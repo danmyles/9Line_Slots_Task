@@ -10,7 +10,7 @@ clearvars;
 
 % Here we call some default settings for setting up Psychtoolbox
 PsychDefaultSetup(2);
-Screen('Preference', 'SkipSyncTests', 1)  
+Screen('Preference', 'SkipSyncTests', 1);  
 
 
 % Get the screen numbers. This gives us a number for each of the screens
@@ -70,7 +70,7 @@ radius = (sqrt(2 .* max(baseRect)^2))/2;
 % Call the colours of our shapes. These are defined at presnet in
 % shape_colours.m. I will probably end up moving this.
 shape_colours;
-colour_vessel = nan(3, 3);
+colour_vessel = nan(3, 9);
 for i = 1:length(colour_vessel)
     colour_vessel(:, i) = all_colours(:, randsample(5, 1));
 end
@@ -79,32 +79,36 @@ end
 splitXpos = [screenXpixels * 0.25 screenXpixels * 0.5 screenXpixels * 0.75];
 splitYpos = [screenYpixels * 0.75 screenYpixels * 0.5 screenYpixels * 0.25];
 
-% % Make our coordinates
-% allPositions = nan(4, 3);
-% for i = 1:numSqaures
-%     allPositions(:, i) = CenterRectOnPointd(baseRect, splitXpos(i), yCenter);
-% end
-
 %% CURRENTLY WORKING FROM HERE
 
 % Make our coordinates
 
 % I am trying to construct a vector full of the seven co-ordinate points
-% at each of the positions in the H design of my slot machine.
+% at each of the positions in the H design layout of my slot machine.
 
-reelPositions = {1 4 7; 2 5 8; 3 6 9};
-for i = 1:9 
-    for j = 1:3
-        reelPositions(i) = CenterRectOnPointd(baseRect, splitXpos(j), splitYpos(j));
+% Create a cell array a 3 x 3 cell array.
+reelPositions = cell(3);
+
+% Place the four rect dimensions in each of the 9 corresponding positions
+
+for i = 1:3 % i being each of the three x positions
+    for j = 1:3 % j being each of the three y positions
+        for k = 1:4
+            reelPositions{j, i} = CenterRectOnPointd(baseRect, splitXpos(i), splitYpos(j));
+        end
     end
 end
 
-% some kind of if statement to pull out the 2
-
 %%
 
+%% Get reel positions
+
+for i = 1:9
+list_reelpos(i, :) = reelPositions{i};
+end
+
 % Draw shape to position 1
-Screen('FillOval', window, colour_vessel, reelPositions);
+Screen('FillOval', window, colour_vessel, list_reelpos');
 
 % Flip to the screen
 Screen('Flip', window);
