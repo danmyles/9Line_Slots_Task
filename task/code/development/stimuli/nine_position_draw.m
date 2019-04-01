@@ -54,7 +54,7 @@ reelInfo.sym_col = cell(3); % Contains the symbol RGB values
 reel_symbols = ["circ"; "tri"; "rect"; "diam"; "pent"];
 
 for i = 1:9
-reelInfo.sym_shape{i} = randsample(reel_symbols,1,true)
+reelInfo.sym_shape{i} = randsample(reel_symbols,1,true);
 end
 
 %% ASSIGN COLOURS
