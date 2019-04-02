@@ -1,14 +1,11 @@
 %% Script to draw a grid on screen
 % Based loosely on http://peterscarfe.com/ptbtutorials.html
 
-% Width of the grid lines.
-penWidthPixels = 5;
-
+% Draw the rect to the screen
 % Set Colour to black (0)
-% Iterate through all grid positions and draw a FrameRect
+% Iterate through all positions
 for i = 1:9
-Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
+    if i ~= [4, 6]
+        Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
+    end
 end
-
-% Flip to the screen
-Screen('Flip', window);

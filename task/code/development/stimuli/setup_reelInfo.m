@@ -8,21 +8,6 @@ reelInfo.sym_shape = cell(3); % Will contain the symbol to display
 reelInfo.sym_col = cell(3); % Contains the symbol RGB values
 reelInfo.grid_position = cell(3);
 
-%% ASSIGN GRID POSITION 
-% Set grid squares dimensions, this is used to define the size of 
-% our rect and oval shapes. The coordinates define the top left and bottom 
-% right coordinates of our grid rectangles. 0 0  refers to the top left
-% corner of the screen, from there we can move the rectangles to a new
-% position. 
-% [top-left-x top-left-y bottom-right-x bottom-right-y].
-gridRect = [0 0 200 200];
-
-for i = 1:3
-    for j = 1:3
-                reelInfo.grid_position{j, i} = CenterRectOnPointd(gridRect, splitXpos(i), splitYpos(j))';
-    end
-end
-
 %% RANDOMLY ASSIGN SHAPES
 % This is a place holder for the actual game script
 

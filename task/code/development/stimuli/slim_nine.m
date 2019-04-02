@@ -6,13 +6,8 @@
 % Call setup scripts
 setup_screen
 setup_reelInfo
-
-% Display grid
-call_grid
-
-% Wait for a key press
-KbStrokeWait;
-
+setup_grid
+ 
 %% ASSIGN SCREEN DIMENSIONS TO EACH REEL POSITION
 
 % Set some base dimensions in pixels for our FillOval and FillRect
@@ -42,6 +37,7 @@ radius = max(baseRect)/1.5;
 % more processing)
 isConvex = 1;
 
+%% Assign Screen Positions for new Shapes
 % This next script computes the screen positions that each shape will be 
 % drawn using. This was a little tricky as FillPoly uses different
 % input to FillRect and FillOval. 
@@ -82,7 +78,7 @@ for i = 1:3
     end
 end
 
-
+%% DRAW ALL SHAPES TO SCREEN
 % Draw shapes to position 1:9
 for i = 1:9
    switch(reelInfo.sym_shape{i})
@@ -97,6 +93,13 @@ for i = 1:9
         case "pent"
             Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
     end   
+end
+
+% Draw a grid
+for i = 1:9
+    if i ~= [4, 6]
+        Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
+    end
 end
 
 % Flip to the screen
