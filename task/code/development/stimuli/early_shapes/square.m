@@ -84,5 +84,3 @@ KbStrokeWait;
 % workspace so you can have a look at them if you want.
 % For help see: help sca
 sca;
-
-% Published with MATLAB® R2015b
