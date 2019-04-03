@@ -53,7 +53,7 @@ isConvex = 1;
 
 for i = 1:3
     for j = 1:3
-        reelInfo.reel_position{j, i} = [j, i];
+        reelInfo.reel_ID{j, i} = [j, i];
         switch(reelInfo.sym_shape{j, i})
             case {"tri", "diam", "pent"}
                 switch(reelInfo.sym_shape{j, i})

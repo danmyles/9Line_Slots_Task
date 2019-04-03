@@ -24,9 +24,6 @@ Y_adjust = gridRect(4) - penWidthPixels;
 splitYpos = [screenYpixels * 0.5 - Y_adjust, screenYpixels * 0.5, screenYpixels * 0.5 + Y_adjust];
 splitXpos = [screenXpixels * 0.5 - X_adjust, screenXpixels * 0.5, screenXpixels * 0.5 + X_adjust];
 
-% splitYpos = [screenYpixels * 0.5 - gridRect(4), screenYpixels * 0.5, screenYpixels * 0.5 + gridRect(4)];
-% splitXpos = [screenXpixels * 0.5 - gridRect(3), screenXpixels * 0.5, screenXpixels * 0.5 + gridRect(3)];
-
 % SET UP reelInfo.grid
 for i = 1:3
     for j = 1:3
