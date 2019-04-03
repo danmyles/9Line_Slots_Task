@@ -40,6 +40,8 @@ white = WhiteIndex(screenNumber);
 % For help see: help RectCenter
 [xCenter, yCenter] = RectCenter(windowRect);
 
-% % Screen X positions of our three rectangles
-splitXpos = [screenXpixels * 0.25 screenXpixels * 0.5 screenXpixels * 0.75];
-splitYpos = [screenYpixels * 0.75 screenYpixels * 0.5 screenYpixels * 0.25];
+%% Old Code
+
+% % % Screen X positions of our three rectangles
+% splitXpos = [screenXpixels * 0.25 screenXpixels * 0.5 screenXpixels * 0.75];
+% splitYpos = [screenYpixels * 0.75 screenYpixels * 0.5 screenYpixels * 0.25];
