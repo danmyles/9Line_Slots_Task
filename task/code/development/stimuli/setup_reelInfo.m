@@ -3,7 +3,7 @@
 
 %% SET UP reelInfo DATA STRUCTURE
 reelInfo.reel_position = cell(3); % Contains Symbol ID Row x Reel
-reelInfo.screen_position = cell(3); % Contains Screen Position in pixels
+reelInfo.sym_position = cell(3); % Contains Screen Position in pixels
 reelInfo.sym_shape = cell(3); % Will contain the symbol to display
 reelInfo.sym_col = cell(3); % Contains the symbol RGB values
 reelInfo.grid_position = cell(3);

@@ -70,9 +70,9 @@ for i = 1:3
                 yPosVector = sin(anglesRad) .* radius + splitYpos(j);
                 xPosVector = cos(anglesRad) .* radius + splitXpos(i);
                 
-                reelInfo.screen_position{j, i} = [xPosVector; yPosVector]';
+                reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
             case {"circ", "rect"}
-                reelInfo.screen_position{j, i} = ... 
+                reelInfo.sym_position{j, i} = ... 
                     CenterRectOnPointd(baseRect, splitXpos(i), splitYpos(j))';
         end
     end
@@ -83,15 +83,15 @@ end
 for i = 1:9
    switch(reelInfo.sym_shape{i})
         case "circ"
-            Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.screen_position{i});
+            Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
         case "tri"
-            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
+            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         case "rect"
-            Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.screen_position{i});
+            Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
         case "diam"
-            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
+            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         case "pent"
-            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
+            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
     end   
 end
 
