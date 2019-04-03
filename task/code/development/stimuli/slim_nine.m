@@ -48,8 +48,8 @@ isConvex = 1;
 % There are then a number of switch statments. These split the flow so that
 % FillPoly is treated seperately to FillRect and Fill Oval. I also used a
 % switch statment to assign the number of sides to each poly shape. The
-% output of this results in dimensions that are appropriate for the shape
-% selected by the game script.
+% output of this results in a set of screen positions the dimensions 
+% of which are appropriate for the shape selected by the game script.
 
 for i = 1:3
     for j = 1:3
@@ -96,11 +96,7 @@ for i = 1:9
 end
 
 % Draw a grid
-for i = 1:9
-    if i ~= [4, 6]
-        Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
-    end
-end
+call_grid
 
 % Flip to the screen
 Screen('Flip', window);
