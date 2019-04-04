@@ -20,12 +20,13 @@ penWidthPixels = 3;
 X_adjust = gridRect(3) - penWidthPixels;
 Y_adjust = gridRect(4) - penWidthPixels;
 
+%% Adjust screen split co-ordinates for penWidth (else they over lap)
 
-%% DAN CHECK THESE THE Y POSITION MAY NEED TO BE REVERSED...?
-% Adjust screen split co-ordinates for penWidth (else they over lap) and
-splitYpos = [screenYpixels * 0.5 - Y_adjust, screenYpixels * 0.5, screenYpixels * 0.5 + Y_adjust];
-splitXpos = [screenXpixels * 0.5 - X_adjust, screenXpixels * 0.5, screenXpixels * 0.5 + X_adjust];
-
+% This divides the screen at three points. The position is determined
+% using the central point +/- the length (X) or width (Y) of the grid
+% square
+splitYpos = [yCenter - Y_adjust, yCenter, yCenter + Y_adjust];
+splitXpos = [xCenter - X_adjust, xCenter, xCenter + X_adjust];
 
 % SET UP reelInfo.grid
 for i = 1:3
