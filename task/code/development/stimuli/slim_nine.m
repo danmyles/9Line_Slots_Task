@@ -46,61 +46,65 @@ isConvex = 1;
 % the j loop cycles through each row position on that reel.
 
 % There are then a number of switch statments. These split the flow so that
-% FillPoly is treated seperately to FillRect and Fill Oval. I also used a
-% switch statment to assign the number of sides to each poly shape. The
-% output of this results in dimensions that are appropriate for the shape
-% selected by the game script.
+% the output is prepared for FillPoly or, FillRect and Fill Oval.
+% This is neccesary beucaase these take a different input for the position
+% argument. I also used a switch statment to assign the number of sides 
+% to each poly shape. The output of this results in a set of screen 
+% positions the dimensions of which are appropriate for the shape selected 
+% by the game script.
+
+% The If statement determines whether the reel position should be left 
+% blank or filled with a symbol
 
 for i = 1:3
     for j = 1:3
-        reelInfo.reel_position{j, i} = [j, i];
-        switch(reelInfo.sym_shape{j, i})
-            case {"tri", "diam", "pent"}
-                switch(reelInfo.sym_shape{j, i})
-                    case "tri"
-                        numSides = 3;
-                    case "diam"
-                        numSides = 4;
-                    case "pent"
-                        numSides = 5;
-                end
-                anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
-                anglesRad = anglesDeg * (pi / 180);
-                
-                yPosVector = sin(anglesRad) .* radius + splitYpos(j);
-                xPosVector = cos(anglesRad) .* radius + splitXpos(i);
-                
-                reelInfo.screen_position{j, i} = [xPosVector; yPosVector]';
-            case {"circ", "rect"}
-                reelInfo.screen_position{j, i} = ... 
-                    CenterRectOnPointd(baseRect, splitXpos(i), splitYpos(j))';
+        if ismember(reelInfo.sym_shape{2, 2}, reel_symbols)
+            switch(reelInfo.sym_shape{j, i})
+                case {"tri", "diam", "pent"}
+                    switch(reelInfo.sym_shape{j, i})
+                        case "tri"
+                            numSides = 3;
+                        case "diam"
+                            numSides = 4;
+                        case "pent"
+                            numSides = 5;
+                    end
+                    anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
+                    anglesRad = anglesDeg * (pi / 180);
+                    
+                    yPosVector = sin(anglesRad) .* radius + splitYpos(j);
+                    xPosVector = cos(anglesRad) .* radius + splitXpos(i);
+                    
+                    reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
+                case {"circ", "rect"}
+                    reelInfo.sym_position{j, i} = ...
+                        CenterRectOnPointd(baseRect, splitXpos(i), splitYpos(j))';
+            end
         end
     end
 end
 
 %% DRAW ALL SHAPES TO SCREEN
-% Draw shapes to position 1:9
+% Draw shapes to position 1:9 excluding position 4 and 6
 for i = 1:9
-   switch(reelInfo.sym_shape{i})
-        case "circ"
-            Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.screen_position{i});
-        case "tri"
-            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
-        case "rect"
-            Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.screen_position{i});
-        case "diam"
-            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
-        case "pent"
-            Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.screen_position{i}, isConvex);
-    end   
+    if i ~= [4, 6]
+        switch(reelInfo.sym_shape{i})
+            case "circ"
+                Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+            case "tri"
+                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+            case "rect"
+                Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+            case "diam"
+                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+            case "pent"
+                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+        end
+    end
 end
 
 % Draw a grid
-for i = 1:9
-    if i ~= [4, 6]
-        Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
-    end
-end
+call_grid
 
 % Flip to the screen
 Screen('Flip', window);

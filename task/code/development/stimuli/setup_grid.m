@@ -8,8 +8,8 @@
 
 %% SET SIZE OF GRID SQUARES
 gridRect = windowRect;
-gridRect(3) = gridRect(3) * .20
-gridRect(4) = gridRect(4) * .24
+gridRect(3) = gridRect(3) * .20;
+gridRect(4) = gridRect(4) * .24;
 
 %% Width of the grid lines.
 penWidthPixels = 3;
@@ -20,14 +20,17 @@ penWidthPixels = 3;
 X_adjust = gridRect(3) - penWidthPixels;
 Y_adjust = gridRect(4) - penWidthPixels;
 
+
+%% DAN CHECK THESE THE Y POSITION MAY NEED TO BE REVERSED...?
 % Adjust screen split co-ordinates for penWidth (else they over lap) and
-splitYpos_grid = [screenYpixels * 0.5 - Y_adjust, screenYpixels * 0.5, screenYpixels * 0.5 + Y_adjust];
-splitXpos_grid = [screenXpixels * 0.5 - X_adjust, screenXpixels * 0.5, screenXpixels * 0.5 + X_adjust];
+splitYpos = [screenYpixels * 0.5 - Y_adjust, screenYpixels * 0.5, screenYpixels * 0.5 + Y_adjust];
+splitXpos = [screenXpixels * 0.5 - X_adjust, screenXpixels * 0.5, screenXpixels * 0.5 + X_adjust];
+
 
 % SET UP reelInfo.grid
 for i = 1:3
     for j = 1:3
         reelInfo.grid_position{j, i} = ...
-            CenterRectOnPointd(gridRect, splitXpos_grid(i), splitYpos_grid(j))';
+            CenterRectOnPointd(gridRect, splitXpos(i), splitYpos(j))';
     end
 end
