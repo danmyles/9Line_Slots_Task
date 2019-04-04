@@ -32,6 +32,9 @@ white = WhiteIndex(screenNumber);
 % Open the main window with multi-sampling for anti-aliasing
 [window, windowRect] = PsychImaging('OpenWindow', screenNumber, white, [], [], [], [], 6, []);
 
+% Setup for playing on laptiop only (ie no external)
+% [window, windowRect] = PsychImaging('OpenWindow', screenNumber, white, [0, 0, 640, 480], [], [], [], 6, []);
+
 % Get the size of the on screen window in pixels
 % For help see: Screen WindowSize?
 [screenXpixels, screenYpixels] = Screen('WindowSize', window);
