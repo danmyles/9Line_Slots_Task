@@ -13,7 +13,7 @@
 [reelInfo] = create_reelInfo();
 
 % Set up grid
-[gridInfo] = setup_grid(screenInfo);
+[gridInfo, screenInfo] = setup_grid(screenInfo);
 
 % May put screen launch here...?
 
@@ -22,7 +22,7 @@ priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
 % Fill reel.Info struct with current spin info
-update_reelInfo; % also sets up grid dimensions
+[reelInfo] = update_reelInfo(reelInfo, screenInfo);
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);

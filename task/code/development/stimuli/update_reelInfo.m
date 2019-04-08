@@ -1,4 +1,4 @@
-function [reelInfo] = update_reelInfo(reelInfo, gridInfo)
+function [reelInfo] = update_reelInfo(reelInfo, screenInfo)
 % ----------------------------------------------------------------------
 % update_reelInfo(reelInfo, gridInfo)
 % ----------------------------------------------------------------------
@@ -110,13 +110,13 @@ for i = 1:3
                     anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
                     anglesRad = anglesDeg * (pi / 180);
                     
-                    yPosVector = sin(anglesRad) .* radius + gridInfo.splitYpos(j);
-                    xPosVector = cos(anglesRad) .* radius + gridInfo.splitXpos(i);
+                    yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(j);
+                    xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(i);
                     
                     reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
                 case {"circ", "rect"}
                     reelInfo.sym_position{j, i} = ...
-                        CenterRectOnPointd(baseRect, gridInfo.splitXpos(i), gridInfo.splitYpos(j))';
+                        CenterRectOnPointd(baseRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
             end
         end
     end

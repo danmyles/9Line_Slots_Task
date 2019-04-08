@@ -1,4 +1,4 @@
-function [gridInfo] = setup_grid(screenInfo)
+function [gridInfo, screenInfo] = setup_grid(screenInfo)
 % ----------------------------------------------------------------------
 % setup_grid(screenInfo)
 % ----------------------------------------------------------------------
@@ -9,7 +9,7 @@ function [gridInfo] = setup_grid(screenInfo)
 % screenInfo
 % ----------------------------------------------------------------------
 % Output(s):
-% gridInfo
+% gridInfo, screenInfo
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019
@@ -41,11 +41,11 @@ Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
 % using the central point +/- the length (X) or width (Y) of the grid
 % square
 
-gridInfo.splitYpos = [screenInfo.yCenter - Y_adjust,...
+screenInfo.splitYpos = [screenInfo.yCenter - Y_adjust,...
                         screenInfo.yCenter, ... 
                         screenInfo.yCenter + Y_adjust];
 
-gridInfo.splitXpos = [screenInfo.xCenter - X_adjust, ... 
+screenInfo.splitXpos = [screenInfo.xCenter - X_adjust, ... 
                         screenInfo.xCenter, ... 
                         screenInfo.xCenter + X_adjust];
 
@@ -53,7 +53,7 @@ gridInfo.splitXpos = [screenInfo.xCenter - X_adjust, ...
 for i = 1:3
     for j = 1:3
         gridInfo.position{j, i} = ...
-            CenterRectOnPointd(gridInfo.Rect, gridInfo.splitXpos(i), gridInfo.splitYpos(j))';
+            CenterRectOnPointd(gridInfo.Rect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
     end
 end 
 end
