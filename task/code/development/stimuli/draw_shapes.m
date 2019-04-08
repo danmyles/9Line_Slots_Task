@@ -3,7 +3,10 @@ function [] = draw_shapes(screenInfo, reelInfo, selectReels)
 % Tell PTB that polygons should be convex (concave polygons require much
 % more processing)
 isConvex = 1;
-    
+
+% This for loop uses the selectReels variable to draw a shape to each reel
+% position. The loop also skips the 4th and 6th position to avoid filling
+% these.
 for i = selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})

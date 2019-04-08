@@ -26,8 +26,7 @@ update_reelInfo; % also sets up grid dimensions
 draw_grid(screenInfo, gridInfo);
 
 % Draw shapes
-% draw_shapes(1:9, reelInfo);
-selectReels = 6:9;
+selectReels = 1:9;
 draw_shapes(screenInfo, reelInfo, selectReels);
 
 % Flip to the screen
