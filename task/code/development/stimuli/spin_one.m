@@ -10,6 +10,9 @@
 % Create reel.Info struct
 [reelInfo] = create_reelInfo();
 
+% Set up grid
+[gridInfo] = setup_grid(screenInfo);
+
 % May put screen launch here...?
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
@@ -20,7 +23,7 @@ Priority(priorityLevel);
 update_reelInfo; % also sets up grid dimensions
 
 % Draw a grid
-draw_grid;
+draw_grid(screenInfo, gridInfo);
 
 % Draw shapes
 % draw_shapes(1:9, reelInfo);

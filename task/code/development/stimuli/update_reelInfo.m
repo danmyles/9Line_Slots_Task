@@ -38,11 +38,6 @@ for i = 1:9
     end
 end
 
-%% SETUP reelInfo.grid_position
-
-grid_on = true;
-setup_grid % See script
-
 %% ASSIGN SCREEN DIMENSIONS TO EACH REEL POSITION
 
 % Set some base dimensions in pixels for our FillOval and FillRect
@@ -106,13 +101,13 @@ for i = 1:3
                     anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
                     anglesRad = anglesDeg * (pi / 180);
                     
-                    yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(j);
-                    xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(i);
+                    yPosVector = sin(anglesRad) .* radius + gridInfo.splitYpos(j);
+                    xPosVector = cos(anglesRad) .* radius + gridInfo.splitXpos(i);
                     
                     reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
                 case {"circ", "rect"}
                     reelInfo.sym_position{j, i} = ...
-                        CenterRectOnPointd(baseRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
+                        CenterRectOnPointd(baseRect, gridInfo.splitXpos(i), gridInfo.splitYpos(j))';
             end
         end
     end

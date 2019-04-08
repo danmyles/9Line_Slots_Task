@@ -23,3 +23,7 @@ dir = (which('setup_exp.m'));
 cd(dir(1:end-11));
 
 % probably want some info laid out about the subject etc
+
+%% THINGS TO ADD DOWN THE LINE:
+% HideCursor; To hide the mouse cursor ? but this is annoying when
+% debugging

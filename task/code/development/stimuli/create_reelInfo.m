@@ -24,10 +24,10 @@ function reelInfo = create_reelInfo()
 
 %% SET UP reelInfo DATA STRUCTURE
 reelInfo.reel_ID = cell(3); % Contains Reel ID Row x Reel
-reelInfo.sym_position = cell(3); % Symbol screen Position in pixels
+reelInfo.sym_position = cell(3); % Symbol screen position in pixels
 reelInfo.sym_shape = cell(3); % Symbol to display
 reelInfo.sym_col = cell(3); % Symbol RGB values for colour
-reelInfo.grid_position = cell(3); % Grid screen Position in pixels
+reelInfo.grid_position = cell(3); % Grid screen position in pixels
 
 %% ASSIGN REEL IDs
 for i = 1:3

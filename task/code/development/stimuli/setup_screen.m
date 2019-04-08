@@ -1,11 +1,3 @@
-%% Script to run basic Screen Set up
-% Based on http://peterscarfe.com/ptbtutorials.html
-
-%% THINGS TO ADD DOWN THE LINE:
-% HideCursor; To hide the mouse cursor ? but this is annoying when
-% debugging
-
-% HERE IS A NICE EXAMPLE OF function info
 function screenInfo = setup_screen()
 % ----------------------------------------------------------------------
 % setup_screen()
