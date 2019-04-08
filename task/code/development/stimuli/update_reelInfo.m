@@ -106,13 +106,13 @@ for i = 1:3
                     anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
                     anglesRad = anglesDeg * (pi / 180);
                     
-                    yPosVector = sin(anglesRad) .* radius + splitYpos(j);
-                    xPosVector = cos(anglesRad) .* radius + splitXpos(i);
+                    yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(j);
+                    xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(i);
                     
                     reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
                 case {"circ", "rect"}
                     reelInfo.sym_position{j, i} = ...
-                        CenterRectOnPointd(baseRect, splitXpos(i), splitYpos(j))';
+                        CenterRectOnPointd(baseRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
             end
         end
     end

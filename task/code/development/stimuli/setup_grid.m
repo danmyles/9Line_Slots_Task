@@ -6,8 +6,11 @@
 % position. 
 % [top-left-x top-left-y bottom-right-x bottom-right-y].
 
+%% TODO: Wrap in if statement for build_grid = false/true
+% See update reelinfo line 43 - 44
+
 %% SET SIZE OF GRID SQUARES
-gridRect = windowRect;
+gridRect = screenInfo.windowRect;
 gridRect(3) = gridRect(3) * .20;
 gridRect(4) = gridRect(4) * .24;
 
@@ -25,13 +28,19 @@ Y_adjust = gridRect(4) - penWidthPixels;
 % This divides the screen at three points. The position is determined
 % using the central point +/- the length (X) or width (Y) of the grid
 % square
-splitYpos = [yCenter - Y_adjust, yCenter, yCenter + Y_adjust];
-splitXpos = [xCenter - X_adjust, xCenter, xCenter + X_adjust];
+
+screenInfo.splitYpos = [screenInfo.yCenter - Y_adjust,...
+                        screenInfo.yCenter, ... 
+                        screenInfo.yCenter + Y_adjust];
+
+screenInfo.splitXpos = [screenInfo.xCenter - X_adjust, ... 
+                        screenInfo.xCenter, ... 
+                        screenInfo.xCenter + X_adjust];
 
 % SET UP reelInfo.grid
 for i = 1:3
     for j = 1:3
         reelInfo.grid_position{j, i} = ...
-            CenterRectOnPointd(gridRect, splitXpos(i), splitYpos(j))';
+            CenterRectOnPointd(gridRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
     end
 end

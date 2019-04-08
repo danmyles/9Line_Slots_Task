@@ -6,6 +6,6 @@
 
 for i = 1:9
     if i ~= [4, 6]
-        Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
+        Screen('FrameRect', screenInfo.window, screenInfo.black, reelInfo.grid_position{i}, penWidthPixels);
     end
 end

@@ -3,8 +3,11 @@
 % Bibiliogra phy:
 % http://peterscarfe.com/ptbtutorials.html
 
+% Create file directories
+% TO DO: create a function that creates a struct full of file path names
+
 % Call setup scripts
-setup_screen;
+[screenInfo] = setup_screen();
 
 % Create reel.Info struct
 [reelInfo] = create_reelInfo();
@@ -20,21 +23,21 @@ for i = 1:3
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "tri"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "rect"
-                Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "diam"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "pent"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end
 end
 
 % Flip to the screen
-Screen('Flip', window);
+Screen('Flip', screenInfo.window);
 
 % Wait for a key press
 KbStrokeWait;
@@ -47,21 +50,21 @@ for i = [1:3, 7:9]
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "tri"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "rect"
-                Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "diam"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "pent"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end
 end
 
 % Flip to the screen
-Screen('Flip', window);
+Screen('Flip', screenInfo.window);
 
 % Draw a grid
 draw_grid;
@@ -71,21 +74,21 @@ for i = [1:3, 7:9]
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "tri"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "rect"
-                Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "diam"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "pent"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end
 end
 
 % Flip to the screen
-Screen('Flip', window);
+Screen('Flip', screenInfo.window);
 
 % Wait for a key press
 KbStrokeWait;
@@ -98,15 +101,15 @@ for i = [1:3, 7:9]
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "tri"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "rect"
-                Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "diam"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "pent"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end
 end
@@ -124,11 +127,11 @@ yCoords = [0, 0, -fixCrossDimPix, fixCrossDimPix];
 allCoords = [xCoords; yCoords];
 
 % Draw a fixation cross in white at the centre of the screen
-Screen('DrawLines', window, allCoords,...
-    lineWidthPix, black, screenCenter, 2);
+Screen('DrawLines', screenInfo.window, allCoords,...
+    lineWidthPix, screenInfo.black, screenCenter, 2);
 
 % Flip cross the the screen
-Screen('Flip', window);
+Screen('Flip', screenInfo.window);
 
 % Wait for a key press
 KbStrokeWait;
@@ -141,21 +144,21 @@ for i = 1:9
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                Screen('FillOval', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "tri"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "rect"
-                Screen('FillRect', window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
             case "diam"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
             case "pent"
-                Screen('FillPoly', window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end
 end
 
 % Flip to the screen
-Screen('Flip', window);
+Screen('Flip', screenInfo.window);
 
 % Wait for a key press
 KbStrokeWait;
