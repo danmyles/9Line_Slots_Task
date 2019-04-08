@@ -35,16 +35,21 @@ white = WhiteIndex(screenNumber);
 % Setup for playing on laptiop only (ie no external)
 % [window, windowRect] = PsychImaging('OpenWindow', screenNumber, white, [0, 0, 640, 480], [], [], [], 6, []);
 
+% Set up alpha-blending for smooth (anti-aliased) lines
+Screen('BlendFunction', window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
+
+% Query the frame duration
+ifi = Screen('GetFlipInterval', window);
+
 % Get the size of the on screen window in pixels
 % For help see: Screen WindowSize?
 [screenXpixels, screenYpixels] = Screen('WindowSize', window);
 
+% Setup the text type for the window
+Screen('TextFont', window, 'Ariel');
+Screen('TextSize', window, 36);
+
 % Get the centre coordinate of the window in pixels
 % For help see: help RectCenter
 [xCenter, yCenter] = RectCenter(windowRect);
-
-%% Old Code
-
-% % % Screen X positions of our three rectangles
-% splitXpos = [screenXpixels * 0.25 screenXpixels * 0.5 screenXpixels * 0.75];
-% splitYpos = [screenYpixels * 0.75 screenYpixels * 0.5 screenYpixels * 0.25];
+screenCenter = [xCenter, yCenter];

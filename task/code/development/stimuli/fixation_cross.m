@@ -41,6 +41,7 @@ Screen('TextSize', window, 36);
 % Get the centre coordinate of your window
 [xCenter, yCenter] = RectCenter(windowRect);
 screenCenter = [xCenter, yCenter];
+
 % Set the size of the fixation cross arms
 fixCrossDimPix = 22;
 
