@@ -1,10 +1,10 @@
-%% DRAW ALL SHAPES TO SCREEN
-% Draw shapes to position 1:9 excluding position 4 and 6
+function [] = draw_shapes(screenInfo, reelInfo, selectReels)
 
-% I AM TRYING TO TURN THIS INTO A FUNCTION THAT SELECTS REELS (INPUT) TO
-% DISPLAY (OUTPUT) OR IGNORE WHEN PRESENTING REELS ONE AT A TIME.
-
-for i = 1:9
+% Tell PTB that polygons should be convex (concave polygons require much
+% more processing)
+isConvex = 1;
+    
+for i = selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
@@ -19,4 +19,6 @@ for i = 1:9
                 Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end
+end
+
 end

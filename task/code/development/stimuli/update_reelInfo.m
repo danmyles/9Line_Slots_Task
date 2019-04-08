@@ -63,10 +63,6 @@ baseRect = [0 0 100 100];
 % 3) Or 1.5 in the event you want to go for what "looks" about even.
 radius = max(baseRect)/1.5;
 
-% Tell PTB that polygons should be convex (concave polygons require much
-% more processing)
-isConvex = 1;
-
 % This next script computes the screen positions that each shape will be 
 % drawn using. This was a little tricky as FillPoly uses different
 % input to FillRect and FillOval. 

@@ -27,7 +27,8 @@ draw_grid(screenInfo, gridInfo);
 
 % Draw shapes
 % draw_shapes(1:9, reelInfo);
-draw_shapes;
+selectReels = 6:9;
+draw_shapes(screenInfo, reelInfo, selectReels);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
