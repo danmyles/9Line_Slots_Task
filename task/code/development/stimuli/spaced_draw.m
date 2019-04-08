@@ -1,12 +1,11 @@
-%% Script to draw a 9 random symbols onscreen
-% Slimmed down draw script
-% Bibiliogra phy:
-% http://peterscarfe.com/ptbtutorials.html
+%% Script to draw a 9 random symbols onscreen one reel at a time
 
 % Create file directories
 % TO DO: create a function that creates a struct full of file path names
 
-% Call setup scripts ?> TODO THIS A FUNCTION
+% TO DO: make a function thate calls all setup scripts
+
+% Setup screen
 [screenInfo] = setup_screen();
 
 % Create reel.Info struct
@@ -14,8 +13,6 @@
 
 % Set up grid
 [gridInfo, screenInfo] = setup_grid(screenInfo);
-
-% May put screen launch here...?
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);

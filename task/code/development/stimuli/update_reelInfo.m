@@ -1,4 +1,4 @@
-function [reelInfo] = update_reelInfo(reelInfo, screenInfo)
+function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels)
 % ----------------------------------------------------------------------
 % update_reelInfo(reelInfo, gridInfo)
 % ----------------------------------------------------------------------
@@ -16,7 +16,7 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo)
 % Project : 9_Line_Slots_Task
 % Version : development
 % ----------------------------------------------------------------------    
-    
+
 %% RANDOMLY ASSIGN SHAPES
 % This is a place holder for the actual game script which will eventually
 % be it's own function
@@ -24,7 +24,7 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo)
 reelSymbols = ["circ"; "tri"; "rect"; "diam"; "pent"];
 
 % Randomly assign shapes to positions 1:9 excluding 4 and 6.
-for i = 1:9
+for i = selectReels
      if i ~= [4, 6]
          reelInfo.sym_shape{i} = randsample(reelSymbols,1,true);
      else
@@ -34,7 +34,7 @@ end
 
 %% ASSIGN COLOURS
 % Assign the appropriate colour values for each shape
-for i = 1:9
+for i = selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
@@ -93,6 +93,20 @@ radius = max(baseRect)/1.5;
 
 % The If statement determines whether the reel position should be left 
 % blank or filled with a symbol
+
+%% I AM TRYING TO MAKE THIS FUNCTION FLEXIBLE SO THAT I CAN 
+% Use select reels.
+% Hoping I can use selectReels to subset reel_ID and use this for the
+% loop below.
+
+x= []
+
+for i = 1:length(selectReels)
+x = [x; reelInfo.reel_ID{selectReels(i)}];
+end
+x
+
+
 
 for i = 1:3
     for j = 1:3

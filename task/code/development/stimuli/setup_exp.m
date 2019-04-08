@@ -24,6 +24,11 @@ cd(dir(1:end-11));
 
 % probably want some info laid out about the subject etc
 
+%% Set inter stimulus interval
+% Mean ISI e.g 200ms
+% Range ISI e.g. +/- 50ms
+% So ISI will fall randomly between 150 ms and 250 ms
+
 %% THINGS TO ADD DOWN THE LINE:
 % HideCursor; To hide the mouse cursor ? but this is annoying when
 % debugging
