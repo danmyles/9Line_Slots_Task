@@ -20,7 +20,7 @@ priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
 % Fill reel.Info struct with current spin info
-update_reelInfo; % also sets up grid dimensions
+[reelInfo] = update_reelInfo(reelInfo, gridInfo);
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);

@@ -1,20 +1,39 @@
-%% SCRIPT TO FILL IN NEW INFORMATION to reelInfo STRUCT
-
+function [reelInfo] = update_reelInfo(reelInfo, gridInfo)
+% ----------------------------------------------------------------------
+% update_reelInfo(reelInfo, gridInfo)
+% ----------------------------------------------------------------------
+% Goal of the function :
+% Update reelInfo with values from last spin
+% ----------------------------------------------------------------------
+% Input(s) :
+% reelInfo, gridInfo
+% ----------------------------------------------------------------------
+% Output(s):
+% reelInfo - overwrites and updates reelInfo values in the base workspace 
+% ----------------------------------------------------------------------
+% Function created by Dan Myles (dan.myles@monash.edu)
+% Last update : 8th April 2019
+% Project : 9_Line_Slots_Task
+% Version : development
+% ----------------------------------------------------------------------    
+    
 %% RANDOMLY ASSIGN SHAPES
-% This is a place holder for the actual game script
+% This is a place holder for the actual game script which will eventually
+% be it's own function
 
-reel_symbols = ["circ"; "tri"; "rect"; "diam"; "pent"];
+reelSymbols = ["circ"; "tri"; "rect"; "diam"; "pent"];
 
 % Randomly assign shapes to positions 1:9 excluding 4 and 6.
 for i = 1:9
      if i ~= [4, 6]
-         reelInfo.sym_shape{i} = randsample(reel_symbols,1,true);
+         reelInfo.sym_shape{i} = randsample(reelSymbols,1,true);
      else
          reelInfo.sym_shape{i} = "empty_space";
      end
 end
 
 %% ASSIGN COLOURS
+% Assign the appropriate colour values for each shape
 for i = 1:9
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
@@ -77,7 +96,7 @@ radius = max(baseRect)/1.5;
 
 for i = 1:3
     for j = 1:3
-        if ismember(reelInfo.sym_shape{2, 2}, reel_symbols)
+        if ismember(reelInfo.sym_shape{2, 2}, reelSymbols)
             switch(reelInfo.sym_shape{j, i})
                 case {"tri", "diam", "pent"}
                     switch(reelInfo.sym_shape{j, i})
@@ -101,4 +120,5 @@ for i = 1:3
             end
         end
     end
+end
 end
