@@ -1,4 +1,4 @@
-function reelInfo = create_reelInfo()
+function [reelInfo] = create_reelInfo()
 % ----------------------------------------------------------------------
 % create_reelInfo()
 % ----------------------------------------------------------------------
@@ -14,7 +14,6 @@ function reelInfo = create_reelInfo()
 % ----------------------------------------------------------------------
 % Output(s):
 % reelInfo
-% [reelInfo] = create_reelInfo() to call into base workspace
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019

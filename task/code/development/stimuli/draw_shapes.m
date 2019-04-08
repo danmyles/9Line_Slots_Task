@@ -1,5 +1,32 @@
 function [] = draw_shapes(screenInfo, reelInfo, selectReels)
-
+% ----------------------------------------------------------------------
+% draw_shapes(screenInfo, reelInfo, selectReels)
+% ----------------------------------------------------------------------
+% Goal of the function :
+% Draw a grid on screen
+% ----------------------------------------------------------------------
+% Input(s) :
+% screenInfo, gridInfo
+%
+% selectReels - any set of numbers between 1 and 9. 
+%
+% Position Numbers:
+%   1   4   7
+%   2   5   8
+%   3   6   9
+%
+% NOTE: Functions designed to leave positions 4 and 6 blank
+% ----------------------------------------------------------------------
+% Output(s):
+% (none)
+% ----------------------------------------------------------------------
+% Function created by Dan Myles (dan.myles@monash.edu)
+% Last update : 8th April 2019
+% Project : 9_Line_Slots_Task
+% Version : development
+% ----------------------------------------------------------------------
+    
+    
 % Tell PTB that polygons should be convex (concave polygons require much
 % more processing)
 isConvex = 1;

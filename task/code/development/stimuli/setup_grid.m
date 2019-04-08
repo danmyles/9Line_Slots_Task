@@ -1,19 +1,30 @@
 function [gridInfo] = setup_grid(screenInfo)
-%% ASSIGN GRID POSITION 
-% Set grid squares dimensions, this is used to define the size of 
-% our rect and oval shapes. The coordinates define the top left and bottom 
-% right coordinates of our grid rectangles. 0 0  refers to the top left
-% corner of the screen, from there we can move the rectangles to a new
-% position. 
-% [top-left-x top-left-y bottom-right-x bottom-right-y].
-
-%% TODO: Wrap in if statement for build_grid = false/true
-% See update reelinfo line 43 - 44
+% ----------------------------------------------------------------------
+% setup_grid(screenInfo)
+% ----------------------------------------------------------------------
+% Goal of the function :
+% Set grid squares positions and dimensions.
+% ----------------------------------------------------------------------
+% Input(s) :
+% screenInfo
+% ----------------------------------------------------------------------
+% Output(s):
+% gridInfo
+% ----------------------------------------------------------------------
+% Function created by Dan Myles (dan.myles@monash.edu)
+% Last update : 8th April 2019
+% Project : 9_Line_Slots_Task
+% Version : development
+% ----------------------------------------------------------------------
 
 %% SET SIZE OF GRID SQUARES
+% The coordinates gridInfo.Rect define the top left and bottom right 
+% coordinates of our grid rectangles. [0, 0] refers to the top left corner 
+% of the screen, from there we can move the rectangles to a new position. 
+% [top-left-x top-left-y bottom-right-x bottom-right-y].
 gridInfo.Rect = screenInfo.windowRect;
-gridInfo.Rect(3) = gridInfo.Rect(3) * .20;
-gridInfo.Rect(4) = gridInfo.Rect(4) * .24;
+gridInfo.Rect(3) = gridInfo.Rect(3) * .20; % proportion of total screen size
+gridInfo.Rect(4) = gridInfo.Rect(4) * .24; % proportion of total screen size
 
 %% Width of the grid lines.
 gridInfo.penWidthPixels = 3;
@@ -38,7 +49,7 @@ gridInfo.splitXpos = [screenInfo.xCenter - X_adjust, ...
                         screenInfo.xCenter, ... 
                         screenInfo.xCenter + X_adjust];
 
-% SET UP reelInfo.grid
+% SET UP gridInfo.position
 for i = 1:3
     for j = 1:3
         gridInfo.position{j, i} = ...

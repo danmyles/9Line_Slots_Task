@@ -1,4 +1,22 @@
 function [] = draw_fixation(screenInfo)
+% ----------------------------------------------------------------------
+% draw_fixation(screenInfo)
+% ----------------------------------------------------------------------
+% Goal of the function :
+% Draw a fixation cross at the centre of the screen
+% ----------------------------------------------------------------------
+% Input(s) :
+% screenInfo
+% ----------------------------------------------------------------------
+% Output(s):
+% (none)
+% ----------------------------------------------------------------------
+% Function created by Dan Myles (dan.myles@monash.edu)
+% Last update : 8th April 2019
+% Project : 9_Line_Slots_Task
+% Version : development
+% ----------------------------------------------------------------------
+
 % Set the size of the fixation cross arms
 fixCrossDimPix = 22;
 
