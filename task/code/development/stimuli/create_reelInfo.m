@@ -1,4 +1,4 @@
-function reelInfo = setup_reelInfo()
+function reelInfo = create_reelInfo()
     %%%%%%%%%%%%%%%%%%%%%%%%%
     %% FUNCTION TO SET UP THE reelInfo DATA STRUCTURE
     % This script sets up a data structre that will contains information about

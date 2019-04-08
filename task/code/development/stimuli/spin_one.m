@@ -7,7 +7,7 @@
 setup_screen;
 
 % Create reel.Info struct
-[reelInfo] = setup_reelInfo();
+[reelInfo] = create_reelInfo();
 
 % Fill reel.Info struct with current spin info
 update_reelInfo; % also sets up grid dimensions
