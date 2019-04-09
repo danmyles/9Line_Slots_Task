@@ -128,11 +128,9 @@ for i = selectReels
                     screenInfo.splitXpos((reelInfo.reel_ID{i}(2))), ... 
                     screenInfo.splitYpos((reelInfo.reel_ID{i}(1))))';
         end
-end
+end    
 
-
-       
-
+%% OLD CODE - TIDY UP OR SAVE AS ANOTHER FILE SO YOU CAN EASILY REVERT
 
 % for i = 1:3
 %     for j = 1:3
