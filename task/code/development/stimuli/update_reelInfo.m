@@ -34,7 +34,7 @@ end
 
 %% ASSIGN COLOURS
 % Assign the appropriate colour values for each shape
-for i = selectReels
+for i =  selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
@@ -98,41 +98,67 @@ radius = max(baseRect)/1.5;
 % Use select reels.
 % Hoping I can use selectReels to subset reel_ID and use this for the
 % loop below.
-
-x= []
-
-for i = 1:length(selectReels)
-x = [x; reelInfo.reel_ID{selectReels(i)}];
-end
-x
+% 
 
 
+%% DAN IS HERE - UPDATE COMMENTS ABOVE AND BESIDE THIS TO EXPLAIN HOW
+% The loop works.
 
-for i = 1:3
-    for j = 1:3
-        if ismember(reelInfo.sym_shape{2, 2}, reelSymbols)
-            switch(reelInfo.sym_shape{j, i})
-                case {"tri", "diam", "pent"}
-                    switch(reelInfo.sym_shape{j, i})
-                        case "tri"
-                            numSides = 3;
-                        case "diam"
-                            numSides = 4;
-                        case "pent"
-                            numSides = 5;
-                    end
-                    anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
-                    anglesRad = anglesDeg * (pi / 180);
-                    
-                    yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(j);
-                    xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(i);
-                    
-                    reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
-                case {"circ", "rect"}
-                    reelInfo.sym_position{j, i} = ...
-                        CenterRectOnPointd(baseRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
-            end
+for i = selectReels
+     switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
+            case {"tri", "diam", "pent"}
+                switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
+                    case "tri"
+                        numSides = 3;
+                    case "diam"
+                        numSides = 4;
+                    case "pent"
+                        numSides = 5;
+                end
+                anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
+                anglesRad = anglesDeg * (pi / 180);
+                
+                yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(reelInfo.reel_ID{i}(1));
+                xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(reelInfo.reel_ID{i}(2));
+                
+                reelInfo.sym_position{i} = [xPosVector; yPosVector]';
+            case {"circ", "rect"}
+                reelInfo.sym_position{i} = ...
+                    CenterRectOnPointd(baseRect, ...
+                    screenInfo.splitXpos((reelInfo.reel_ID{i}(2))), ... 
+                    screenInfo.splitYpos((reelInfo.reel_ID{i}(1))))';
         end
-    end
 end
+
+
+       
+
+
+% for i = 1:3
+%     for j = 1:3
+%         if ismember(reelInfo.sym_shape{2, 2}, reelSymbols)
+%             switch(reelInfo.sym_shape{j, i})
+%                 case {"tri", "diam", "pent"}
+%                     switch(reelInfo.sym_shape{j, i})
+%                         case "tri"
+%                             numSides = 3;
+%                         case "diam"
+%                             numSides = 4;
+%                         case "pent"
+%                             numSides = 5;
+%                     end
+%                     anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
+%                     anglesRad = anglesDeg * (pi / 180);
+%                     
+%                     yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(j);
+%                     xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(i);
+%                     
+%                     reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
+%                 case {"circ", "rect"}
+%                     reelInfo.sym_position{j, i} = ...
+%                         CenterRectOnPointd(baseRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
+%             end
+%         end
+%     end
+% end
 end
