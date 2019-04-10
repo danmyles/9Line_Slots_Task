@@ -77,28 +77,19 @@ baseRect = [0 0 100 100];
 radius = max(baseRect)/1.5;
 
 % This next script computes the screen positions that each shape will be 
-% drawn using. This was a little tricky as FillPoly uses different
-% input to FillRect and FillOval. 
+% drawn using. This was a little tricky as FillPoly takes a different
+% input format to FillRect and FillOval. 
 
-% The script uses two a for loop that takes the function input selectReels
+% To get around this I've used a number of switch statments. These split 
+% the flow so that the output is prepared as appropriate for
+% FillPoly/Rect/Oval.
+
+% I also used a switch statment to assign the number of sides 
+% to each poly shape. This can then be used to assign the appropriate 
+% set of positions/dimensions.
+
+% The script also uses a for loop that takes the function input selectReels
 % to allow for resetting of a subset of the reels (e.g. just reels 7:9). 
-
-% There are then a number of switch statments. These split the flow so that
-% the output is prepared for FillPoly or, FillRect and Fill Oval.
-% This is neccesary beucaase these take a different input for the position
-% argument. I also used a switch statment to assign the number of sides 
-% to each poly shape. The output of this results in a set of screen 
-% positions the dimensions of which are appropriate for the shape selected 
-% by the game script.
-
-% The If statement determines whether the reel position should be left 
-% blank or filled with a symbol
-
-
-%% DAN IS HERE - UPDATE COMMENTS ABOVE AND BESIDE THIS TO EXPLAIN HOW
-% The loop works.
-
-% Adjust this to use new screenInfo.splitpos
 
 for i = selectReels
      switch(reelInfo.sym_shape{i})
@@ -128,62 +119,4 @@ for i = selectReels
                     screenInfo.splitpos{i}(2))';
         end
 end    
-
-
-%% OLD CODE - TIDY UP OR SAVE AS ANOTHER FILE SO YOU CAN EASILY REVERT
-% 
-% for i = selectReels
-%      switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
-%             case {"tri", "diam", "pent"}
-%                 switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
-%                     case "tri"
-%                         numSides = 3;
-%                     case "diam"
-%                         numSides = 4;
-%                     case "pent"
-%                         numSides = 5;
-%                 end
-%                 anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
-%                 anglesRad = anglesDeg * (pi / 180);
-%                 
-%                 yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(reelInfo.reel_ID{i}(1));
-%                 xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(reelInfo.reel_ID{i}(2));
-%                 
-%                 reelInfo.sym_position{i} = [xPosVector; yPosVector]';
-%             case {"circ", "rect"}
-%                 reelInfo.sym_position{i} = ...
-%                     CenterRectOnPointd(baseRect, ...
-%                     screenInfo.splitXpos((reelInfo.reel_ID{i}(2))), ... 
-%                     screenInfo.splitYpos((reelInfo.reel_ID{i}(1))))';
-%         end
-% end    
-
-
-% for i = 1:3
-%     for j = 1:3
-%         if ismember(reelInfo.sym_shape{2, 2}, reelSymbols)
-%             switch(reelInfo.sym_shape{j, i})
-%                 case {"tri", "diam", "pent"}
-%                     switch(reelInfo.sym_shape{j, i})
-%                         case "tri"
-%                             numSides = 3;
-%                         case "diam"
-%                             numSides = 4;
-%                         case "pent"
-%                             numSides = 5;
-%                     end
-%                     anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
-%                     anglesRad = anglesDeg * (pi / 180);
-%                     
-%                     yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(j);
-%                     xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(i);
-%                     
-%                     reelInfo.sym_position{j, i} = [xPosVector; yPosVector]';
-%                 case {"circ", "rect"}
-%                     reelInfo.sym_position{j, i} = ...
-%                         CenterRectOnPointd(baseRect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
-%             end
-%         end
-%     end
-% end
 end
