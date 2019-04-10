@@ -1,11 +1,29 @@
-%% Script to draw a grid on screen
+function [] = draw_grid(screenInfo, gridInfo)
+% ----------------------------------------------------------------------
+% draw_grid(screenInfo, gridInfo)
+% ----------------------------------------------------------------------
+% Goal of the function :
+% Draw a grid on screen to containg symbols
+% ----------------------------------------------------------------------
+% Input(s) :
+% screenInfo, gridInfo
+% ----------------------------------------------------------------------
+% Output(s):
+% (none)
+% ----------------------------------------------------------------------
+% Function created by Dan Myles (dan.myles@monash.edu)
+% Last update : 8th April 2019
+% Project : 9_Line_Slots_Task
+% Version : development
+% ----------------------------------------------------------------------
 
-% Draw the rect to the screen.
-% Set Colour to black (0).
-% Iterate through positions 1:9 but skip 4 and 6.
+% For loop to iterate through positions 1:9 but skip 4 and 6.
+% Then draw a rectangle at each grid location
 
 for i = 1:9
     if i ~= [4, 6]
-        Screen('FrameRect', window, 0, reelInfo.grid_position{i}, penWidthPixels);
+        Screen('FrameRect', screenInfo.window, screenInfo.black, gridInfo.position{i}, gridInfo.penWidthPixels);
     end
+end
+
 end
