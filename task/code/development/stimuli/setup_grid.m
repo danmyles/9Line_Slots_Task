@@ -41,19 +41,32 @@ Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
 % using the central point +/- the length (X) or width (Y) of the grid
 % square
 
-screenInfo.splitYpos = [screenInfo.yCenter - Y_adjust,...
+splitYpos = [screenInfo.yCenter - Y_adjust,...
                         screenInfo.yCenter, ... 
                         screenInfo.yCenter + Y_adjust];
 
-screenInfo.splitXpos = [screenInfo.xCenter - X_adjust, ... 
+splitXpos = [screenInfo.xCenter - X_adjust, ... 
                         screenInfo.xCenter, ... 
                         screenInfo.xCenter + X_adjust];
+                    
+% Each of these central points will be of value and so I want to add them 
+% to either screenInfo or reelInfo as a 3x3 cell array.
 
-% SET UP gridInfo.position
-for i = 1:3
-    for j = 1:3
-        gridInfo.position{j, i} = ...
-            CenterRectOnPointd(gridInfo.Rect, screenInfo.splitXpos(i), screenInfo.splitYpos(j))';
+for X_select = 1:3
+    for Y_select = 1:3
+        screenInfo.splitpos{Y_select, X_select} = [splitXpos(X_select), splitYpos(Y_select)];
+    end 
+end
+
+
+for column_select = 1:3
+    for row_select = 1:3
+        
+        grid_X = screenInfo.splitpos{row_select, column_select}(1); % Go to column, row. Subset 1st in cell (X value)
+        grid_Y = screenInfo.splitpos{row_select, column_select}(2); % Go to column, row. Subset 2nd in cell (Y value)
+        
+        gridInfo.position{row_select, column_select} = ... 
+            CenterRectOnPointd(gridInfo.Rect, grid_X, grid_Y);
     end
 end 
 end

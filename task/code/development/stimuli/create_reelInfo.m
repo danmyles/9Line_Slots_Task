@@ -30,11 +30,13 @@ reelInfo.sym_col = cell(3); % Symbol RGB values for colour
 reelInfo.grid_position = cell(3); % Grid screen position in pixels
 
 %% ASSIGN REEL IDs
+
 for i = 1:3
     for j = 1:3
         reelInfo.reel_ID{j, i} = [j, i];
     end
 end
+
 
 %% CREATE BASE COLOUR VALUES FOR SYMBOLS
 reelInfo.colours.circ = [238/255, 000/255, 001/255];

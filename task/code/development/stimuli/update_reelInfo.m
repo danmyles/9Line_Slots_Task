@@ -80,8 +80,8 @@ radius = max(baseRect)/1.5;
 % drawn using. This was a little tricky as FillPoly uses different
 % input to FillRect and FillOval. 
 
-% The script uses two for loops. The i loop cycles through each reel, and 
-% the j loop cycles through each row position on that reel.
+% The script uses two a for loop that takes the function input selectReels
+% to allow for resetting of a subset of the reels (e.g. just reels 7:9). 
 
 % There are then a number of switch statments. These split the flow so that
 % the output is prepared for FillPoly or, FillRect and Fill Oval.
@@ -94,20 +94,17 @@ radius = max(baseRect)/1.5;
 % The If statement determines whether the reel position should be left 
 % blank or filled with a symbol
 
-%% I AM TRYING TO MAKE THIS FUNCTION FLEXIBLE SO THAT I CAN 
-% Use select reels.
-% Hoping I can use selectReels to subset reel_ID and use this for the
-% loop below.
-% 
-
 
 %% DAN IS HERE - UPDATE COMMENTS ABOVE AND BESIDE THIS TO EXPLAIN HOW
 % The loop works.
 
+% Adjust this to use new screenInfo.splitpos
+
 for i = selectReels
-     switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
+     switch(reelInfo.sym_shape{i})
             case {"tri", "diam", "pent"}
-                switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
+                
+                switch(reelInfo.sym_shape{i})
                     case "tri"
                         numSides = 3;
                     case "diam"
@@ -115,22 +112,52 @@ for i = selectReels
                     case "pent"
                         numSides = 5;
                 end
+                
                 anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
                 anglesRad = anglesDeg * (pi / 180);
                 
-                yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(reelInfo.reel_ID{i}(1));
-                xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(reelInfo.reel_ID{i}(2));
+                xPosVector = cos(anglesRad) .* radius + screenInfo.splitpos{i}(1);
+                yPosVector = sin(anglesRad) .* radius + screenInfo.splitpos{i}(2);
                 
                 reelInfo.sym_position{i} = [xPosVector; yPosVector]';
+                
             case {"circ", "rect"}
                 reelInfo.sym_position{i} = ...
                     CenterRectOnPointd(baseRect, ...
-                    screenInfo.splitXpos((reelInfo.reel_ID{i}(2))), ... 
-                    screenInfo.splitYpos((reelInfo.reel_ID{i}(1))))';
+                    screenInfo.splitpos{i}(1), ... 
+                    screenInfo.splitpos{i}(2))';
         end
 end    
 
+
 %% OLD CODE - TIDY UP OR SAVE AS ANOTHER FILE SO YOU CAN EASILY REVERT
+% 
+% for i = selectReels
+%      switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
+%             case {"tri", "diam", "pent"}
+%                 switch(reelInfo.sym_shape{reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)})
+%                     case "tri"
+%                         numSides = 3;
+%                     case "diam"
+%                         numSides = 4;
+%                     case "pent"
+%                         numSides = 5;
+%                 end
+%                 anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
+%                 anglesRad = anglesDeg * (pi / 180);
+%                 
+%                 yPosVector = sin(anglesRad) .* radius + screenInfo.splitYpos(reelInfo.reel_ID{i}(1));
+%                 xPosVector = cos(anglesRad) .* radius + screenInfo.splitXpos(reelInfo.reel_ID{i}(2));
+%                 
+%                 reelInfo.sym_position{i} = [xPosVector; yPosVector]';
+%             case {"circ", "rect"}
+%                 reelInfo.sym_position{i} = ...
+%                     CenterRectOnPointd(baseRect, ...
+%                     screenInfo.splitXpos((reelInfo.reel_ID{i}(2))), ... 
+%                     screenInfo.splitYpos((reelInfo.reel_ID{i}(1))))';
+%         end
+% end    
+
 
 % for i = 1:3
 %     for j = 1:3
