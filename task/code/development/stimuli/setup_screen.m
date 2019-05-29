@@ -19,16 +19,9 @@ function screenInfo = setup_screen()
 % Version : dev
 % ----------------------------------------------------------------------
 
-%% FELETE THIS SECTION WHEN setup_exp is finished
-% Clear the workspace and the screen
-sca;
-close all;
-clearvars;
-%%
-
 % Here we call some default settings for setting up Psychtoolbox
 PsychDefaultSetup(2);
-Screen('Preference', 'SkipSyncTests', 1);  
+Screen('Preference', 'SkipSyncTests', 1);  % Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
 % Get the screen numbers. This gives us a number for each of the screens
 % attached to our computer.
@@ -39,8 +32,8 @@ screenInfo.screens = Screen('Screens');
 % If we choose maximum this will set up a situation where when
 % have two screens attached to our monitor we will draw to the external
 % screen.
-% screenInfo.screenNumber = max(screenInfo.screens);
 screenInfo.screenNumber = min(screenInfo.screens);
+% screenInfo.screenNumber = max(screenInfo.screens);
 
 % Define white (white will be 1 and black 0). This is because
 % luminace values are (in general) defined between 0 and 1.
@@ -68,36 +61,26 @@ screenInfo.screenCenter = [screenInfo.xCenter, screenInfo.yCenter];
 % Set up alpha-blending for smooth (anti-aliased) lines
 Screen('BlendFunction', screenInfo.window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
 
-% Query the frame duration
+% Query the frame duration - minimum possible time
+% between drawing to the screen
 screenInfo.ifi = Screen('GetFlipInterval', screenInfo.window);
 
-%% Get the Frame rate and check against desired.
+% We can also determine the refresh rate of our screen. The
+% relationship between the two is: ifi = 1 / hertz
+screenInfo.hertz = FrameRate(screenInfo.window);
 
-% If we want to do this you need to set up vairables in setup_experiment
-
-% Below is copied from: 
-% http://www.martinszinte.net/Martin_Szinte/Teaching_files/Prog_c6.pdf. 
-% check if ifi will suffice.
-
-% % Frame rate : (fps)
-% screenInfo.fps = 1/(Screen('FrameRate',screenInfo.screenNumber));
-% if screenInfo.fps == inf;
-%     screenInfo.fps = 1/60;
-% elseif screenInfo.fps == 0;
-%     screenInfo.fps = 1/60;
-% end
-% 
-% % Frame rate : (hertz)
-% screenInfo.Hz = 1/(screenInfo.fps);
-% if (screenInfo.Hz >= 1.1*const.desiredFPS || screenInfo.Hz <= 0.9*const.desiredFPS) && const.expStart
-%  error('Incorrect refresh rate => Please restart the program after changing the refresh rate to %i Hz', const.desiredFPS);
-% end
-%%
+% We can also query the "nominal" refresh rate of our screen. This is
+% the refresh rate as reported by the video card. This is rounded to the
+% nearest integer. In reality there can be small differences between
+% "hertz" and "nominalHertz"
+% This is nothing to worry about. See Screen FrameRate? and Screen
+% GetFlipInterval? for more information
+screenInfo.nominalHertz = Screen('NominalFrameRate', screenInfo.window);
 
 %% TEXT SETUP 
 % Will probably relocate to a text setup function eventually
 % Setup the text type for the window
-Screen('TextFont', screenInfo.window, 'Ariel');
+Screen('TextFont', screenInfo.window, 'Arial');
 Screen('TextSize', screenInfo.window, 36);
 
 %% TODO ? SAVE ALL SCREEN INFO TO FILE.
