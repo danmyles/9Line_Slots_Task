@@ -29,8 +29,8 @@ gridInfo.Rect(4) = gridInfo.Rect(4) * .24; % proportion of total screen size
 %% Width of the grid lines.
 gridInfo.penWidthPixels = 3;
 
-% Scalar to align grid square locations across the x-axis.
-% This is proportional to the x dimension of the grid squares - 
+% Scalar to align grid square locations across the x & y axes.
+% This is proportional to the x/y dimension of the grid squares minus 
 % penWidthline to prevent doubling up of edges.
 X_adjust = gridInfo.Rect(3) - gridInfo.penWidthPixels;
 Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
@@ -49,8 +49,9 @@ splitXpos = [screenInfo.xCenter - X_adjust, ...
                         screenInfo.xCenter, ... 
                         screenInfo.xCenter + X_adjust];
                     
-% Each of these central points will be of value and so I want to add them 
-% to either screenInfo or reelInfo as a 3x3 cell array.
+% Each of these central points are useful for a number of tasks so we will
+% add them screenInfo as a 3x3 cell array, each cell will be placed in the
+% cell as per their corresponding grid+symbol position.
 
 for X_select = 1:3
     for Y_select = 1:3
@@ -58,6 +59,7 @@ for X_select = 1:3
     end 
 end
 
+%% Set all positions for the grid
 
 for column_select = 1:3
     for row_select = 1:3

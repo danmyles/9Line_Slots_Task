@@ -1,9 +1,39 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
+% Simple script for debugging and development
 
-% Create file directories
 % TO DO: create a function that creates a struct full of file path names
+% TO DO: make a function that calls all setup scripts
 
-% TO DO: make a function thate calls all setup scripts
+% TO DO: Series of tests and checks for all video features to ensure
+% accurate timing. For instance checking the recorded inter frame interval
+% or refresh rate against those desired.
+
+%% TO DO SET SPEED OF PLAY
+% Speed of play - From Harrigan & Dixon 2009
+% We estimated the speed of play by using the second hand on a watch. On the two
+% traditional mechanical reel slot machine games, the player can play approximately every
+% 6 s, which is approximately 10 spins per minute, or 600 spins per hour. On the two video
+% slots games, the player can play approximately every 3 s, which is 1,200 spins per hour.
+
+% You will also need to consider the length of time neccesary to avoid
+% artifacts from previous stimuli affecting the result. ~1000 ms from
+% fixation cross to display of final symbol.
+
+
+%% DELETE THIS SECTION WHEN setup_exp is finished
+% Clear the workspace and the screen
+sca;
+close all;
+clearvars;
+rng shuffle; % See notes below
+
+% It is recomended that the rng be reseeded at the beginning of any MATLAB 
+% session if we wish to think of output from the rng as being
+% statistically independent. Only needs to be done once at the start of the
+% session.
+
+% The deBruijn package notes also recomend reseeding MATLAB rng prior to 
+% each session.
 
 % Setup screen
 [screenInfo] = setup_screen();
@@ -19,7 +49,7 @@ priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
 % Fill reel.Info struct with current spin info
-[reelInfo] = update_reelInfo(reelInfo, screenInfo, 1:9);
+[reelInfo] = update_reelInfo(reelInfo, screenInfo, 1:9, 1);
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);

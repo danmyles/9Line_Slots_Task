@@ -1,0 +1,9 @@
+# Citations for code development
+
+MATLAB code for de Bruijn cycles:
+
+Brimijoin, W. O., & O’Neill, W. E. (2010). Patterned tone sequences reveal non-linear interactions in auditory spectrotemporal receptive fields in the inferior colliculus. Hearing Research, 267(1–2), 96–110. https://doi.org/10.1016/j.heares.2010.04.005
+
+de Bruijn cycles in fMRI:
+
+Aguirre, G. K., Mattar, M. G., & Magis-Weinberg, L. (2011). de Bruijn cycles for neural decoding. NeuroImage, 56(3), 1293–1300. https://doi.org/10.1016/j.neuroimage.2011.02.005

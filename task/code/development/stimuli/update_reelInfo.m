@@ -1,4 +1,4 @@
-function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels)
+function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, reset)
 % ----------------------------------------------------------------------
 % update_reelInfo(reelInfo, gridInfo)
 % ----------------------------------------------------------------------
@@ -21,15 +21,16 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels)
 % This is a place holder for the actual game script which will eventually
 % be it's own function
 
-reelSymbols = ["circ"; "tri"; "rect"; "diam"; "pent"];
-
 % Randomly assign shapes to positions 1:9 excluding 4 and 6.
-for i = selectReels
-     if i ~= [4, 6]
-         reelInfo.sym_shape{i} = randsample(reelSymbols,1,true);
-     else
-         reelInfo.sym_shape{i} = "empty_space";
-     end
+
+if reset == 1
+    for i = selectReels
+        if i ~= [4, 6]
+            reelInfo.sym_shape{i} = randsample(reelInfo.sym_names,1,true);
+        else
+            reelInfo.sym_shape{i} = "empty_space";
+        end
+    end
 end
 
 %% ASSIGN COLOURS
@@ -38,15 +39,15 @@ for i =  selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                reelInfo.sym_col{i} = reelInfo.colours.circ;
-            case "tri"
-                reelInfo.sym_col{i} = reelInfo.colours.tri;
-            case "rect"
-                reelInfo.sym_col{i} = reelInfo.colours.rect;
+                reelInfo.sym_col{i} = reelInfo.colours{1};
             case "diam"
-                reelInfo.sym_col{i} = reelInfo.colours.diam;
+                reelInfo.sym_col{i} = reelInfo.colours{2};
+            case "tri"
+                reelInfo.sym_col{i} = reelInfo.colours{3};
+            case "rect"
+                reelInfo.sym_col{i} = reelInfo.colours{4};
             case "pent"
-                reelInfo.sym_col{i} = reelInfo.colours.pent;
+                reelInfo.sym_col{i} = reelInfo.colours{5};
         end
     end
 end
@@ -88,8 +89,9 @@ radius = max(baseRect)/1.5;
 % to each poly shape. This can then be used to assign the appropriate 
 % set of positions/dimensions.
 
-% The script also uses a for loop that takes the function input selectReels
-% to allow for resetting of a subset of the reels (e.g. just reels 7:9). 
+% The script also uses a for loop that takes the function selectReels as
+% input to allow for resetting of a subset of the reels 
+% (e.g. just reels 7:9). 
 
 for i = selectReels
      switch(reelInfo.sym_shape{i})

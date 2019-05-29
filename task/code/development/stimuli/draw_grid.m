@@ -26,4 +26,16 @@ for i = 1:9
     end
 end
 
+% Now we draw two rects at the top and the bottom of the screen to obscure 
+% symbols passing underneath during animations
+
+% Top - Using relative positioning information from screenInfo & gridInfo
+Screen('FillRect', screenInfo.window, screenInfo.white, [screenInfo.windowRect(1:3), gridInfo.position{1}(1,2)]); % CHANGE positions to use screenInfo relative positions.
+
+% Bottom - Using relative positioning information from screenInfo &
+% gridInfo
+bottom_pos = screenInfo.windowRect;
+bottom_pos(2) = gridInfo.position{3}(1,4);
+Screen('FillRect', screenInfo.window, screenInfo.white, bottom_pos);
+    
 end
