@@ -45,7 +45,7 @@ for j = length(reelInfo.reelstrip1):-1:1
    
     %% Use J to select symbols from deBruijn Sequence
     for i = 3:-1:1
-        reelInfo.sym_shape{i}(1,1) = reelInfo.reelstrip1{j + (i - 3)};
+        reelInfo.sym_shape(i) = reelInfo.reelstrip1{j + (i - 3)}; %% I AM UP TO HERE. YOU WILL NOW HAVE TO SHIFT THE deBruijn reel generator to speak matrix. 
     end
     
     [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, 0);

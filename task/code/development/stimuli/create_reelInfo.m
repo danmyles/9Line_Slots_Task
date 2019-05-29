@@ -22,7 +22,7 @@ function [reelInfo] = create_reelInfo()
 % ----------------------------------------------------------------------
 
 %% SET UP reelInfo DATA STRUCTURE
-reelInfo.reel_ID = cell(3)
+reelInfo.reel_ID = cell(3);
 reelInfo.colours = zeros(5, 3);% RGB values for all the colours
 reelInfo.sym_shape = zeros(3, 3); % Symbol to display
 reelInfo.sym_position = cell(3); % Symbol screen position in pixels

@@ -36,16 +36,16 @@ isConvex = 1;
 % these.
 for i = selectReels
     if i ~= [4, 6]
-        switch(reelInfo.sym_shape{i})
-            case "circ"
+        switch(reelInfo.sym_shape(i))
+            case 1 % circ
                 Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
-            case "tri"
+            case 2 % diam
                 Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
-            case "rect"
+            case 3 % tri
+                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+            case 4 % rect
                 Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
-            case "diam"
-                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
-            case "pent"
+            case 5 % pent
                 Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
         end
     end

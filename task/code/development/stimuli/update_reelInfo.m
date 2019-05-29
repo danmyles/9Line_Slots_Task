@@ -26,9 +26,9 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, reset)
 if reset == 1
     for i = selectReels
         if i ~= [4, 6]
-             reelInfo.sym_shape(reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)) = randsample(1:5,1,true);
+            reelInfo.sym_shape(i) = randsample(1:5,1,true);
         else
-            reelInfo.sym_shape{i} = 0;
+            reelInfo.sym_shape(reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)) = 0;
         end
     end
 end
@@ -37,16 +37,16 @@ end
 % Assign the appropriate colour values for each shape
 for i =  selectReels
     if i ~= [4, 6]
-        switch(reelInfo.sym_shape{i})
-            case "circ"
+        switch(reelInfo.sym_shape(i))
+            case 1 % "circ"
                 reelInfo.sym_col{i} = reelInfo.colours(1, :);
-            case "diam"
+            case 2 % "diam"
                 reelInfo.sym_col{i} = reelInfo.colours(2, :);
-            case "tri"
+            case 3 % "tri"
                 reelInfo.sym_col{i} = reelInfo.colours(3, :);
-            case "rect"
+            case 4 % "rect"
                 reelInfo.sym_col{i} = reelInfo.colours(4, :);
-            case "pent"
+            case 5 % "pent"
                 reelInfo.sym_col{i} = reelInfo.colours(5, :);
         end
     end
@@ -94,15 +94,15 @@ radius = max(baseRect)/1.5;
 % (e.g. just reels 7:9). 
 
 for i = selectReels
-     switch(reelInfo.sym_shape{i})
-            case {"tri", "diam", "pent"}
+     switch(reelInfo.sym_shape(i))
+            case {3, 2, 5} % tri, diam, pent
                 
-                switch(reelInfo.sym_shape{i})
-                    case "tri"
+                switch(reelInfo.sym_shape(i))
+                    case 3 % tri
                         numSides = 3;
-                    case "diam"
+                    case 2 % diam
                         numSides = 4;
-                    case "pent"
+                    case 5 % pent
                         numSides = 5;
                 end
                 
@@ -114,7 +114,7 @@ for i = selectReels
                 
                 reelInfo.sym_position{i} = [xPosVector; yPosVector]';
                 
-            case {"circ", "rect"}
+            case {1, 4} % circ or rect
                 reelInfo.sym_position{i} = ...
                     CenterRectOnPointd(baseRect, ...
                     screenInfo.splitpos{i}(1), ... 
