@@ -26,9 +26,9 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, reset)
 if reset == 1
     for i = selectReels
         if i ~= [4, 6]
-             reelInfo.sym_shape(reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)) = randsample(1:5,1,true);
+            reelInfo.sym_shape{i} = randsample(reelInfo.sym_names,1,true);
         else
-            reelInfo.sym_shape{i} = 0;
+            reelInfo.sym_shape{i} = "empty_space";
         end
     end
 end
@@ -39,15 +39,15 @@ for i =  selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape{i})
             case "circ"
-                reelInfo.sym_col{i} = reelInfo.colours(1, :);
+                reelInfo.sym_col{i} = reelInfo.colours{1};
             case "diam"
-                reelInfo.sym_col{i} = reelInfo.colours(2, :);
+                reelInfo.sym_col{i} = reelInfo.colours{2};
             case "tri"
-                reelInfo.sym_col{i} = reelInfo.colours(3, :);
+                reelInfo.sym_col{i} = reelInfo.colours{3};
             case "rect"
-                reelInfo.sym_col{i} = reelInfo.colours(4, :);
+                reelInfo.sym_col{i} = reelInfo.colours{4};
             case "pent"
-                reelInfo.sym_col{i} = reelInfo.colours(5, :);
+                reelInfo.sym_col{i} = reelInfo.colours{5};
         end
     end
 end
