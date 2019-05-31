@@ -28,7 +28,7 @@ if reset == 1
         if i ~= [4, 6]
             reelInfo.sym_shape(i) = randsample(1:5,1,true);
         else
-            reelInfo.sym_shape(reelInfo.reel_ID{i}(1), reelInfo.reel_ID{i}(2)) = 0;
+            reelInfo.sym_shape(i) = 0;
         end
     end
 end

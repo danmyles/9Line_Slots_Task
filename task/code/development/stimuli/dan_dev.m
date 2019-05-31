@@ -127,25 +127,25 @@ end
 isConvex = 1;
 
 for j = 1:750
-       
+    
     for i = 1:125
         switch(reelInfo.reelstrip1{i})
             case "circ"
-                Screen('FillOval', screenInfo.window, reelInfo.colours{1}, reelInfo.reelstrip1{i,2});
+                Screen('FillOval', screenInfo.window, reelInfo.colours(1, 1:3), reelInfo.reelstrip1{i,2});
             case "diam"
-                Screen('FillPoly', screenInfo.window, reelInfo.colours{2}, reelInfo.reelstrip1{i,2}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.colours(2, 1:3), reelInfo.reelstrip1{i,2}, isConvex);
             case "tri"
-                Screen('FillPoly', screenInfo.window, reelInfo.colours{3}, reelInfo.reelstrip1{i,2}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.colours(3, 1:3), reelInfo.reelstrip1{i,2}, isConvex);
             case "rect"
-                Screen('FillRect', screenInfo.window, reelInfo.colours{4}, reelInfo.reelstrip1{i,2});
+                Screen('FillRect', screenInfo.window, reelInfo.colours(4, 1:3), reelInfo.reelstrip1{i,2});
             case "pent"
-                Screen('FillPoly', screenInfo.window, reelInfo.colours{5}, reelInfo.reelstrip1{i,2}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.colours(5, 1:3), reelInfo.reelstrip1{i,2}, isConvex);
         end
     end
     
     speed = 50 %% THIS NEEDS TO GO SOMEWHERE ELSE
     
-    for i = 1:125
+    for i = 1:75 % THIS is a temp fix. We will want the loop to be continuous until it gets a stop input of some kind.
         switch(reelInfo.reelstrip1{i, 1})
             case {"tri", "diam", "pent"}
                 reelInfo.reelstrip1{i, 2}(:, 2) = reelInfo.reelstrip1{i, 2}(:, 2) + speed; % Index Y positions only
