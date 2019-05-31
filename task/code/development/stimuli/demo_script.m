@@ -8,7 +8,7 @@
 % accurate timing. For instance checking the recorded inter frame interval
 % or refresh rate against those desired.
 
-%% TO DO SET SPEED OF PLAY
+%% TcO D    O SET SPEED OF PLAY
 % Speed of play - From Harrigan & Dixon 2009
 % We estimated the speed of play by using the second hand on a watch. On the two
 % traditional mechanical reel slot machine games, the player can play approximately every
