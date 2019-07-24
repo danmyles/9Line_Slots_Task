@@ -1,27 +1,8 @@
 % This is a script for developing ideas or holding pieces of older code 
 % that may be of use at a later date
 
-sca;
-close all;
-clearvars;
-rng shuffle; % See notes below
-
-% It is recomended that the rng be reseeded at the beginning of any MATLAB 
-% session if we wish to think of output from the rng as being
-% statistically independent. Only needs to be done once at the start of the
-% session.
-
-% The deBruijn package notes also recomend reseeding MATLAB rng prior to 
-% each session.
-
-% Set up screen
-[screenInfo] = setup_screen();
-
-% Set up reel.Info struct
-[reelInfo] = setup_reelInfo();
-
-% Set up grid
-[gridInfo, screenInfo] = setup_grid(screenInfo);
+% Start experiment and run all setup functions
+[screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
 
 % Fill reel.Info struct with current spin info
 [reelInfo] = update_reelInfo(reelInfo, screenInfo, 1:9, 1);

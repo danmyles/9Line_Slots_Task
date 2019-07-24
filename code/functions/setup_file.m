@@ -19,8 +19,6 @@ function [fileInfo] = setup_file(fileInfo)
 % ----------------------------------------------------------------------
     
 addpath([fileInfo.Path filesep 'config' filesep]);
-
-fileInfo.outputPath = ['placeholder'];
-
+fileInfo.outputPath = [fileInfo.Path(1:end-4) 'output' filesep];
 end
 

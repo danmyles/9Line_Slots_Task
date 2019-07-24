@@ -1,34 +1,8 @@
 %  % Script to draw a 9 random symbols onscreen
 % This script runs a crude animation by resampling the symbols and drawing each
 % to the screen.
-
-sca;
-close all;
-clearvars;
-rng shuffle; % See notes below
-
-% It is recomended that the rng be reseeded at the beginning of any MATLAB 
-% session if we wish to think of output from the rng as being
-% statistically independent. Only needs to be done once at the start of the
-% session.
-
-% The deBruijn package notes also recomend reseeding MATLAB rng prior to 
-% each session.
-
-% Set up screen
-[screenInfo] = setup_screen();
-
-% Set up reel.Info struct
-[reelInfo] = setup_reelInfo();
-
-% Set up grid
-[gridInfo, screenInfo] = setup_grid(screenInfo);
-
-% May put screen launch here...?
-
-% Give the program maximum priority (limit background programs e.g. antivirus)
-priorityLevel = MaxPriority(screenInfo.window);
-Priority(priorityLevel);
+% Start experiment and run all setup functions
+[screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
 
 % Set time of stimuli
 stim_sec = .125;
