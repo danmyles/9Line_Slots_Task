@@ -38,6 +38,14 @@ rng shuffle; % See notes below
 % The deBruijn package notes also recomend reseeding MATLAB rng prior to 
 % each session.
 
+% Set up directories
+[fileInfo.Path, fileInfo.Name] = fileparts(mfilename('fullpath'));
+cd(fileInfo.Path);
+
+% Add the functions folder to path
+addpath([fileInfo.Path filesep 'functions' filesep]);
+% [fileInfo] = setup_file(); %% Put all further additions to directory structure here
+
 % Set up screen
 [screenInfo] = setup_screen();
 

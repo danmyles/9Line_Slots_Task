@@ -7,3 +7,8 @@ Brimijoin, W. O., & O’Neill, W. E. (2010). Patterned tone sequences reveal non
 de Bruijn cycles in fMRI:
 
 Aguirre, G. K., Mattar, M. G., & Magis-Weinberg, L. (2011). de Bruijn cycles for neural decoding. NeuroImage, 56(3), 1293–1300. https://doi.org/10.1016/j.neuroimage.2011.02.005
+
+MATLAB tutorials
+
+  - Peter Scharfe
+  - http://www.martinszinte.net/Martin_Szinte/Teaching_files/Prog_c6.pdf
