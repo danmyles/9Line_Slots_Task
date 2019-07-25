@@ -16,6 +16,16 @@ Screen('Flip', screenInfo.window);
 KbStrokeWait;
 
 %% I WANT TO WRITE A SCRIPT THAT GENERATES Y POSITIONS FOR ALL 125 of the reels
+
+% 25/07 - I was confused about where I was deriving these split pos
+% measures from. I think I absent mindedly deleted some code during an edit
+% which defined these variables. However, see the notes in setup_grid line 
+% line 41 - 61. I use a splitpos vairable to define central points within 
+% each grid box. 
+
+% Possible I was using these to keep the x axis constant and central for
+% during the animation?
+
 reelspin_pos = zeros(125, 2);
 reelspin_pos(:,1) = screenInfo.splitpos{1}(1, 1); % X position for the centre of the left hand grid line
 

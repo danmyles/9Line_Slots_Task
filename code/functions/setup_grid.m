@@ -29,7 +29,8 @@ gridInfo.Rect(4) = gridInfo.Rect(4) * .24; % proportion of total screen size
 %% Width of the grid lines.
 gridInfo.penWidthPixels = 3;
 
-% Scalar to align grid square locations across the x & y axes.
+% Scalar to adjust grid square locations across the x & y axes for the
+% penWidth so that they do not double up. 
 % This is proportional to the x/y dimension of the grid squares minus 
 % penWidthline to prevent doubling up of edges.
 X_adjust = gridInfo.Rect(3) - gridInfo.penWidthPixels;
