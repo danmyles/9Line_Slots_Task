@@ -41,11 +41,13 @@ tic % you can read time elapsed since tic; with toc
 cd(fileInfo.Path); % Change working directory
 addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top path
 
-% Add remaining directories
+% Add remaining directories    
 [fileInfo] = setup_file(fileInfo);
 
 % Set up screen
 [screenInfo] = setup_screen();
+
+% May put screen launch here...?
 
 % Set up reel.Info struct
 [reelInfo] = setup_reelInfo();
@@ -56,9 +58,6 @@ addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
-
-
-% May put screen launch here...?
 
 end
 

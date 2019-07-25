@@ -12,6 +12,8 @@ selectReels = [1:3];
 stim_sec = .125;
 numFrames = stim_sec/(screenInfo.ifi);
 
+
+
 for j = length(reelInfo.reelstrip1):-1:1
    
     %% Use J to select symbols from deBruijn Sequence

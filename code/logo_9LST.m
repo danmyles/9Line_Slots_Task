@@ -68,7 +68,7 @@ loadScreen.sym_position{3}([5,8]) = loadScreen.sym_position{4}(2);
 isConvex = 1;
 
 for i = 1:5
-    switch(reelInfo.sym_names{i})
+    switch(reelInfo.sym_names(i))
         case "circ"
             Screen('FillOval', screenInfo.window, reelInfo.colours{i}, loadScreen.sym_position{i});
         case "diam"

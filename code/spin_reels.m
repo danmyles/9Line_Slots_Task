@@ -6,13 +6,9 @@
 % Fill reel.Info struct with current spin info
 [reelInfo] = update_reelInfo(reelInfo, screenInfo, 1:9, 1);
 
-% Give the program maximum priority (limit background programs e.g. antivirus)
-priorityLevel = MaxPriority(screenInfo.window);
-Priority(priorityLevel);
-
 %% Set up deBRUIJN DELETE THIS BEFORE MERGE
 [reelInfo] = deBruijn_reels(reelInfo);
-
+ 
 selectReels = [1:3];
 
 % Set time of stimuli

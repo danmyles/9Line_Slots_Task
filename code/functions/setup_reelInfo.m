@@ -43,11 +43,44 @@ reelInfo.reelstrip2 = zeros((length(reelInfo.sym_names))^3, 3); % Set to length 
 %% CREATE BASE COLOUR VALUES FOR SYMBOLS
 reelInfo.colours(1,:) = [238/255, 000/255, 001/255]; % circ
 reelInfo.colours(2,:) = [000/255, 162/255, 255/255]; % diam
-reelInfo.colours(3,:)  = [229/255, 211/255, 103/255]; % tri
+reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
 reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
 reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
-%% Define Reel strip pattern
+%% Define reel strip pattern
+
+% This part of the function will create a reel strip in which the sequence 
+% of symbols along the reel will be arranged in a de Bruijn Sequence. 
+% That is, a sequence in which every possible sequential order of stimuli 
+% is included an equal number of times.
+
+% The shortest circular sequence of length k^n such that every string 
+% of length n on the alphabet a of size k occurs as a contiguous 
+% subrange of the sequence described by a.
+% See : http://mathworld.wolfram.com/deBruijnSequence.html
+% Also see: https://cfn.upenn.edu/aguirre/wiki/public:de_bruijn
+
+k = length(reelInfo.sym_names); % Number of reel symbols ? "alphabet"
+n = 3; % Number of vertical reel positions - "word length"
+
+% the number of distinct sequences for a given k and n is:
+
+% distinct_solutions = factorial(k)^(k^(n-1))/(k^n); 
+
+% In other words this quickly becomes enormous even for 
+% small values of k and n.
+
+% We use the deBruijn generator developed by  W. Owen Brimijoin
+
+% CITATION:
+% Brimijoin, W. O., & O?Neill, W. E. (2010). Patterned tone sequences reveal 
+% non-linear interactions in auditory spectrotemporal receptive fields in 
+% the inferior colliculus. Hearing Research, 267(1?2), 96?110. 
+% https://doi.org/10.1016/j.heares.2010.04.005
+
+% For convieniance I have located this function in ./functions
+% directory (deBruijn.m).
+
 reelInfo.reelstrip1(:, 1) = deBruijn(5, 3);
 reelInfo.reelstrip2(:, 1) = deBruijn(5, 3);
 end

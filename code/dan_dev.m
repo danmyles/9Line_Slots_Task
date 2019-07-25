@@ -7,10 +7,6 @@
 % Fill reel.Info struct with current spin info
 [reelInfo] = update_reelInfo(reelInfo, screenInfo, 1:9, 1);
 
-% Give the program maximum priority (limit background programs e.g. antivirus)
-priorityLevel = MaxPriority(screenInfo.window);
-Priority(priorityLevel);
-
 draw_grid(screenInfo, gridInfo);
 
 % Flip to the screen
@@ -35,7 +31,7 @@ end
 %% ADD position information to the second column of deBruijn reel DS
 
 for i = length(reelInfo.reelstrip1):-1:1
-   reelInfo.reelstrip1{i,2} = reelspin_pos(i, :);
+   reelInfo.reelstrip1{i,2} = reelspin_pos(i, :); %% 24/07 I think change these braces out for ()
 end
 
 baseRect = [0 0 100 100];
