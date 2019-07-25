@@ -38,15 +38,15 @@ for i = selectReels
     if i ~= [4, 6]
         switch(reelInfo.sym_shape(i))
             case 1 % circ
-                Screen('FillOval', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillOval', screenInfo.window, reelInfo.colours(1, 1:3), reelInfo.sym_position{i});
             case 2 % diam
-                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.colours(2, 1:3), reelInfo.sym_position{i}, isConvex);
             case 3 % tri
-                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.colours(3, 1:3), reelInfo.sym_position{i}, isConvex);
             case 4 % rect
-                Screen('FillRect', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i});
+                Screen('FillRect', screenInfo.window, reelInfo.colours(4, 1:3), reelInfo.sym_position{i});
             case 5 % pent
-                Screen('FillPoly', screenInfo.window, reelInfo.sym_col{i}, reelInfo.sym_position{i}, isConvex);
+                Screen('FillPoly', screenInfo.window, reelInfo.colours(5, 1:3), reelInfo.sym_position{i}, isConvex);
         end
     end
 end

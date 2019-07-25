@@ -35,22 +35,22 @@ end
 
 %% ASSIGN COLOURS
 % Assign the appropriate colour values for each shape
-for i =  selectReels
-    if i ~= [4, 6]
-        switch(reelInfo.sym_shape(i))
-            case 1 % "circ"
-                reelInfo.sym_col{i} = reelInfo.colours(1, :);
-            case 2 % "diam"
-                reelInfo.sym_col{i} = reelInfo.colours(2, :);
-            case 3 % "tri"
-                reelInfo.sym_col{i} = reelInfo.colours(3, :);
-            case 4 % "rect"
-                reelInfo.sym_col{i} = reelInfo.colours(4, :);
-            case 5 % "pent"
-                reelInfo.sym_col{i} = reelInfo.colours(5, :);
-        end
-    end
-end
+% for i =  selectReels
+%     if i ~= [4, 6]
+%         switch(reelInfo.sym_shape(i))
+%             case 1 % "circ"
+%                 reelInfo.sym_col{i} = reelInfo.colours(1, :);
+%             case 2 % "diam"
+%                 reelInfo.sym_col{i} = reelInfo.colours(2, :);
+%             case 3 % "tri"
+%                 reelInfo.sym_col{i} = reelInfo.colours(3, :);
+%             case 4 % "rect"
+%                 reelInfo.sym_col{i} = reelInfo.colours(4, :);
+%             case 5 % "pent"
+%                 reelInfo.sym_col{i} = reelInfo.colours(5, :);
+%         end
+%     end
+% end
 
 %% ASSIGN SCREEN DIMENSIONS TO EACH REEL POSITION
 
