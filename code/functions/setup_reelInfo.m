@@ -67,7 +67,7 @@ reelInfo.repeatSymbols = 0;
 
 % Create columns for position information (may end up deleting this)
 
-reelInfo.reelstrip1(:, 2:3) = zeros(length(reelInfo.reelstrip1(:, 2)), 2);
-reelInfo.reelstrip2(:, 2:3) = zeros(length(reelInfo.reelstrip1(:, 2)), 2);
+reelInfo.reelstrip1(:, 2:3) = zeros(length(reelInfo.reelstrip1(:, 1)), 2);
+reelInfo.reelstrip2(:, 2:3) = zeros(length(reelInfo.reelstrip2(:, 1)), 2);
 end
 
