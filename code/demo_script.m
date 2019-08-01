@@ -1,6 +1,13 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
 
+% TO DO: Create config file with all basic settings. For instance you
+% should put:
+%    - config.repeatSymbols == 1
+%    - RGB values for the symbols. 
+%    - The number of grid positions. 
+
+
 % TO DO: add output path to setup_file
 % TO DO: create a function that sets up all experimental variables etc
 % TO DO: make a function that calls all setup scripts

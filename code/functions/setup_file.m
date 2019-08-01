@@ -15,7 +15,7 @@ function [fileInfo] = setup_file(fileInfo)
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 24 July 2019
 % Project : 9_Line_Slots_Task
-% Version : dev
+% Version : 2019a
 % ----------------------------------------------------------------------
     
 addpath([fileInfo.Path filesep 'config' filesep]);

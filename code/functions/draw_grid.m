@@ -14,7 +14,7 @@ function [] = draw_grid(screenInfo, gridInfo)
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019
 % Project : 9_Line_Slots_Task
-% Version : development
+% Version : 2019a
 % ----------------------------------------------------------------------
 
 % For loop to iterate through positions 1:9 but skip 4 and 6.

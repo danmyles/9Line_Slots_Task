@@ -23,7 +23,7 @@ function [] = draw_shapes(screenInfo, reelInfo, selectReels)
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019
 % Project : 9_Line_Slots_Task
-% Version : development
+% Version : 2019a
 % ----------------------------------------------------------------------
     
 % Tell PTB that polygons should be convex (concave polygons require much

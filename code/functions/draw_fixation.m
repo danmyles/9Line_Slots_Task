@@ -14,7 +14,7 @@ function [] = draw_fixation(screenInfo)
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019
 % Project : 9_Line_Slots_Task
-% Version : development
+% Version : 2019a
 % ----------------------------------------------------------------------
 
 % Set the size of the fixation cross arms

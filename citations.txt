@@ -1,12 +1,27 @@
 # Citations for code development
 
-MATLAB code for de Bruijn cycles:
+MATLAB code for Kautz sequences. I used this to develop a function that 
+would generate perumatations without repitions among subsequences of reel 
+symbols:
 
-Brimijoin, W. O., & O’Neill, W. E. (2010). Patterned tone sequences reveal non-linear interactions in auditory spectrotemporal receptive fields in the inferior colliculus. Hearing Research, 267(1–2), 96–110. https://doi.org/10.1016/j.heares.2010.04.005
+kautz_generator.m
 
-de Bruijn cycles in fMRI:
+Brimijoin, W. O., McShefferty, D., & Akeroyd, M. A. (2010). Auditory 
+and visual orienting responses in listeners with and without
+hearing-impairment. The Journal of the Acoustical Society of America,
+127(6), 3678-3688.
+https://doi.org/10.1121/1.3409488
 
-Aguirre, G. K., Mattar, M. G., & Magis-Weinberg, L. (2011). de Bruijn cycles for neural decoding. NeuroImage, 56(3), 1293–1300. https://doi.org/10.1016/j.neuroimage.2011.02.005
+MATLAB code for de Bruijn sequences:
+
+deBruijn.m 
+
+Brimijoin, W. O., & O'Neill, W. E. (2010). Patterned tone sequences 
+reveal non-linear interactions in auditory spectrotemporal receptive 
+fields in the inferior colliculus. Hearing Research, 267(1-2), 96-110.
+https://doi.org/10.1016/j.heares.2010.04.005
+
+
 
 MATLAB tutorials
 

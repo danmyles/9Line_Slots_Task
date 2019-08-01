@@ -14,7 +14,7 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, reset)
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019
 % Project : 9_Line_Slots_Task
-% Version : development
+% Version : 2019a
 % ----------------------------------------------------------------------    
 
 %% RANDOMLY ASSIGN SHAPES

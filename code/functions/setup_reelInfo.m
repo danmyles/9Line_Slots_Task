@@ -1,13 +1,14 @@
 function [reelInfo] = setup_reelInfo()
 % ----------------------------------------------------------------------
-% create_reelInfo()
+% setup_reelInfo()
 % ----------------------------------------------------------------------
 % Goal of the function :
 % SET UP THE reelInfo DATA STRUCTURE
-% This script sets up a data struct that will contain information about
+% This function sets up a data struct that will contain information about
 % the positions of each symbol determined by the spin, as well as
-% information neccesary to draw the shapes the draw. This information is
-% contributed to reelInfo using the update_reelInfo function.
+% information neccesary to draw the shapes the draw. 
+%
+% reelInfo is also passed informaion from the update_reelInfo function.
 %
 % Symbol codes are loosely assigned by number of sides (exc diam)
 %
@@ -27,7 +28,7 @@ function [reelInfo] = setup_reelInfo()
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 8th April 2019
 % Project : 9_Line_Slots_Task
-% Version : development
+% Version : 2019a
 % ----------------------------------------------------------------------
 
 %% SET UP reelInfo DATA STRUCTURE
@@ -35,8 +36,8 @@ reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
 reelInfo.sym_shape = zeros(3, 3); % Symbol to display
 reelInfo.sym_position = cell(3);  % Symbol screen position in pixels
 reelInfo.sym_names = ["circ"; "diam"; "tri"; "rect"; "pent"];   
-reelInfo.reelstrip1 = zeros((length(reelInfo.sym_names))^3, 3); % Set to length of deBruijn cycle (k^n)
-reelInfo.reelstrip2 = zeros((length(reelInfo.sym_names))^3, 3); % Set to length of deBruijn cycle (k^n)
+% reelInfo.reelstrip1 - created below
+% reelInfo.reelstrip2 - created below
 
 %% CREATE BASE COLOUR VALUES FOR SYMBOLS
 reelInfo.colours(1,:) = [238/255, 000/255, 001/255]; % circ
@@ -47,39 +48,26 @@ reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
 %% Define reel strip pattern
 
-% This part of the function will create a reel strip in which the sequence 
-% of symbols along the reel will be arranged in a de Bruijn Sequence. 
-% That is, a sequence in which every possible sequential order of stimuli 
-% is included an equal number of times.
+n = length(reelInfo.sym_names); % Number of reel symbols ? "alphabet"
+k = 3; % Number of vertical reel positions - "word length"
 
-% The shortest circular sequence of length k^n such that every string 
-% of length n on the alphabet a of size k occurs as a contiguous 
-% subrange of the sequence described by a.
-% See : http://mathworld.wolfram.com/deBruijnSequence.html
-% Also see: https://cfn.upenn.edu/aguirre/wiki/public:de_bruijn
+% Determine reelstrip structure
+%       0 = no repetition of symbols within subsequences
+%       1 = de Bruijn sequence 
+%       2 = Kautz sequence
+% For more information see documentation inside generate_reelstrip function
 
-k = length(reelInfo.sym_names); % Number of reel symbols ? "alphabet"
-n = 3; % Number of vertical reel positions - "word length"
+reelInfo.repeatSymbols = 0;
 
-% the number of distinct sequences for a given k and n is:
+% By default this will generate a sequence of symbols that does not include
+% repeats. This can be altered in the config. See documentation for the
+% generate_reelstrip function for more information.
 
-% distinct_solutions = factorial(k)^(k^(n-1))/(k^n); 
+[reelInfo] = generate_reelstrip(n, k, reelInfo);
 
-% In other words this quickly becomes enormous even for 
-% small values of k and n.
+% Create columns for position information (may end up deleting this)
 
-% We use the deBruijn generator developed by  W. Owen Brimijoin
-
-% CITATION:
-% Brimijoin, W. O., & O?Neill, W. E. (2010). Patterned tone sequences reveal 
-% non-linear interactions in auditory spectrotemporal receptive fields in 
-% the inferior colliculus. Hearing Research, 267(1?2), 96?110. 
-% https://doi.org/10.1016/j.heares.2010.04.005
-
-% For convieniance I have located this function in ./functions
-% directory (deBruijn.m).
-
-reelInfo.reelstrip1(:, 1) = deBruijn(5, 3);
-reelInfo.reelstrip2(:, 1) = deBruijn(5, 3);
+reelInfo.reelstrip1(:, 2:3) = zeros(length(reelInfo.reelstrip1(:, 2)), 2);
+reelInfo.reelstrip2(:, 2:3) = zeros(length(reelInfo.reelstrip1(:, 2)), 2);
 end
 
