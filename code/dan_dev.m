@@ -17,7 +17,7 @@ KbStrokeWait;
 
 %% I WANT TO WRITE A SCRIPT THAT GENERATES Y POSITIONS FOR ALL 125 of the reels
 
-% 25/07 - I was confused about where I was deriving these split pos
+% 25/07 - I was confused about where I was deriving these splitpos
 % measures from. I think I absent mindedly deleted some code during an edit
 % which defined these variables. However, see the notes in setup_grid line 
 % line 41 - 61. I use a splitpos vairable to define central points within 
