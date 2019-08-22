@@ -35,9 +35,13 @@ end
 
 %% ASSIGN SCREEN DIMENSIONS TO EACH REEL POSITION
 
-% Set some base dimensions in pixels for our FillOval and FillRect
-% commands. See the details in setup_reelInfo for gridRect.
-baseRect = [0 0 100 100];
+% Set some base dimensions in pixels for our shapes
+% commands. These are done relative to the screen information so that the
+% shapes are proportional accross monitors. 
+% See setup_reelInfo for gridRect (also defined using scree dimensions).
+
+baseRect = screenInfo.windowRect;
+baseRect(3:4) = screenInfo.windowRect(4) / 9;
 
 % The FillPoly command takes a radius input to determine the size of the
 % shapes. The corners of the polygon are positioned at this radius value

@@ -5,8 +5,6 @@
 % should put:
 %    - config.repeatSymbols == 1
 %    - RGB values for the symbols. 
-%    - The number of grid positions. 
-
 
 % TO DO: add output path to setup_file
 % TO DO: create a function that sets up all experimental variables etc

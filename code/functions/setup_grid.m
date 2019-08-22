@@ -27,7 +27,7 @@ gridInfo.Rect(3) = gridInfo.Rect(3) * .20; % proportion of total screen size
 gridInfo.Rect(4) = gridInfo.Rect(4) * .24; % proportion of total screen size
 
 %% Width of the grid lines.
-gridInfo.penWidthPixels = 3;
+gridInfo.penWidthPixels = floor(screenInfo.windowRect(4)/300);
 
 % Scalar to adjust grid square locations across the x & y axes for the
 % penWidth so that they do not double up. 
