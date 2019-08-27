@@ -40,7 +40,7 @@ Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
 
 % This divides the screen at three points. The position is determined
 % using the central point +/- the length (X) or width (Y) of the grid
-% square
+% square.
 
 splitYpos = [screenInfo.yCenter - Y_adjust,...
                         screenInfo.yCenter, ... 
