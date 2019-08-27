@@ -35,6 +35,7 @@ function [reelInfo] = setup_reelInfo()
 reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
 reelInfo.sym_shape = zeros(3, 3); % Symbol to display
 reelInfo.sym_position = cell(3);  % Symbol screen position in pixels
+reelInfo.stops = zeros(1, 3);
 reelInfo.sym_names = ["circ"; "diam"; "tri"; "rect"; "pent"];   
 % reelInfo.reelstrip1 - created below
 % reelInfo.reelstrip2 - created below

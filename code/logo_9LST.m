@@ -32,10 +32,10 @@ end
 % cell as per their corresponding grid+symbol position.
 
 for i = 1:5
-    switch(reelInfo.sym_names{i})
+    switch(reelInfo.sym_names(i))
             case {"tri", "diam", "pent"}
                 
-                switch(reelInfo.sym_names{i})
+                switch(reelInfo.sym_names(i))
                     case "tri"
                         numSides = 3;
                     case "diam"
@@ -70,35 +70,32 @@ isConvex = 1;
 for i = 1:5
     switch(reelInfo.sym_names(i))
         case "circ"
-            Screen('FillOval', screenInfo.window, reelInfo.colours{i}, loadScreen.sym_position{i});
+            Screen('FillOval', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i});
         case "diam"
-            Screen('FillPoly', screenInfo.window, reelInfo.colours{i}, loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
+            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
         case "tri"
-            Screen('FillPoly', screenInfo.window, reelInfo.colours{i}, loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
+            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
         case "rect"
-            Screen('FillRect', screenInfo.window, reelInfo.colours{i}, loadScreen.sym_position{i});
+            Screen('FillRect', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i});
         case "pent"
-            Screen('FillPoly', screenInfo.window, reelInfo.colours{i}, loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
+            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
     end
 end
 
 line1 = '\n\n\n\n\n 9 Line Slot Task';
 line2 = '\n Created by Dan Myles';
-line3 = 'Loading deBruijn cycle';
+line3 = 'Loading';
 
-Screen('TextSize', screenInfo.window, 28);
-Screen('TextFont', screenInfo.window, 'Arial');
-DrawFormattedText(screenInfo.window, [line1, line2], 'center', 'center', screenInfo.black);
+Screen('TextSize', window, 28);
+Screen('TextFont', window, 'Courier');
+DrawFormattedText(window, [line1, line2], 'center', 'center', black);
 
-Screen('TextSize', screenInfo.window, 18);
-Screen('TextFont', screenInfo.window, 'Arial');
-DrawFormattedText(screenInfo.window, [line3], 'center', [screenInfo.yCenter *1.33], screenInfo.black);
-
+Screen('TextSize', window, 18);
+Screen('TextFont', window, 'Courier');
+DrawFormattedText(window, [line3], 'center', [yCenter + 150], black);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
-
-[reelInfo] = deBruijn_reels(reelInfo);
 
 % Wait for a key press
 KbStrokeWait;

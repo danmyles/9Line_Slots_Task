@@ -1,4 +1,4 @@
-function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, reset)
+function [reelInfo] = update_reelInfo(reelInfo, screenInfo)
 % ----------------------------------------------------------------------
 % update_reelInfo(reelInfo, gridInfo)
 % ----------------------------------------------------------------------
@@ -17,27 +17,17 @@ function [reelInfo] = update_reelInfo(reelInfo, screenInfo, selectReels, reset)
 % Version : 2019a
 % ----------------------------------------------------------------------    
 
-%% RANDOMLY ASSIGN SHAPES
-% This is a place holder for the actual game script which will eventually
-% be it's own function
+%% RANDOMLY DRAW REELSTOPS
+% This function randomly selects a position on the reelstrips to "stop" at.
+% Information is updated in reelInfo.sym_shape
 
-% Randomly assign shapes to positions 1:9 excluding 4 and 6.
+[reelInfo] = update_stops(reelInfo);
 
-if reset == 1
-    for i = selectReels
-        if i ~= [4, 6]
-            reelInfo.sym_shape(i) = randsample(1:5,1,true);
-        else
-            reelInfo.sym_shape(i) = 0;
-        end
-    end
-end
-
-%% ASSIGN SCREEN DIMENSIONS TO EACH REEL POSITION
+%% ASSIGN SCREEN DIMENSIONS FOR EACH SYMBOL GIVEN POSITION
 
 % Set some base dimensions in pixels for our shapes
 % commands. These are done relative to the screen information so that the
-% shapes are proportional accross monitors. 
+% shapes are proportional accross monitors.
 % See setup_reelInfo for gridRect (also defined using scree dimensions).
 
 baseRect = screenInfo.windowRect;
@@ -72,13 +62,9 @@ radius = max(baseRect)/1.5;
 
 % I also used a switch statment to assign the number of sides 
 % to each poly shape. This can then be used to assign the appropriate 
-% set of positions/dimensions.
+% set of positions/dimensions. 
 
-% The script also uses a for loop that takes the function selectReels as
-% input to allow for resetting of a subset of the reels 
-% (e.g. just reels 7:9). 
-
-for i = selectReels
+for i = 1:9
      switch(reelInfo.sym_shape(i))
             case {3, 2, 5} % tri, diam, pent
                 

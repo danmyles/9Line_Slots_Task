@@ -42,7 +42,7 @@
 [screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
 
 % Fill reel.Info struct with current spin info
-[reelInfo] = update_reelInfo(reelInfo, screenInfo, 1:9, 1);
+[reelInfo] = update_reelInfo(reelInfo, screenInfo);
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);

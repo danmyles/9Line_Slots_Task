@@ -43,11 +43,11 @@ screenInfo.white = WhiteIndex(screenInfo.screenNumber);
 
 % For help see: Screen OpenWindow?
 % Open the main window with multi-sampling for anti-aliasing
-% [screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, [], [], [], [], 6, []);
+[screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, [], [], [], [], 6, []);
 
 % Setup for playing on laptop only (ie no external)
-laptopScreen = Screen('Rect', 0)/2;
-[screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, laptopScreen, [], [], [], 6, []);
+% laptopScreen = Screen('Rect', 0)/2;
+% [screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, laptopScreen, [], [], [], 6, []);
 
 % Get the size of the on screen window in pixels
 % For help see: Screen WindowSize?

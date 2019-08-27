@@ -61,7 +61,6 @@ for X_select = 1:3
 end
 
 %% Set all positions for the grid
-
 for column_select = 1:3
     for row_select = 1:3
         
@@ -72,4 +71,6 @@ for column_select = 1:3
             CenterRectOnPointd(gridInfo.Rect, grid_X, grid_Y);
     end
 end 
+
+%% GET X & Y COORDINATES FOR THE CENTRE POSITION FOR EACH GRID SQUARE
 end
