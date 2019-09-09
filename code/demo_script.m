@@ -1,6 +1,5 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
-
 % TO DO: Create config file with all basic settings. For instance you
 % should put:
 %    - config.repeatSymbols == 1
@@ -42,7 +41,7 @@
 [screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
 
 % Randomly draws postion at which to stop reels and fill reel_info
-[reelInfo] = update_stops(reelInfo);
+[reelInfo] = update_stops(screenInfo, reelInfo);
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);

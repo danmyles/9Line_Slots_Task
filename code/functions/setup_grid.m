@@ -31,10 +31,15 @@ gridInfo.penWidthPixels = floor(screenInfo.windowRect(4)/300);
 
 % Scalar to adjust grid square locations across the x & y axes for the
 % penWidth so that they do not double up. 
+
 % This is proportional to the x/y dimension of the grid squares minus 
 % penWidthline to prevent doubling up of edges.
-X_adjust = gridInfo.Rect(3) - gridInfo.penWidthPixels;
-Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
+
+% These values will be useful later for drawing objects to the screen and
+% so I've saved them to screenInfo
+
+screenInfo.X_adjust = gridInfo.Rect(3) - gridInfo.penWidthPixels;
+screenInfo.Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
 
 %% Adjust screen split co-ordinates for penWidth (else they over lap)
 
@@ -42,13 +47,13 @@ Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
 % using the central point +/- the length (X) or width (Y) of the grid
 % square.
 
-screenInfo.splitposX = [screenInfo.xCenter - X_adjust, ... 
+screenInfo.splitposX = [screenInfo.xCenter - screenInfo.X_adjust, ... 
                         screenInfo.xCenter, ... 
-                        screenInfo.xCenter + X_adjust];
+                        screenInfo.xCenter + screenInfo.X_adjust];
 
-screenInfo.splitposY = [screenInfo.yCenter - Y_adjust,...
+screenInfo.splitposY = [screenInfo.yCenter - screenInfo.Y_adjust,...
                         screenInfo.yCenter, ... 
-                        screenInfo.yCenter + Y_adjust];
+                        screenInfo.yCenter + screenInfo.Y_adjust];
                    
 
 % Each of these central points are useful for a number of tasks so we will

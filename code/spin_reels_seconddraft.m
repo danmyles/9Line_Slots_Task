@@ -3,49 +3,77 @@
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
 
-% Fill reel.Info struct with current spin info
-[reelInfo] = update_reelInfo(reelInfo, screenInfo);
+% Randomly draws postion at which to stop reels and fill reel_info
+[reelInfo] = update_stops(screenInfo, reelInfo);
 
 % while ~KbCheck
 % end
 
-reel_length = length(reelInfo.reelstrip1);
+%%
 
-% The next thing I want to to do is write a function that will draw a shape
-% from one position to another so that it appears to move along the Y axis.
+% This is lifted from the update reel section. Consider putting in a
+% function if you are likely to re-use it. 
 
-% I also want to make the draw shapes and get dimensions functions more
-% flexible. For example, I would like the get_dimensions function to take a
-% vector of x and y dimensions rather than an index of screen position.
+%% DELETE AFTER DEBUGGING
+% 
+% reelInfo.stops([1, 3]) = randsample(reelInfo.reel_length, 2, true);
+% reelInfo.stops(2) = randsample(1:5, 1, true);
+% 
+% reelInfo.stops(1) = 60; 
+% %%
 
-position = screenInfo.splitpos;
+reelInfo = fill_y(screenInfo, reelInfo);
 
-reelInfo.reelstrip1(1:9, 2:3) = screenInfo.splitpos;
+% finds highest and lowest y values
+reset = (screenInfo.splitposY(1) - screenInfo.Y_adjust) + (reelInfo.reel_length .* screenInfo.Y_adjust); 
+reset2 = reelInfo.reel_length .* screenInfo.Y_adjust;
 
-screenInfo.splitpos(selectLocation, :)
-
-for i = 0:25:800
-   
 % Draw shapes
-draw_shapes(screenInfo, reelInfo, [reelInfo.reelstrip1(:, 2) , reelInfo.reelstrip1(reelInfo.stops(1), 3) + i], reelInfo.reelstrip1(1:9, 1));
+draw_shapes(screenInfo, reelInfo, reelInfo.reelstrip1(:, [2,3]), reelInfo.reelstrip1(:, 1));
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);
 
-%
 Screen('Flip', screenInfo.window);
 
+for i = 1:55
+    for i = 1:3
+        reelInfo.reelstrip1(:, 3) = reelInfo.reelstrip1(:, 3) + screenInfo.Y_adjust/3;
+    end
 end
 
-Draw shapes
-draw_shapes2(screenInfo, reelInfo, screenInfo.splitpos(selectReels, :), [1:5, 5, 5]);
-
-Draw a grid
-draw_grid(screenInfo, gridInfo);
-
-
-Screen('Flip', screenInfo.window);
-
+while ~KbCheck
+    
+    if reelInfo.reelstrip1(1, 3) == reset
+        reelInfo.reelstrip1(1, 3) = screenInfo.splitposY(1) - screenInfo.Y_adjust;
+    end
+       
+    reelInfo.reelstrip1(:, 3) = reelInfo.reelstrip1(:, 3) + screenInfo.Y_adjust/3;
+    
+    % Draw shapes
+    draw_shapes(screenInfo, reelInfo, reelInfo.reelstrip1(:, [2,3]), reelInfo.reelstrip1(:, 1));
+    
+    % Draw a grid
+    draw_grid(screenInfo, gridInfo);
+    
+    Screen('Flip', screenInfo.window);
+    
+    WaitSecs(0.005);
+    
+    disp(reelInfo.reelstrip1(reelInfo.reel_length, 3))
+    
+    if reelInfo.reelstrip1(reelInfo.reel_length, 3) == reset
+        reelInfo.reelstrip1(4:reelInfo.reel_length, 3) = ...
+            (reelInfo.reelstrip1(4:reelInfo.reel_length, 3) - reset2);
+    end
+    
+    % I'm up to here. It's kind of working but I'll have to add something
+    % to fix the updating for positions 2 and 3 (and possibly 1 ...)
+    
+    % But progress ...
+    
+end
+%%
 
 %% 
 selectReels = [1:3, 5, 7:9];
