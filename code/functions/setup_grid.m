@@ -42,35 +42,30 @@ Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
 % using the central point +/- the length (X) or width (Y) of the grid
 % square.
 
-splitYpos = [screenInfo.yCenter - Y_adjust,...
-                        screenInfo.yCenter, ... 
-                        screenInfo.yCenter + Y_adjust];
-
-splitXpos = [screenInfo.xCenter - X_adjust, ... 
+screenInfo.splitposX = [screenInfo.xCenter - X_adjust, ... 
                         screenInfo.xCenter, ... 
                         screenInfo.xCenter + X_adjust];
-                    
-% Each of these central points are useful for a number of tasks so we will
-% add them screenInfo as a 3x3 cell array, each cell will be placed in the
-% cell as per their corresponding grid+symbol position.
 
-for X_select = 1:3
-    for Y_select = 1:3
-        screenInfo.splitpos{Y_select, X_select} = [splitXpos(X_select), splitYpos(Y_select)];
-    end 
+screenInfo.splitposY = [screenInfo.yCenter - Y_adjust,...
+                        screenInfo.yCenter, ... 
+                        screenInfo.yCenter + Y_adjust];
+                   
+
+% Each of these central points are useful for a number of tasks so we will
+% save them for later use
+
+% Fill out a matrix with all X and Y values for drawin the grid
+
+i = 1; % Use i to count through each row of the grid position matrix
+
+for X = 1:3 % Enter X Position
+    for Y = 1:3 % Enter Y Position
+        screenInfo.splitpos(i, :) =  [screenInfo.splitposX(X); screenInfo.splitposY(Y)];
+        gridInfo.position(i, :) = CenterRectOnPointd(gridInfo.Rect, screenInfo.splitposX(X), screenInfo.splitposY(Y));
+        i = i + 1; % Increase i
+    end
 end
 
-%% Set all positions for the grid
-for column_select = 1:3
-    for row_select = 1:3
-        
-        grid_X = screenInfo.splitpos{row_select, column_select}(1); % Go to column, row. Subset 1st in cell (X value)
-        grid_Y = screenInfo.splitpos{row_select, column_select}(2); % Go to column, row. Subset 2nd in cell (Y value)
-        
-        gridInfo.position{row_select, column_select} = ... 
-            CenterRectOnPointd(gridInfo.Rect, grid_X, grid_Y);
-    end
-end 
-
-%% GET X & Y COORDINATES FOR THE CENTRE POSITION FOR EACH GRID SQUARE
+clear i;
+    
 end

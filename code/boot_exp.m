@@ -49,11 +49,11 @@ addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top
 
 % May put screen launch here...?
 
-% Set up reel.Info struct
-[reelInfo] = setup_reelInfo();
-
 % Set up grid
 [gridInfo, screenInfo] = setup_grid(screenInfo);
+
+% Set up reel.Info struct
+[reelInfo] = setup_reelInfo(screenInfo);
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);

@@ -22,7 +22,7 @@ function [] = draw_grid(screenInfo, gridInfo)
 
 for i = 1:9
     if i ~= [4, 6]
-        Screen('FrameRect', screenInfo.window, screenInfo.black, gridInfo.position{i}, gridInfo.penWidthPixels);
+        Screen('FrameRect', screenInfo.window, screenInfo.black, gridInfo.position(i, :), gridInfo.penWidthPixels);
     end
 end
 
@@ -30,12 +30,12 @@ end
 % symbols passing underneath during animations
 
 % Top - Using relative positioning information from screenInfo & gridInfo
-Screen('FillRect', screenInfo.window, screenInfo.white, [screenInfo.windowRect(1:3), gridInfo.position{1}(1,2)]); % CHANGE positions to use screenInfo relative positions.
+Screen('FillRect', screenInfo.window, screenInfo.white, [screenInfo.windowRect(1:3), gridInfo.position(1, 2)]); % CHANGE positions to use screenInfo relative positions.
 
 % Bottom - Using relative positioning information from screenInfo &
 % gridInfo
 bottom_pos = screenInfo.windowRect;
-bottom_pos(2) = gridInfo.position{3}(1,4);
+bottom_pos(2) = gridInfo.position(3,4);
 Screen('FillRect', screenInfo.window, screenInfo.white, bottom_pos);
     
 end

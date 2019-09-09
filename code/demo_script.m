@@ -41,8 +41,8 @@
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
 
-% Fill reel.Info struct with current spin info
-[reelInfo] = update_reelInfo(reelInfo, screenInfo);
+% Randomly draws postion at which to stop reels and fill reel_info
+[reelInfo] = update_stops(reelInfo);
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);
@@ -53,12 +53,12 @@ Screen('Flip', screenInfo.window);
 % Wait for a key press
 KbStrokeWait;
 
+% Draw shapes
+selectLocation = 1:3;
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :));
+
 % Draw a grid
 draw_grid(screenInfo, gridInfo);
-
-% Draw shapes
-selectReels = 1:3;
-draw_shapes(screenInfo, reelInfo, selectReels);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
@@ -66,22 +66,12 @@ Screen('Flip', screenInfo.window);
 % Wait for a key press
 KbStrokeWait;
 
-% Draw a grid
-draw_grid(screenInfo, gridInfo);
-
 % Draw shapes
-selectReels = [1:3, 7:9];
-draw_shapes(screenInfo, reelInfo, selectReels);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
+selectLocation = [1:3, 7:9];
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
 
 % Draw a grid
 draw_grid(screenInfo, gridInfo);
-
-% Draw shapes
-selectReels = [1:3, 7:9];
-draw_shapes(screenInfo, reelInfo, selectReels);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
@@ -89,12 +79,12 @@ Screen('Flip', screenInfo.window);
 % Wait for a key press
 KbStrokeWait;
 
+% Draw shapes
+selectLocation = [1:3, 7:9];
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
+
 % Draw a grid
 draw_grid(screenInfo, gridInfo);
-
-% Draw shapes
-selectReels = [1:3, 7:9];
-draw_shapes(screenInfo, reelInfo, selectReels);
 
 % Draw a fixation cross
 draw_fixation(screenInfo);
@@ -105,12 +95,12 @@ Screen('Flip', screenInfo.window);
 % Wait for a key press
 KbStrokeWait;
 
+% Draw shapes
+selectLocation = [1:9];
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
+
 % Draw a grid
 draw_grid(screenInfo, gridInfo);
-
-% Draw shapes
-selectReels = [1:9];
-draw_shapes(screenInfo, reelInfo, selectReels);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
@@ -121,3 +111,4 @@ KbStrokeWait;
 % Clear the screen
 sca;
 
+ 

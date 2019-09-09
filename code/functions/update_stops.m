@@ -37,7 +37,7 @@ function [reelInfo] = update_stops(reelInfo)
     reel_length = length(reelInfo.reelstrip1);
     
     for i = 1:3 % i Begins as the reel number
-        switch i
+        switch i % i will become a vector of the three reel symbols
             case 1 % Fill out reel 1
                 
                 % Draw a random position to index reelstrip 1
@@ -61,8 +61,14 @@ function [reelInfo] = update_stops(reelInfo)
                         i = reelInfo.stops(1)-1:reelInfo.stops(1)+1;
                 end
                 
+                reelInfo.allstops1 = i;
+                
                 % Fill out sym_shape from reel w/ subset
                 reelInfo.sym_shape(1:3) = reelInfo.reelstrip1(i);
+                
+                % Add Y positions of symbols to reelstrip so we can use
+                % this as starting information for the reel spin
+                % reelInfo.reelstrip1(i, 3) = screenInfo.splitposY(1:3);
                 
             case 2 % Randomly draw a symbol for centre reel
                 reelInfo.stops(2) = randsample(1:5, 1, true);
@@ -72,8 +78,7 @@ function [reelInfo] = update_stops(reelInfo)
                 
                 % Draw a random stop position to index reelstrip 2
                 reelInfo.stops(3) = randsample(reel_length, 1, true);
-                
-                
+                                
                 % Subset one above and below stop position. Switch
                 % statement as before to prevent us trying to select the
                 % n + 1 position or 0th position.
@@ -88,8 +93,14 @@ function [reelInfo] = update_stops(reelInfo)
                         i = reelInfo.stops(3)-1:reelInfo.stops(3)+1;
                 end
                 
+                reelInfo.allstops2 = i;
+                
                 % Fill out sym_shape from reel w/ subset
                 reelInfo.sym_shape(7:9) = reelInfo.reelstrip2(i);
+                
+                % Add Y positions of symbols to reelstrip so we can use
+                % this as starting information for the reel spin
+                % reelInfo.reelstrip2(i, 3) = screenInfo.splitposY(7:9);
         end
     end
 end
