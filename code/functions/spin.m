@@ -1,11 +1,11 @@
-function [reelInfo] = spin(screenInfo, reelInfo, start_value)
+function [reelInfo] = spin(screenInfo, reelInfo, start_from)
     % ----------------------------------------------------------------------
     % spin()
     % ----------------------------------------------------------------------
     % Goal of the function :
     % This function creates an animated transition of the symbols from one
     % reelstrip position to the next. It can be used in loops to create a
-    % spinning animation
+    % spinning animation.
     % ----------------------------------------------------------------------
     % Input(s) :
     % screenInfo, reelInfo
@@ -32,23 +32,26 @@ function [reelInfo] = spin(screenInfo, reelInfo, start_value)
     % E.g. if we start at one, we want the last two positions of the 
     % reelstrip, as well as the first two.
     
-    switch start_value
+    % We begin with the previous stop position and move this to the next
+    % stop position
+    
+    switch start_from
         case 1
-            start_value = [reelInfo.reel_length - 1, reelInfo.reel_length, 1, 2];
+            start_from = [reelInfo.reel_length - 1, reelInfo.reel_length, 1, 2];
         case 2
-            start_value = [reelInfo.reel_length, 1:3];
+            start_from = [reelInfo.reel_length, 1:3];
         case reelInfo.reel_length
-            start_value = [reelInfo.reel_length-2:reelInfo.reel_length, 1]; 
+            start_from = [reelInfo.reel_length - 2:reelInfo.reel_length, 1]; 
         otherwise
-            start_value = [start_value - 2, ...
-                start_value - 1, ...
-                start_value, ...
-                start_value + 1];
+            start_from = [start_from - 2, ...
+                start_from - 1, ...
+                start_from, ...
+                start_from + 1];
     end
                 
     % fill column 1 with symbol values
 
-    reelInfo.spin(:, 1) = reelInfo.reelstrip1(start_value, 1);
+    reelInfo.spin(:, 1) = reelInfo.reelstrip1(start_from, 1);
     
     % fill column 2 with x values
     

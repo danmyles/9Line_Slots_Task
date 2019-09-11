@@ -6,13 +6,17 @@
 % Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(screenInfo, reelInfo);
 
+% Here is an example script to demonstrate rolling the reels from 1:60 then
+% waiting for a keypress before rolling again.
+
+
 while ~KbCheck
    
 draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(1:3, :), reelInfo.reelstrip1([59, 60, 1], 1));
 draw_grid(screenInfo);
 Screen('Flip', screenInfo.window);
 
-for i = 60:-1:1
+for i = flip(1:60)
     spin(screenInfo, reelInfo, i);
 end
 
@@ -20,31 +24,17 @@ KbStrokeWait;
 
 end
 
-%% 
-selectReels = [1:3, 5, 7:9];
+% Here is some example code to spin between specified values using
+% set_spin()
 
-% Draw shapes
-draw_shapes2(screenInfo, reelInfo, screenInfo.splitpos(selectReels, :), repmat(1, 1, 7));
-
-% Draw a grid
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(1:3, :), reelInfo.reelstrip1([59, 60, 1], 1));
 draw_grid(screenInfo);
-
-%
 Screen('Flip', screenInfo.window);
 
-%
-KbStrokeWait;
+for i = set_spin(reelInfo, 1, 2)
+    spin(screenInfo, reelInfo, i);
+end
 
-% Draw shapes
-draw_shapes2(screenInfo, reelInfo, 3);
-
-% Draw a grid
-draw_grid(screenInfo);
-
-%
-Screen('Flip', screenInfo.window);
-
-%
 KbStrokeWait;
 
 
