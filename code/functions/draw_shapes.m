@@ -3,7 +3,7 @@ function [] = draw_shapes(screenInfo, reelInfo, position, shape)
 % draw_shapes(screenInfo, reelInfo, selectReels)
 % ----------------------------------------------------------------------
 % Goal of the function :
-% Draw a grid on screen
+% Draw shapes to the screen in given positions
 % ----------------------------------------------------------------------
 % Input(s) :
 % screenInfo, gridInfo

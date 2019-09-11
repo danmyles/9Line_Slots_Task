@@ -86,13 +86,13 @@ line1 = '\n\n\n\n\n 9 Line Slot Task';
 line2 = '\n Created by Dan Myles';
 line3 = 'Loading';
 
-Screen('TextSize', window, 28);
-Screen('TextFont', window, 'Courier');
-DrawFormattedText(window, [line1, line2], 'center', 'center', black);
+Screen('TextSize', screenInfo.window, 28);
+Screen('TextFont', screenInfo.window, 'Courier');
+DrawFormattedText(screenInfo.window, [line1, line2], 'center', 'center', screenInfo.black);
 
-Screen('TextSize', window, 18);
-Screen('TextFont', window, 'Courier');
-DrawFormattedText(window, [line3], 'center', [yCenter + 150], black);
+Screen('TextSize', screenInfo.window, 18);
+Screen('TextFont', screenInfo.window, 'Courier');
+DrawFormattedText(screenInfo.window, [line3], 'center', [screenInfo.yCenter + 150], screenInfo.black);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);

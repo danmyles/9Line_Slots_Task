@@ -1,5 +1,10 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
+
+% TO DO: remove 2 and 3 columns from reelstrips if no longer needed.
+% You could probably place both reelstrips in the same matrix. This would
+% make passing them to functions more straightforward.
+
 % TO DO: Create config file with all basic settings. For instance you
 % should put:
 %    - config.repeatSymbols == 1
