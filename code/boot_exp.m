@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp()
+function [screenInfo, reelInfo, fileInfo] = boot_exp()
 % ----------------------------------------------------------------------
 % boot_exp()
 % ----------------------------------------------------------------------
@@ -11,7 +11,7 @@ function [screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp()
 % NONE
 % ----------------------------------------------------------------------
 % Output(s):
-% screenInfo, reelInfo, gridInfo
+% screenInfo, reelInfo
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 24 July 2019
@@ -50,7 +50,7 @@ addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top
 % May put screen launch here...?
 
 % Set up grid
-[gridInfo, screenInfo] = setup_grid(screenInfo);
+[screenInfo] = setup_grid(screenInfo);
 
 % Set up reel.Info struct
 [reelInfo] = setup_reelInfo(screenInfo);

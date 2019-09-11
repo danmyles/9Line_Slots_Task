@@ -2,7 +2,7 @@
 % Script for developing ideas
 
 % Start experiment and run all setup functions
-[screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
+[screenInfo, reelInfo, fileInfo] = boot_exp();
 
 %% Set shape sizes
 

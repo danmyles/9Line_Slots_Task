@@ -1,12 +1,12 @@
-function [] = draw_grid(screenInfo, gridInfo)
+function [] = draw_grid(screenInfo)
 % ----------------------------------------------------------------------
-% draw_grid(screenInfo, gridInfo)
+% draw_grid(screenInfo)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Draw a grid on screen to containg symbols
 % ----------------------------------------------------------------------
 % Input(s) :
-% screenInfo, gridInfo
+% screenInfo
 % ----------------------------------------------------------------------
 % Output(s):
 % (none)
@@ -22,20 +22,20 @@ function [] = draw_grid(screenInfo, gridInfo)
 
 for i = 1:9
     if i ~= [4, 6]
-        Screen('FrameRect', screenInfo.window, screenInfo.black, gridInfo.position(i, :), gridInfo.penWidthPixels);
+        Screen('FrameRect', screenInfo.window, screenInfo.black, screenInfo.gridPos(i, :), screenInfo.gridPenWidthPixel);
     end
 end
 
 % Now we draw two rects at the top and the bottom of the screen to obscure 
 % symbols passing underneath during animations
 
-% Top - Using relative positioning information from screenInfo & gridInfo
-Screen('FillRect', screenInfo.window, screenInfo.white, [screenInfo.windowRect(1:3), gridInfo.position(1, 2)]); % CHANGE positions to use screenInfo relative positions.
+% Top - Using relative positioning information from screenInfo
+Screen('FillRect', screenInfo.window, screenInfo.white, [screenInfo.windowRect(1:3), screenInfo.gridPos(1, 2)]);
 
-% Bottom - Using relative positioning information from screenInfo &
-% gridInfo
+% Bottom - Using relative positioning information from screenInfo
+
 bottom_pos = screenInfo.windowRect;
-bottom_pos(2) = gridInfo.position(3,4);
+bottom_pos(2) = screenInfo.gridPos(3,4);
 Screen('FillRect', screenInfo.window, screenInfo.white, bottom_pos);
     
 end

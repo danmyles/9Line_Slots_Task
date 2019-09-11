@@ -1,4 +1,4 @@
-function [reelInfo] = spin(screenInfo, reelInfo, gridInfo, start_value)
+function [reelInfo] = spin(screenInfo, reelInfo, start_value)
     % ----------------------------------------------------------------------
     % spin()
     % ----------------------------------------------------------------------
@@ -23,13 +23,29 @@ function [reelInfo] = spin(screenInfo, reelInfo, gridInfo, start_value)
     % Version : 2019a
     % ----------------------------------------------------------------------
     
-    % work out 4 reel_strip indexes
-                                    
-    start_value = [start_value - 2, ... 
-                  start_value - 1, ...
-                  start_value, ...
-                  start_value + 1];
+    % Derive 4 index values to select symbols on reelstrip. 
     
+    % The switch function handles the expections at the begining and end of
+    % the reel strip, replacing the n-2, n-1, and n+1 values to wrap the
+    % reelstrip around itself.
+    
+    % E.g. if we start at one, we want the last two positions of the 
+    % reelstrip, as well as the first two.
+    
+    switch start_value
+        case 1
+            start_value = [reelInfo.reel_length - 1, reelInfo.reel_length, 1, 2];
+        case 2
+            start_value = [reelInfo.reel_length, 1:3];
+        case reelInfo.reel_length
+            start_value = [reelInfo.reel_length-2:reelInfo.reel_length, 1]; 
+        otherwise
+            start_value = [start_value - 2, ...
+                start_value - 1, ...
+                start_value, ...
+                start_value + 1];
+    end
+                
     % fill column 1 with symbol values
 
     reelInfo.spin(:, 1) = reelInfo.reelstrip1(start_value, 1);
@@ -51,9 +67,8 @@ function [reelInfo] = spin(screenInfo, reelInfo, gridInfo, start_value)
         
         reelInfo.spin(:, 3) = reelInfo.spin(:, 3) + (screenInfo.Y_adjust/draw_rate);
         draw_shapes(screenInfo, reelInfo, reelInfo.spin(:, [2, 3]), reelInfo.spin(:, 1))
-        draw_grid(screenInfo, gridInfo);
+        draw_grid(screenInfo);
         Screen('Flip', screenInfo.window);
-        KbStrokeWait;
         
     end
 

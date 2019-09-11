@@ -1,4 +1,4 @@
-function [gridInfo, screenInfo] = setup_grid(screenInfo)
+function [screenInfo] = setup_grid(screenInfo)
 % ----------------------------------------------------------------------
 % setup_grid(screenInfo)
 % ----------------------------------------------------------------------
@@ -22,12 +22,12 @@ function [gridInfo, screenInfo] = setup_grid(screenInfo)
 % coordinates of our grid rectangles. [0, 0] refers to the top left corner 
 % of the screen, from there we can move the rectangles to a new position. 
 % [top-left-x top-left-y bottom-right-x bottom-right-y].
-gridInfo.Rect = screenInfo.windowRect;
-gridInfo.Rect(3) = gridInfo.Rect(3) * .20; % proportion of total screen size
-gridInfo.Rect(4) = gridInfo.Rect(4) * .24; % proportion of total screen size
+screenInfo.gridRect = screenInfo.windowRect;
+screenInfo.gridRect(3) = screenInfo.gridRect(3) * .20; % proportion of total screen size
+screenInfo.gridRect(4) = screenInfo.gridRect(4) * .24; % proportion of total screen size
 
 %% Width of the grid lines.
-gridInfo.penWidthPixels = floor(screenInfo.windowRect(4)/300);
+screenInfo.gridPenWidthPixel = floor(screenInfo.windowRect(4)/300);
 
 % Scalar to adjust grid square locations across the x & y axes for the
 % penWidth so that they do not double up. 
@@ -38,8 +38,8 @@ gridInfo.penWidthPixels = floor(screenInfo.windowRect(4)/300);
 % These values will be useful later for drawing objects to the screen and
 % so I've saved them to screenInfo
 
-screenInfo.X_adjust = gridInfo.Rect(3) - gridInfo.penWidthPixels;
-screenInfo.Y_adjust = gridInfo.Rect(4) - gridInfo.penWidthPixels;
+screenInfo.X_adjust = screenInfo.gridRect(3) - screenInfo.gridPenWidthPixel;
+screenInfo.Y_adjust = screenInfo.gridRect(4) - screenInfo.gridPenWidthPixel;
 
 %% Adjust screen split co-ordinates for penWidth (else they over lap)
 
@@ -66,7 +66,7 @@ i = 1; % Use i to count through each row of the grid position matrix
 for X = 1:3 % Enter X Position
     for Y = 1:3 % Enter Y Position
         screenInfo.splitpos(i, :) =  [screenInfo.splitposX(X); screenInfo.splitposY(Y)];
-        gridInfo.position(i, :) = CenterRectOnPointd(gridInfo.Rect, screenInfo.splitposX(X), screenInfo.splitposY(Y));
+        screenInfo.gridPos(i, :) = CenterRectOnPointd(screenInfo.gridRect, screenInfo.splitposX(X), screenInfo.splitposY(Y));
         i = i + 1; % Increase i
     end
 end

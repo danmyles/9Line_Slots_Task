@@ -2,7 +2,7 @@
 % This script runs a crude animation by resampling the symbols and drawing each
 % to the screen.
 % Start experiment and run all setup functions
-[screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
+[screenInfo, reelInfo, fileInfo] = boot_exp();
 
 % Set time of stimuli
 stim_sec = .125;
@@ -16,7 +16,7 @@ for i = 1:25 % Roll through 25 different reel updates and display to animate ree
     
     for t = 1:numFrames
         % Draw a grid
-        draw_grid(screenInfo, gridInfo);
+        draw_grid(screenInfo);
         
         % Draw shapes
         selectReels = [1:3, 7:9];
@@ -36,7 +36,7 @@ for i = 1:25 % Roll through 25 different reel updates and display to animate ree
     
     for t = 1:numFrames
         % Draw a grid
-        draw_grid(screenInfo, gridInfo);
+        draw_grid(screenInfo);
         
         % Draw shapes
         selectReels = [1:3, 7:9];

@@ -43,13 +43,13 @@
 % fixation cross to display of final symbol.
 
 % Start experiment and run all setup functions
-[screenInfo, reelInfo, gridInfo, fileInfo] = boot_exp();
+[screenInfo, reelInfo, fileInfo] = boot_exp();
 
 % Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(screenInfo, reelInfo);
 
 % Draw a grid
-draw_grid(screenInfo, gridInfo);
+draw_grid(screenInfo);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
@@ -62,7 +62,7 @@ selectLocation = 1:3;
 draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :));
 
 % Draw a grid
-draw_grid(screenInfo, gridInfo);
+draw_grid(screenInfo);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
@@ -75,7 +75,7 @@ selectLocation = [1:3, 7:9];
 draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
 
 % Draw a grid
-draw_grid(screenInfo, gridInfo);
+draw_grid(screenInfo);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
@@ -88,7 +88,7 @@ selectLocation = [1:3, 7:9];
 draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
 
 % Draw a grid
-draw_grid(screenInfo, gridInfo);
+draw_grid(screenInfo);
 
 % Draw a fixation cross
 draw_fixation(screenInfo);
@@ -104,7 +104,7 @@ selectLocation = [1:9];
 draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
 
 % Draw a grid
-draw_grid(screenInfo, gridInfo);
+draw_grid(screenInfo);
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
