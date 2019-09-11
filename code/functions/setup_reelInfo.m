@@ -68,13 +68,10 @@ reelInfo.repeatSymbols = 0;
 
 [reelInfo] = generate_reelstrip(n, k, reelInfo);
 
-% Create columns for position information (may end up deleting this)
-reelInfo.reelstrip1(:, 2) = screenInfo.splitposX(1);
-reelInfo.reelstrip1(:, 3) = zeros(length(reelInfo.reelstrip1(:, 1)), 1);
+% It will be very useful to know the length of these reels for other
+% functions. By using this we can keep large amounts of the code relative
+% to allow the length of the reelstrips to change
 
-reelInfo.reelstrip2(:, 2) = screenInfo.splitposX(3);
-reelInfo.reelstrip2(:, 3) = zeros(length(reelInfo.reelstrip2(:, 1)), 1);
-
-reelInfo.reel_length = length(reelInfo.reelstrip1);
+reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 end
 

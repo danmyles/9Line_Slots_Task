@@ -31,6 +31,10 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
 % hearing-impairment. The Journal of the Acoustical Society of America,
 % 127(6), 3678-3688.
 % https://doi.org/10.1121/1.3409488
+%
+% I wrote the function for deriving permutation sequences with no repeats by 
+% modifying the the kautz_generator code citation above.
+%
 % ----------------------------------------------------------------------
 % Input(s) :
 % n = Number of reel symbols -  "alphabet"
@@ -80,8 +84,8 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
     % are similar in a number of ways. For more information see citation 
     % list at the top of this function or the documentation below.
         
-        reelInfo.reelstrip1(:, 1) = permutation_sequence(n, k);
-        reelInfo.reelstrip2(:, 1) = permutation_sequence(n, k);       
+        reelInfo.reelstrip(:, 1) = permutation_sequence(n, k);
+        reelInfo.reelstrip(:, 2) = permutation_sequence(n, k);       
     end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,8 +117,8 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
     % For convenience I have located this function in ./functions
     % directory (deBruijn.m).
         
-        reelInfo.reelstrip1(:, 1) = deBruijn(n, k);
-        reelInfo.reelstrip2(:, 1) = deBruijn(n, k);
+        reelInfo.reelstrip(:, 1) = deBruijn(n, k);
+        reelInfo.reelstrip(:, 2) = deBruijn(n, k);
     end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -142,8 +146,8 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
     % For convenience I have located this function in ./functions
     % directory (deBruijn.m).
         
-        reelInfo.reelstrip1(:, 1) = kautz_generator(n, k);
-        reelInfo.reelstrip2(:, 1) = kautz_generator(n, k);
+        reelInfo.reelstrip(:, 1) = kautz_generator(n, k);
+        reelInfo.reelstrip(:, 2) = kautz_generator(n, k);
     end
 end
 

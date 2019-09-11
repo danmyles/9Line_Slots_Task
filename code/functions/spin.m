@@ -1,4 +1,4 @@
-function [reelInfo] = spin(screenInfo, reelInfo, start_from)
+function [reelInfo] = spin(screenInfo, reelInfo, start_from, reelNumber)
     % ----------------------------------------------------------------------
     % spin()
     % ----------------------------------------------------------------------
@@ -51,7 +51,7 @@ function [reelInfo] = spin(screenInfo, reelInfo, start_from)
                 
     % fill column 1 with symbol values
 
-    reelInfo.spin(:, 1) = reelInfo.reelstrip1(start_from, 1);
+    reelInfo.spin(:, 1) = reelInfo.reelstrip(start_from, reelNumber);
     
     % fill column 2 with x values
     

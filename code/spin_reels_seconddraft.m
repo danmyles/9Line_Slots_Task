@@ -33,6 +33,8 @@ Screen('Flip', screenInfo.window);
 
 for i = set_spin(reelInfo, 1, 2)
     spin(screenInfo, reelInfo, i);
+    
+    KbStrokeWait;
 end
 
 KbStrokeWait;
