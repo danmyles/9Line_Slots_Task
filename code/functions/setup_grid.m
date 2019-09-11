@@ -16,7 +16,7 @@ function [gridInfo, screenInfo] = setup_grid(screenInfo)
 % Project : 9_Line_Slots_Task
 % Version : 2019a
 % ----------------------------------------------------------------------
-
+ 
 %% SET SIZE OF GRID SQUARES
 % The coordinates gridInfo.Rect define the top left and bottom right 
 % coordinates of our grid rectangles. [0, 0] refers to the top left corner 
