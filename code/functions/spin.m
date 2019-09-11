@@ -32,15 +32,15 @@ function [reelInfo] = spin(screenInfo, reelInfo, gridInfo, start_value)
     
     % fill column 1 with symbol values
 
-    reelInfo.spin1(:, 1) = reelInfo.reelstrip1(start_value, 1);
+    reelInfo.spin(:, 1) = reelInfo.reelstrip1(start_value, 1);
     
     % fill column 2 with x values
     
-    reelInfo.spin1(:, 2) = screenInfo.splitposX(1);
+    reelInfo.spin(:, 2) = screenInfo.splitposX(1);
     
     % fill column 3 with y values
     
-    reelInfo.spin1(:, 3) = [screenInfo.splitposY - screenInfo.Y_adjust, screenInfo.splitposY(3)];
+    reelInfo.spin(:, 3) = [screenInfo.splitposY - screenInfo.Y_adjust, screenInfo.splitposY(3)];
     
     % create a default value for the draw_rate
     if ~ exist("draw_rate")
@@ -49,8 +49,8 @@ function [reelInfo] = spin(screenInfo, reelInfo, gridInfo, start_value)
     
     for i = 1:draw_rate
         
-        reelInfo.spin1(:, 3) = reelInfo.spin1(:, 3) + (screenInfo.Y_adjust/draw_rate);
-        draw_shapes(screenInfo, reelInfo, reelInfo.spin1(:, [2, 3]), reelInfo.spin1(:, 1))
+        reelInfo.spin(:, 3) = reelInfo.spin(:, 3) + (screenInfo.Y_adjust/draw_rate);
+        draw_shapes(screenInfo, reelInfo, reelInfo.spin(:, [2, 3]), reelInfo.spin(:, 1))
         draw_grid(screenInfo, gridInfo);
         Screen('Flip', screenInfo.window);
         KbStrokeWait;

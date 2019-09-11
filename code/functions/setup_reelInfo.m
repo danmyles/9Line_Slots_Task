@@ -36,8 +36,9 @@ reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
 reelInfo.sym_shape = zeros(3, 3); % Symbol to display
 reelInfo.stops = zeros(1, 3);
 reelInfo.sym_names = ["circ"; "diam"; "tri"; "rect"; "pent"];   
-reelInfo.spin1 = zeros(4, 3); % These are used by the spin function. They 
-reelInfo.spin2 = zeros(4, 3); % hold temporary info used for spin animations
+reelInfo.spin = zeros(4, 3); % Used to hold temporary info used for spin 
+                             % animations
+                             
 % reelInfo.reelstrip1 - created below
 % reelInfo.reelstrip2 - created below
 

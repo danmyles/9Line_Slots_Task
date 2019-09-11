@@ -6,13 +6,12 @@
 % Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(screenInfo, reelInfo);
 
-% while ~KbCheck
-% end
+% Use the spin function to spin from start position 3 until start position
+% 59
 
-%%
-
-% This is lifted from the update reel section. Consider putting in a
-% function if you are likely to re-use it. 
+for i = 59:-1:3
+    spin(screenInfo, reelInfo, gridInfo, i)
+end
 
 %% DELETE AFTER DEBUGGING
 % 
