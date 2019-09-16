@@ -48,48 +48,31 @@
 % Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(screenInfo, reelInfo);
 
-for i = set_spin(reelInfo, reelInfo.stops(1), reelInfo.stops(1)+10)
-    spin(screenInfo, reelInfo, i);
+% TODO: This function pushes the animation onto the next place. It may be more
+% user friendly if the animation stops at the desired reel position
+
+% Check that the indexing in the spin function is correct. There are
+% several reversals and its getting difficult to keep up.
+
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(1:3, :), reelInfo.reelstrip([59, 60, 1], 1))
+draw_grid(screenInfo);
+Screen('Flip', screenInfo.window);
+
+
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(1:3, :), reelInfo.reelstrip([58, 59, 60], 1))
+draw_grid(screenInfo);
+Screen('Flip', screenInfo.window);
+
+for i = set_spin(reelInfo, 60, 60)
+    spin(screenInfo, reelInfo, i, 2);
+    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(1:3, :), reelInfo.reelstrip([58, 59, 60], 1))
+    draw_grid(screenInfo);
+    Screen('Flip', screenInfo.window);
 end
 
-% Draw shapes
-selectLocation = [1:3];
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
-
-% Draw a grid
+draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(7:9, :), reelInfo.reelstrip([58, 59, 60], 2))
 draw_grid(screenInfo);
-
-% Flip to the screen
 Screen('Flip', screenInfo.window);
-
-% Wait for a key press
-KbStrokeWait;
-
-% Draw shapes
-selectLocation = 1:3;
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :));
-
-% Draw a grid
-draw_grid(screenInfo);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% Wait for a key press
-KbStrokeWait;
-
-% Draw shapes
-selectLocation = [1:3, 7:9];
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
-
-% Draw a grid
-draw_grid(screenInfo);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% Wait for a key press
-KbStrokeWait;
 
 % Draw shapes
 selectLocation = [1:3, 7:9];
@@ -105,7 +88,7 @@ draw_fixation(screenInfo);
 Screen('Flip', screenInfo.window);
 
 % Wait for a key press
-KbStrokeWait;
+KbStrokeWait(-3);
 
 % Draw shapes
 selectLocation = [1:9];

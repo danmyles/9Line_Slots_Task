@@ -1,7 +1,7 @@
 function [output] = set_spin(reelInfo, spin_from, spin_to)
     % This function generates a vector that contains descending consecutive
     % integers between the start value and end value. With the added condition
-    % that if values become large reel_length they will start again at 1.
+    % that if values become larger reel_length they will start again at 1.
     
     % Some errors
     
@@ -32,7 +32,7 @@ function [output] = set_spin(reelInfo, spin_from, spin_to)
         %              [stop]  1, 2, 3, 4, 5, 6, 7 [start]
         %              [start] 7, 6, 5, 4, 3, 2, 1 [stop]
         
-        output = flip(spin_to:spin_from);
+        output = flip(spin_to:spin_from)';
         
     elseif spin_from <= spin_to      
         
@@ -49,8 +49,17 @@ function [output] = set_spin(reelInfo, spin_from, spin_to)
         % then we just need to join these two fragments and our vector will
         % wrap over from 60 to 1
                 
-        output = [flip(1:spin_from), flip(spin_to:reelInfo.reel_length)];
+        output = [flip(1:spin_from), flip(spin_to:reelInfo.reel_length)]';
     end
     
+    % The spin animation starts from a value and pushes it forward one
+    % place along the reel strip. This means that when we pass the stop
+    % position to the animation it pushes past it by one place. To account
+    % for this we want this function to trim the final value from the
+    % vector created.
+        
+    trim = length(output) - 1;
+    
+    output = output(1:trim);
 end
 

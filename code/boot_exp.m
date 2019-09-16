@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, fileInfo] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData] = boot_exp()
 % ----------------------------------------------------------------------
 % boot_exp()
 % ----------------------------------------------------------------------
@@ -48,6 +48,9 @@ addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top
 [screenInfo] = setup_screen();
 
 % May put screen launch here...?
+
+% Prefill and setup outputData table
+[outputData] = setup_output();
 
 % Set up grid
 [screenInfo] = setup_grid(screenInfo);

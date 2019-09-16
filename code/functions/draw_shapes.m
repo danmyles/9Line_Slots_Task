@@ -35,7 +35,7 @@ function [] = draw_shapes(screenInfo, reelInfo, position, shape)
 % Version : 2019a
 % ----------------------------------------------------------------------
 
-if ~exist('shape', 'var')
+if ~exist('shape')
     shape = reelInfo.sym_shape;
 end
 
@@ -43,10 +43,10 @@ end
 % enables us to pass all position information for all 7 positions but only 
 % pass three symbols or vice versa
 
-if numel(shape) <= length(position)
+if numel(shape) <= size(position, 1)
     x = numel(shape);
-else
-    x = length(position);
+elseif length(position) < numel(shape)
+    x = size(position, 1);
 end
 
 % Tell PTB that polygons should be convex (concave polygons require much
@@ -79,25 +79,6 @@ for i = 1:x
     end
     
 end
-
-
-% for i = 1:length(shape)
-% 
-%     switch shape(i)
-%         case 1 % circ
-%             Screen('FillOval', screenInfo.window, reelInfo.colours(1, 1:3), get_dimensions(screenInfo, position(i, :), 1));
-%         case 2 % diam
-%             Screen('FillPoly', screenInfo.window, reelInfo.colours(2, 1:3), get_dimensions(screenInfo, position(i, :), 2), isConvex);
-%         case 3 % tri
-%             Screen('FillPoly', screenInfo.window, reelInfo.colours(3, 1:3), get_dimensions(screenInfo, position(i, :), 3), isConvex);
-%         case 4 % rect
-%             Screen('FillRect', screenInfo.window, reelInfo.colours(4, 1:3), get_dimensions(screenInfo, position(i, :), 4));
-%         case 5 % pent
-%             Screen('FillPoly', screenInfo.window, reelInfo.colours(5, 1:3), get_dimensions(screenInfo, position(i, :), 5), isConvex);
-%     end
-%     
-% end
-
 
 end
 

@@ -1,10 +1,6 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
 
-% TO DO: remove 2 and 3 columns from reelstrips if no longer needed.
-% You could probably place both reelstrips in the same matrix. This would
-% make passing them to functions more straightforward.
-
 % TO DO: Create config file with all basic settings. For instance you
 % should put:
 %    - config.repeatSymbols == 1
@@ -25,7 +21,8 @@
 % TO DO: HideCursor; To hide the mouse cursor? but this is annoying when
 % debugging. Probably put this in setup_exp?
 
-% TO DO: subjectInfo - Lay out output file and fill in subject details.
+% TO DO: Output file. subjectInfo - Lay out output file and fill in subject details.
+
 %% Set up inter stimulus interval
 % Mean ISI e.g 200ms
 % Range ISI e.g. +/- 50ms
@@ -43,74 +40,57 @@
 % fixation cross to display of final symbol.
 
 % Start experiment and run all setup functions
-[screenInfo, reelInfo, fileInfo] = boot_exp();
+[screenInfo, reelInfo, fileInfo, outputData] = boot_exp();
 
 % Randomly draws postion at which to stop reels and fill reel_info
-[reelInfo] = update_stops(screenInfo, reelInfo);
+[reelInfo] = update_stops(reelInfo);
 
-% Draw a grid
-draw_grid(screenInfo);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% Wait for a key press
-KbStrokeWait;
-
-% Draw shapes
-selectLocation = 1:3;
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :));
-
-% Draw a grid
-draw_grid(screenInfo);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
+% Iteratively display assortment of symbols to get started
+for i = 1:6
+    
+    % Fill out screen w/ symbols [1:5, 1]
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR(1:i, :), trim_centre(reelInfo.outcome.dspSymbols))
+    
+    % Draw a grid
+    draw_grid(screenInfo);
+    
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+    WaitSecs(screenInfo.ifi.*8);
+    
+end
 
 % Wait for a key press
-KbStrokeWait;
+KbWait(-1, 2);
 
-% Draw shapes
-selectLocation = [1:3, 7:9];
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
+reelInfo.previous = reelInfo.outcome;
+[reelInfo] = update_stops(reelInfo);
 
-% Draw a grid
-draw_grid(screenInfo);
+% Spin first reel.
 
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% Wait for a key press
-KbStrokeWait;
-
-% Draw shapes
-selectLocation = [1:3, 7:9];
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
-
-% Draw a grid
-draw_grid(screenInfo);
-
-% Draw a fixation cross
-draw_fixation(screenInfo);
-
-% Flip cross the the screen
-Screen('Flip', screenInfo.window);
+for i = set_spin(reelInfo, reelInfo.previous.stops(1), reelInfo.outcome.stops(1))'
+    [reelInfo] = spin_L(screenInfo, reelInfo, i);
+end
 
 % Wait for a key press
-KbStrokeWait;
+KbWait(-1, 2);
 
-% Draw shapes
-selectLocation = [1:9];
-draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(selectLocation, :), reelInfo.sym_shape(selectLocation));
+% Spin the second reel. (using independant stops)
 
-% Draw a grid
-draw_grid(screenInfo);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
+for i = set_spin(reelInfo, reelInfo.previous.stops(2), reelInfo.outcome.stops(2))'
+    [reelInfo] = spin_R(screenInfo, reelInfo, i);
+end
 
 % Wait for a key press
-KbStrokeWait;
+KbWait(-1, 2);
+
+% Spin both reels - present a trial
+
+[reelInfo] = spin(screenInfo, reelInfo);
+
+% Wait for a key press
+KbWait(-1, 2);
 
 % Clear the screen
 sca;

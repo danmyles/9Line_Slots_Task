@@ -32,17 +32,30 @@ function [reelInfo] = setup_reelInfo(screenInfo)
 % ----------------------------------------------------------------------
 
 %% SET UP reelInfo DATA STRUCTURES
-reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
-reelInfo.sym_shape = zeros(3, 3); % Symbol to display
-reelInfo.stops = zeros(1, 3);
-reelInfo.sym_names = ["circ"; "diam"; "tri"; "rect"; "pent"];   
-reelInfo.spin = zeros(4, 3); % Used to hold temporary info used for spin 
-                             % animations
-                             
-% reelInfo.reelstrip1 - created below
-% reelInfo.reelstrip2 - created below
 
-%% CREATE BASE COLOUR VALUES FOR SYMBOLS
+% Basic symbol information
+reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
+reelInfo.num_symbols = 5; % Circle, diamond, triangle, rectangle, pentagon, 
+
+reelInfo.outcome.trialNumber = 0 ; % Set N trial to 0 (for indexing output)
+reelInfo.outcome.stops = zeros(1, 2); % Vector with stops for L and R reel
+reelInfo.outcome.centre = 0; % Symbol to be displayed at centre
+reelInfo.outcome.allstops = zeros(3, 2); % Indices for above and below the stop for reel 1 & 2
+reelInfo.outcome.dspSymbols = zeros(3, 3); % Symbols codes displayed at this spin
+
+reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
+
+% To streamline drawing shapes to different combinations of reel positions
+% a few subsets of screen position will be useful. These are all saved
+% within a nested data structure:
+reelInfo.pos.L = screenInfo.splitpos(1:3, :); % Position dimensions for left reel
+reelInfo.pos.R = screenInfo.splitpos(7:9, :); % Position dimensions for right reel
+reelInfo.pos.LR = [reelInfo.pos.L; reelInfo.pos.R]; % All except centre
+reelInfo.pos.All = [reelInfo.pos.L; screenInfo.screenCenter; reelInfo.pos.R]; % All
+                             
+% reelInfo.reelstrip - created below
+
+%% ENTER RGB VALUES FOR SYMBOL COLOURS
 reelInfo.colours(1,:) = [238/255, 000/255, 001/255]; % circ
 reelInfo.colours(2,:) = [000/255, 162/255, 255/255]; % diam
 reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
@@ -51,8 +64,12 @@ reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
 %% Define reel strip pattern
 
-n = length(reelInfo.sym_names); % Number of reel symbols ? "alphabet"
+n = reelInfo.num_symbols; % Number of reel symbols - "alphabet"
 k = 3; % Number of vertical reel positions - "word length"
+
+% By default generate_reelstrip will generate a sequence of symbols that 
+% does not include repeats. This feature can be changed as below by
+% defining the repeatSymbols setting.
 
 % Determine reelstrip structure
 %       0 = no repetition of symbols within subsequences
@@ -62,9 +79,8 @@ k = 3; % Number of vertical reel positions - "word length"
 
 reelInfo.repeatSymbols = 0;
 
-% By default this will generate a sequence of symbols that does not include
-% repeats. This can be altered in the config. See documentation for the
-% generate_reelstrip function for more information.
+% repeats. See documentation for the generate_reelstrip function for more 
+% information.
 
 [reelInfo] = generate_reelstrip(n, k, reelInfo);
 
