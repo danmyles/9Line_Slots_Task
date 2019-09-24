@@ -1,4 +1,4 @@
-function [reelInfo] = generate_reelstrip(n, k, reelInfo)
+function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
 % ----------------------------------------------------------------------
 % generate_reelstrip(n, k, reelInfo)
 % ----------------------------------------------------------------------
@@ -85,6 +85,7 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
     % list at the top of this function or the documentation below.
         
         reelInfo.reelstrip(:, 1) = permutation_sequence(n, k);
+        loading_screen(screenInfo, reelInfo, 2)
         reelInfo.reelstrip(:, 2) = permutation_sequence(n, k);       
     end
     
@@ -118,6 +119,7 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
     % directory (deBruijn.m).
         
         reelInfo.reelstrip(:, 1) = deBruijn(n, k);
+        loading_screen(screenInfo, reelInfo, 2)
         reelInfo.reelstrip(:, 2) = deBruijn(n, k);
     end
     
@@ -147,6 +149,7 @@ function [reelInfo] = generate_reelstrip(n, k, reelInfo)
     % directory (deBruijn.m).
         
         reelInfo.reelstrip(:, 1) = kautz_generator(n, k);
+        loading_screen(screenInfo, reelInfo, 2)
         reelInfo.reelstrip(:, 2) = kautz_generator(n, k);
     end
 end

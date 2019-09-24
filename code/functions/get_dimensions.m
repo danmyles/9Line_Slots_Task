@@ -1,4 +1,4 @@
-function [output_dim] = get_dimensions(screenInfo, position, shape)
+function [output_dim] = get_dimensions(screenInfo, position, shape, baseRect)
 % ----------------------------------------------------------------------
 % get_dimensions(screenInfo, position, shape)
 % ----------------------------------------------------------------------
@@ -39,14 +39,14 @@ function [output_dim] = get_dimensions(screenInfo, position, shape)
 % ----------------------------------------------------------------------  
 % For more information see documentation inside function
 
-% Set some base dimensions in pixels for our shapes
-% commands. These are done relative to the screen information so that the
-% shapes are proportional accross monitors.
-% See setup_reelInfo for gridRect = size of grid vector (also defined
-% using screen dimensions).
+% baseRect contains dimensions in pixels we use to draw each of our shapes
+% See setup_reelInfo for how this is done, also done for gridRect = size of
+% grid vector (also defined using screen dimensions).
 
-baseRect = screenInfo.windowRect;
-baseRect(3:4) = screenInfo.windowRect(4) / 9;
+if ~exist('baseRect')
+    baseRect = screenInfo.windowRect;
+    baseRect(3:4) = screenInfo.windowRect(4) / 9;
+end
 
 % The FillPoly command takes a radius input to determine the size of the
 % shapes. The corners of the polygon are positioned at this radius value
@@ -80,7 +80,7 @@ radius = max(baseRect)/1.5;
 % set of positions/dimensions.
 
 % We have to figure out a way to tell the function whether we are passing
-% position codes or X/Y values. is position(i) <= 9
+% position codes or X/Y values.
 
 if position(1) <= 9
     % If position variable is less than 9 treat values as position codes.

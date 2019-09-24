@@ -20,10 +20,8 @@ function [] = draw_grid(screenInfo)
 % For loop to iterate through positions 1:9 but skip 4 and 6.
 % Then draw a rectangle at each grid location
 
-for i = 1:9
-    if i ~= [4, 6]
-        Screen('FrameRect', screenInfo.window, screenInfo.black, screenInfo.gridPos(i, :), screenInfo.gridPenWidthPixel);
-    end
+for i = [1:3, 5, 7:9]
+    Screen('FrameRect', screenInfo.window, screenInfo.black, screenInfo.gridPos(i, :), screenInfo.gridPenWidthPixel);
 end
 
 % Now we draw two rects at the top and the bottom of the screen to obscure 

@@ -1,12 +1,34 @@
-function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
+function [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData)
     
     % Bump previous reelInfo.outcome to reelInfo.previous
     reelInfo.previous = reelInfo.outcome;
     
     reelInfo.outcome.trialNumber = reelInfo.outcome.trialNumber + 1;
     
-    % Update stops
+    %% This will update until we create a match
     [reelInfo] = update_stops(reelInfo);
+    
+    win = 0;
+    
+    while win ~= 1
+             
+        % check if match in Reel 1
+        A = ismember(reelInfo.outcome.dspSymbols(:, 1), reelInfo.outcome.dspSymbols(:, 2));
+        
+        % check if match in Reel 3
+        B = ismember(reelInfo.outcome.dspSymbols(:, 3), reelInfo.outcome.dspSymbols(:, 2));
+        
+        if sum(A) > 0 && sum(B) > 0
+            win = 1;
+        end
+        
+        if win ~= 1
+        
+        [reelInfo] = update_stops(reelInfo);
+       
+        end
+    end
+%%
 
     % Spin first reel.
     

@@ -23,62 +23,37 @@ splitXpos = [screenInfo.xCenter - 2*adjustX, ...
     screenInfo.xCenter + adjustX, ...
     screenInfo.xCenter + 2*adjustX];
 
-for i = 1:5
-    loadScreen.sym_position{i} = [splitXpos(i), screenInfo.yCenter];
-end
-
-% Each of these central points will be of value and so I want to add them 
-% to either screenInfo as a 3x3 cell array, each cell will be placed in the
-% cell as per their corresponding grid+symbol position.
+% Fill in X,Y cordinates for loading screen symbols 
 
 for i = 1:5
-    switch(reelInfo.sym_names(i))
-            case {"tri", "diam", "pent"}
-                
-                switch(reelInfo.sym_names(i))
-                    case "tri"
-                        numSides = 3;
-                    case "diam"
-                        numSides = 4;
-                    case "pent"
-                        numSides = 5;
-                end
-                
-                anglesDeg = linspace(0, 360, numSides + 1 ) - 90;
-                anglesRad = anglesDeg * (pi / 180);
-                
-                xPosVector = cos(anglesRad) .* radius + loadScreen.sym_position{i}(1);
-                yPosVector = sin(anglesRad) .* radius + loadScreen.sym_position{i}(2);
-                
-                loadScreen.sym_position{i} = [xPosVector; yPosVector]';
-                
-            case {"circ", "rect"}
-                loadScreen.sym_position{i} = ...
-                    CenterRectOnPointd(baseRect, ...
-                    loadScreen.sym_position{i}(1), ... 
-                    loadScreen.sym_position{i}(2))';
-   
-    end
+    loadScreen.sym_position(i, :) = [splitXpos(i), screenInfo.yCenter];
 end
 
-% adjust triangle position to meet rect
-loadScreen.sym_position{3}(6:7) = loadScreen.sym_position{4}(4);
-loadScreen.sym_position{3}([5,8]) = loadScreen.sym_position{4}(2);
+% Triangle position will be slightly above the rectangle if we use 
+% get_dimensions, so a little bit of tweaking here. This part of the script
+% will use the lower y dimensions from the rectangle to adjust the location
+% of the triangle
+
+replace_sq = get_dimensions(screenInfo, loadScreen.sym_position(4, :), 4, baseRect);
+triangle_dim = get_dimensions(screenInfo, loadScreen.sym_position(3, :), 3, baseRect);
+
+triangle_dim([1, 4], 2) = replace_sq(2);
+triangle_dim([2, 3], 2) = replace_sq(4);
 
 isConvex = 1;
 
 for i = 1:5
-    switch(reelInfo.sym_names(i))
-        case "circ"
-            Screen('FillOval', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i});
-        case "diam"
-            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
-        case "tri"
-            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
-        case "rect"
-            Screen('FillRect', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i});
-        case "pent"
-            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, 1:3), loadScreen.sym_position{i}, isConvex); % Set isConvex = 1
+    switch i 
+        case 1
+            Screen('FillOval', screenInfo.window, reelInfo.colours(i, :), get_dimensions(screenInfo, loadScreen.sym_position(i, :), i, baseRect));
+        case 2
+            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, :), get_dimensions(screenInfo, loadScreen.sym_position(i, :), i, baseRect), isConvex); % Set isConvex = 1
+        case 3
+            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, :), triangle_dim, isConvex); % Set isConvex = 1
+        case 4
+            Screen('FillRect', screenInfo.window, reelInfo.colours(i, :), get_dimensions(screenInfo, loadScreen.sym_position(i, :), i, baseRect));
+        case 5
+            Screen('FillPoly', screenInfo.window, reelInfo.colours(i, :), get_dimensions(screenInfo, loadScreen.sym_position(i, :), i, baseRect), isConvex); % Set isConvex = 1
     end
 end
 

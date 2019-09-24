@@ -61,6 +61,11 @@ screenInfo.screenCenter = [screenInfo.xCenter, screenInfo.yCenter];
 % Set up alpha-blending for smooth (anti-aliased) lines
 Screen('BlendFunction', screenInfo.window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
 
+% This preference setting selects the high quality text renderer 
+% each operating system:
+Screen('Preference', 'TextRenderer', 1);
+Screen('Preference', 'TextAntiAliasing', 2);
+
 % Query the frame duration - minimum possible time
 % between drawing to the screen
 screenInfo.ifi = Screen('GetFlipInterval', screenInfo.window);

@@ -34,7 +34,7 @@ rng shuffle; % See notes below
 % each session.
 
 % Start a stopwatch
-tic % you can read time elapsed since tic; with toc
+tic; % you can read time elapsed since tic; with toc
 
 % Set up directories relative to file location
 [fileInfo.Path, fileInfo.Name] = fileparts(mfilename('fullpath'));
@@ -47,16 +47,17 @@ addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top
 % Set up screen
 [screenInfo] = setup_screen();
 
-% May put screen launch here...?
-
-% Prefill and setup outputData table
-[outputData] = setup_output();
 
 % Set up grid
 [screenInfo] = setup_grid(screenInfo);
 
 % Set up reel.Info struct
 [reelInfo] = setup_reelInfo(screenInfo);
+
+% May put screen launch here...?
+
+% Prefill and setup outputData table
+[outputData] = setup_output();
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);

@@ -34,7 +34,8 @@ function [reelInfo] = update_stops(reelInfo)
     % Version : 2019a
     % ----------------------------------------------------------------------
     
-    % 
+    % Draw a payout amount (if win occurs)
+    reelInfo.outcome.payout = randsample(reelInfo.payout.amounts, 1);
     
     % Draw a random position to index each reelstrip
     reelInfo.outcome.stops(1:2) = randsample(reelInfo.reel_length, 2, true);

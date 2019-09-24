@@ -1,22 +1,27 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
 
+% TO DO: I installed https://www.xquartz.org/ to try out DrawFormattedText2
+% You may need to direct users to download this
+
+% TO DO: I may need to add outputData as input and output to a
+% number of functions. For instance, if we are using it to track the trial
+% number.
+
 % TO DO: Create config file with all basic settings. For instance you
 % should put:
-%    - config.repeatSymbols == 1
-%    - RGB values for the symbols. 
+%   - config.repeatSymbols == 1 << Change in highlight reels & generate
+%                                   reelstrips
+%   - RGB values for the symbols. 
+%   - Sequential or simultaneous reel highlighting
 
 % TO DO: add output path to setup_file
 % TO DO: create a function that sets up all experimental variables etc
 % TO DO: make a function that calls all setup scripts
 
-% TO DO: Add launch screen to boot_exp()
-
 % TO DO: Series of tests and checks for all video features to ensure
 % accurate timing. For instance checking the recorded inter frame interval
 % or refresh rate against those desired.
-
-% TO DO: Create Reel highlighting function
 
 % TO DO: HideCursor; To hide the mouse cursor? but this is annoying when
 % debugging. Probably put this in setup_exp?
@@ -42,8 +47,20 @@
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, fileInfo, outputData] = boot_exp();
 
+%% I'm toying around with the load screen. Seems silly to have it create 
+% wait time. Perhaps best to use the dots . ... .....
+
+loading_screen(screenInfo, reelInfo, 4)
+
+WaitSecs(0.25);
+
 % Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(reelInfo);
+
+loading_screen(screenInfo, reelInfo, 5)
+
+% Wait for a key press
+KbWait(-1, 2);
 
 % Iteratively display assortment of symbols to get started
 for i = 1:6
@@ -64,35 +81,48 @@ end
 % Wait for a key press
 KbWait(-1, 2);
 
-reelInfo.previous = reelInfo.outcome;
-[reelInfo] = update_stops(reelInfo);
-
-% Spin first reel.
-
-for i = set_spin(reelInfo, reelInfo.previous.stops(1), reelInfo.outcome.stops(1))'
-    [reelInfo] = spin_L(screenInfo, reelInfo, i);
-end
-
-% Wait for a key press
-KbWait(-1, 2);
-
-% Spin the second reel. (using independant stops)
-
-for i = set_spin(reelInfo, reelInfo.previous.stops(2), reelInfo.outcome.stops(2))'
-    [reelInfo] = spin_R(screenInfo, reelInfo, i);
-end
-
-% Wait for a key press
-KbWait(-1, 2);
-
 % Spin both reels - present a trial
 
-[reelInfo] = spin(screenInfo, reelInfo);
+for i = 1:5
+[reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
+KbWait(-1, 2);
+end
 
-% Wait for a key press
+payoutText = ['<b>', 'Now all wins!'];
+
+% Draw winning amount to centre
+[cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
+    'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
+    'xalign','center','yalign','center','xlayout','center');
+
+% Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+KbWait(-1, 2);
+
+for i = 1:5
+[reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData);
+KbWait(-1, 2);
+end
+
+   % Set up text for payout display
+    Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
+    Screen('TextFont', screenInfo.window, 'Garamond');
+    Screen('TextColor', screenInfo.window, screenInfo.black);
+payoutText = ['<b>', 'Demo over :)'];
+
+% Draw winning amount to centre
+[cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
+    'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
+    'xalign','center','yalign','center','xlayout','center');
+
+% Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
 KbWait(-1, 2);
 
 % Clear the screen
 sca;
+
 
  
