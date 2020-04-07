@@ -3,12 +3,16 @@ function [reelInfo] = setup_reelInfo(screenInfo)
 % setup_reelInfo()
 % ----------------------------------------------------------------------
 % Goal of the function :
+%
 % SET UP THE reelInfo DATA STRUCTURE
 % This function sets up a data struct that will contain information about
 % the positions of each symbol determined by the spin, as well as
 % information neccesary to draw the shapes the draw. 
 %
-% reelInfo is also passed informaion from the update_reelInfo function.
+% This function and the data structure it sets up have become the 
+% defacto major config file. Many of the key information about the
+% animations and display settings used in the experiment can be tweaked
+% here
 %
 % Symbol codes are loosely assigned by number of sides (exc diam)
 %
@@ -26,9 +30,9 @@ function [reelInfo] = setup_reelInfo(screenInfo)
 % reelInfo - All sub struct are listed below
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 8th April 2019
+% Last update : 7th April 2020
 % Project : 9_Line_Slots_Task
-% Version : 2019a
+% Version : 2020a
 % ----------------------------------------------------------------------
 
 %% SET UP reelInfo DATA STRUCTURES

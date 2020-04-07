@@ -23,18 +23,18 @@ function [outputData] = draw_payout(screenInfo, reelInfo, win, outputData)
     % Draw text if a win occured (else skip)
     
     if win == 1
-    
-    % Set up text for payout display
-    Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
-    Screen('TextFont', screenInfo.window, 'Garamond');
-    Screen('TextColor', screenInfo.window, screenInfo.black);
-    payoutText = ['<b>', sprintf('%g', reelInfo.outcome.payout)];   
-
-    % Draw winning amount to centre
-    [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
-        'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
-        'xalign','center','yalign','center','xlayout','center');   
-    
+        
+        % Set up text for payout display
+        Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
+        Screen('TextFont', screenInfo.window, 'Garamond');
+        Screen('TextColor', screenInfo.window, screenInfo.black);
+        payoutText = ['<b>', sprintf('%g', reelInfo.outcome.payout)];
+        
+        % Draw winning amount to centre
+        [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
+            'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
+            'xalign','center','yalign','center','xlayout','center');
+        
     end
     
 end

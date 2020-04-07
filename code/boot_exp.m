@@ -16,7 +16,7 @@ function [screenInfo, reelInfo, fileInfo, outputData] = boot_exp()
 % Function created by Dan Myles (dan.myles@monash.edu)
 % Last update : 24 July 2019
 % Project : 9_Line_Slots_Task
-% Version : 2019a
+% Version : 2020a
 % ----------------------------------------------------------------------
 
 % Clear the workspace and the screen

@@ -17,6 +17,7 @@ Make sure you have the following software and MATLAB packages installed:
 
   1. [MATLAB_2019a](http://mathworks.com)
   2. [PsychToolbox-3](http://psychtoolbox.org/)
+  3. I installed https://www.xquartz.org/ in order to use the PsychToolbox function DrawFormattedText2
   
 ## File Structure
 

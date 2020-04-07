@@ -42,7 +42,7 @@ function [reelInfo] = update_stops(reelInfo)
     
     % Draw a random symbol (1:5) to display at centre position
     reelInfo.outcome.centre = randsample(1:5, 1, true);
-       
+    
     % Find all indices for above and below the stops on reel 1 & 2
     % Then update reel information
     for i = [1, 2]
@@ -58,9 +58,9 @@ function [reelInfo] = update_stops(reelInfo)
         end
     end
     
-   % Fill out sym_shape from reel w/ allstops
-     reelInfo.outcome.dspSymbols(:, 1) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 1), 1);
-     reelInfo.outcome.dspSymbols(2, 2) = reelInfo.outcome.centre;
-     reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 2), 2);
-          
+    % Fill out sym_shape from reel w/ allstops
+    reelInfo.outcome.dspSymbols(:, 1) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 1), 1);
+    reelInfo.outcome.dspSymbols(2, 2) = reelInfo.outcome.centre;
+    reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 2), 2);
+    
 end

@@ -1,9 +1,6 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
 
-% TO DO: I installed https://www.xquartz.org/ to try out DrawFormattedText2
-% You may need to direct users to download this
-
 % TO DO: I may need to add outputData as input and output to a
 % number of functions. For instance, if we are using it to track the trial
 % number.
