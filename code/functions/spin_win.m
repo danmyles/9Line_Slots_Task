@@ -85,7 +85,7 @@ function [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData)
         end
         
         % Display info for payout
-        display_payout(screenInfo, reelInfo);
+        draw_payout(screenInfo, reelInfo, 1); % 1 indicates win
         
         % Send information to outputData
         if reelInfo.outcome.trialNumber > 0

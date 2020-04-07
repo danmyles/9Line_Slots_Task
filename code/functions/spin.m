@@ -58,13 +58,15 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     % Check if win
     if sum(nonzeros(ismember(reelInfo.outcome.dspSymbols, reelInfo.outcome.centre))) == 3
         
+        win = 1;
+        
         if reelInfo.highlight ~= 0
         % Highlight winning grid positions and show payout amount
         highlight_win(screenInfo, reelInfo);
         end
         
         % Display payout
-        display_payout(screenInfo, reelInfo);
+        draw_payout(screenInfo, reelInfo, win);
         
         % Send information to outputData
         if reelInfo.outcome.trialNumber > 0
@@ -73,6 +75,13 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
         % Output netOutcome
         % outputData.netOutcome(reelInfo.outcome.trialNumber) = reelInfo.outcome.payout;
         end
+    else
+        
+        % Loss
+        win = 0;
+        
+        % Display payout shape, but not text
+        draw_payout(screenInfo, reelInfo, win);
         
     end
     

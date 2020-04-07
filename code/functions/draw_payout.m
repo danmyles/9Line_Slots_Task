@@ -1,4 +1,4 @@
-function [outputData] = display_payout(screenInfo, reelInfo, outputData)
+function [outputData] = draw_payout(screenInfo, reelInfo, win, outputData)
       
     % Draw a small bordered shape to display text within:
     
@@ -20,6 +20,10 @@ function [outputData] = display_payout(screenInfo, reelInfo, outputData)
             Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 5, reelInfo.payout.rect - reelInfo.payout.rect/10))
     end  
     
+    % Draw text if a win occured (else skip)
+    
+    if win == 1
+    
     % Set up text for payout display
     Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
     Screen('TextFont', screenInfo.window, 'Garamond');
@@ -30,6 +34,8 @@ function [outputData] = display_payout(screenInfo, reelInfo, outputData)
     [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
         'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
         'xalign','center','yalign','center','xlayout','center');   
-     
+    
+    end
+    
 end
 
