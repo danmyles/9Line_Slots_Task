@@ -21,7 +21,8 @@ function [screenInfo] = setup_screen()
 
 % Here we call some default settings for setting up Psychtoolbox
 PsychDefaultSetup(2);
-Screen('Preference', 'SkipSyncTests', 1);  % Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
+Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
+% Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
 % Get the screen numbers. This gives us a number for each of the screens
 % attached to our computer.
@@ -29,11 +30,9 @@ Screen('Preference', 'SkipSyncTests', 1);  % Screen('Preference', 'SkipSyncTests
 screenInfo.screens = Screen('Screens');
 
 % We select the minimum of these numbers if we plan to draw to our laptop or main screen. 
-% If we choose maximum this will set up a situation where when
-% have two screens attached to our monitor we will draw to the external
-% screen.
-screenInfo.screenNumber = min(screenInfo.screens);
-% screenInfo.screenNumber = max(screenInfo.screens);
+% If we choose maximum this will draw to an external screen (if connected)
+% screenInfo.screenNumber = min(screenInfo.screens);
+screenInfo.screenNumber = max(screenInfo.screens);
 
 % Define white (white will be 1 and black 0). This is because
 % luminace values are (in general) defined between 0 and 1.
@@ -41,13 +40,18 @@ screenInfo.screenNumber = min(screenInfo.screens);
 screenInfo.black = BlackIndex(screenInfo.screenNumber);
 screenInfo.white = WhiteIndex(screenInfo.screenNumber);
 
+%% MAIN WINDOW
+
 % For help see: Screen OpenWindow?
 % Open the main window with multi-sampling for anti-aliasing
 [screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, [], [], [], [], 6, []);
 
+%% DEBUGGING ON LAPTOP
+
 % Setup for playing on laptop only (ie no external)
 % laptopScreen = Screen('Rect', 0)/2;
 % [screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, laptopScreen, [], [], [], 6, []);
+%%
 
 % Get the size of the on screen window in pixels
 % For help see: Screen WindowSize?
@@ -59,7 +63,8 @@ screenInfo.white = WhiteIndex(screenInfo.screenNumber);
 screenInfo.screenCenter = [screenInfo.xCenter, screenInfo.yCenter];
 
 % Set up alpha-blending for smooth (anti-aliased) lines
-Screen('BlendFunction', screenInfo.window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
+Screen('BlendFunction', screenInfo.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+Screen('Preference', 'TextAntiAliasing', 2); %% TESTING THIS 
 
 % This preference setting selects the high quality text renderer 
 % each operating system:

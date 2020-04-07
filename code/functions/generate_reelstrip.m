@@ -33,7 +33,7 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
 % https://doi.org/10.1121/1.3409488
 %
 % I wrote the function for deriving permutation sequences with no repeats by 
-% modifying the the kautz_generator code citation above.
+% modifying the the kautz_generator code from the paper cited above.
 %
 % ----------------------------------------------------------------------
 % Input(s) :
@@ -45,7 +45,7 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
 % reelInfo
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : Augst 2019
+% Last update : August 2019
 % Project : 9_Line_Slots_Task
 % Version : 2019a
 % ----------------------------------------------------------------------
@@ -68,16 +68,17 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
     %  - No subsequence can contain an individual symbol more than once. 
     %    In other words, no symbol will repeat within two positions of
     %    where is appears at any point along the strip. 
-    %    e.g [1; 2; 1] [5; 5; 4] [1; 3; 3] will not occur.
+    %    e.g [1; 2; 1] [5; 5; 4] [1; 3; 3] will NOT occur.
     %  - This sequence is circular so that the final k-1 elements  of the 
     %    last subsequence can wrap around the first k-1 elements of the 
     %    sequence.
     %
     % The benefit of this is that the machine cannot generate situations 
-    % where multiple wins occur. If the experimenter wants multiple wins to
-    % occur, consider using de Bruijn sequence (will allow all lines to 
-    % come up as one symbol), or Kautz sequence which will prevent
-    % consecutive symbols occuring [1; 1; 2] [2; 1; 1] but not [1; 2; 1].
+    % where multiple wins occur. 
+    % If the experimenter wants multiple wins to occur, consider using de 
+    % Bruijn sequence (will allow all lines to come up as one symbol), 
+    % or Kautz sequence which will prevent consecutive symbols occuring 
+    % [1; 1; 2] [2; 1; 1] but not [1; 2; 1].
     %
     % This function is based closely on a function for generating Kautz 
     % sequences developed by Owen Brimijoin and collegues. These sequences 
@@ -88,6 +89,11 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
         loading_screen(screenInfo, reelInfo, 2)
         reelInfo.reelstrip(:, 2) = permutation_sequence(n, k);       
     end
+    
+    %% A NOTE:
+    % The next two options were only included for future flexibilty 
+    % I doubt they would be of much use. I would encourage you to increase
+    % the rate of reel spins and these reels will become quite long.
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% Reelstrips that include repetition - de Bruijn sequence %%

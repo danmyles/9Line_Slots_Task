@@ -18,8 +18,7 @@ function [] = draw_fixation(screenInfo)
 % ----------------------------------------------------------------------
 
 % Set the size of the fixation cross arms in pixels
-fixCrossDimPix = Screen('Rect', 0); % ~22
-fixCrossDimPix = fixCrossDimPix(4)/45;
+fixCrossDimPix = screenInfo.gridRect(4)/8;
 
 % Set the line width for our fixation cross
 lineWidthPix = 1;

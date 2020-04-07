@@ -8,7 +8,7 @@
 % number of functions. For instance, if we are using it to track the trial
 % number.
 
-% TO DO: Create config file with all basic settings. For instance you
+ %  TO DO: Create config file with all basic settings. For instance you
 % should put:
 %   - config.repeatSymbols == 1 << Change in highlight reels & generate
 %                                   reelstrips
@@ -44,7 +44,8 @@
 % artifacts from previous stimuli affecting the result. ~1000 ms from
 % fixation cross to display of final symbol.
 
-% Start experiment and run all setup functions
+% Start experiment and run all setup functions 
+% (screenInfo, output file, output path, reelinfo, )
 [screenInfo, reelInfo, fileInfo, outputData] = boot_exp();
 
 %% I'm toying around with the load screen. Seems silly to have it create 
@@ -52,7 +53,7 @@
 
 loading_screen(screenInfo, reelInfo, 4)
 
-WaitSecs(0.25);
+% WaitSecs(0.25);
 
 % Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(reelInfo);
@@ -62,7 +63,7 @@ loading_screen(screenInfo, reelInfo, 5)
 % Wait for a key press
 KbWait(-1, 2);
 
-% Iteratively display assortment of symbols to get started
+% Iteratively display assortment of symbols to get started (just looks nice)
 for i = 1:6
     
     % Fill out screen w/ symbols [1:5, 1]
@@ -84,8 +85,16 @@ KbWait(-1, 2);
 % Spin both reels - present a trial
 
 for i = 1:5
-[reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
-KbWait(-1, 2);
+    [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
+    
+    % Wait for a key press and store key press name
+    [secs, keyCode] = KbWait(-1, 2);
+    keyPressed = KbName(keyCode);
+    
+    % Exit experiment if Esc is pressed
+    if strcmpi(keyPressed,'escape')
+        sca;
+    end
 end
 
 payoutText = ['<b>', 'Now all wins!'];
@@ -101,17 +110,27 @@ payoutText = ['<b>', 'Now all wins!'];
 KbWait(-1, 2);
 
 for i = 1:5
+    
 [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData);
-KbWait(-1, 2);
+    
+    % Wait for a key press and store the name or the key
+    [secs, keyCode] = KbWait(-1, 2);
+    keyPressed = KbName(keyCode);
+    
+    % Exit code if Esc is pressed
+    if strcmpi(keyPressed,'escape')
+        sca;
+    end
+    
 end
 
-   % Set up text for payout display
+% Set up text for final text display
     Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
     Screen('TextFont', screenInfo.window, 'Garamond');
     Screen('TextColor', screenInfo.window, screenInfo.black);
-payoutText = ['<b>', 'Demo over :)'];
+    payoutText = ['<b>', 'Demo over :)'];
 
-% Draw winning amount to centre
+% Draw text to centre 
 [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
     'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
     'xalign','center','yalign','center','xlayout','center');

@@ -43,10 +43,10 @@ reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 
 %% Payout information
 % Set possible payout amounts here
-reelInfo.payout.amounts = [0, 5, 10, 50, 100];
+reelInfo.payout.amounts = [0, 60, 120, 500];
 % Slightly smaller rect for payout display background
-reelInfo.payout.rect = reelInfo.baseRect .* 0.6;
-reelInfo.payout.textSize = reelInfo.baseRect(4)/4;
+reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
+reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
 
 %% Outcome information
 reelInfo.outcome.trialNumber = 0 ; % Set N trial to 0 (for indexing output)
@@ -93,9 +93,6 @@ k = 3; % Number of vertical reel positions - "word length"
 
 reelInfo.repeatSymbols = 0;
 
-% repeats. See documentation for the generate_reelstrip function for more 
-% information.
-
 [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo);
 
 loading_screen(screenInfo, reelInfo, 3)
@@ -105,5 +102,16 @@ loading_screen(screenInfo, reelInfo, 3)
 % to allow the length of the reelstrips to change
 
 reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
+
+%% Define reel highlighting behaviour
+
+% This allows the user to set the highlighting behaviour of the slot game
+%       0 = No highlights (neither wins, nor potential matches)
+%       1 = Win highlighting (only wins are highlighted, after they occur)
+%       2 = Full highlighting. Both potential matches prior to final symbol
+%           and wins are highlighted.
+
+reelInfo.highlight = 0;
+
 end
 

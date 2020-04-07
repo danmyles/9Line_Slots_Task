@@ -22,18 +22,22 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
         [reelInfo] = spin_R(screenInfo, reelInfo, i);
     end
     
-    % Wait ISI
-    WaitSecs(0.5);
-    
-    % Highlight Active Reels
-    % [outputData] = highlight_reels(screenInfo, reelInfo, outputData);
-    [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData); 
-    
     % Send event marker (Reel 2 - Stop)
     
     % Wait ISI
+    WaitSecs(0.5);
+    
+    if reelInfo.highlight == 2
+        
+    % Highlight Active Reels
+    % [outputData] = highlight_reels(screenInfo, reelInfo, outputData);
+    [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData); 
+              
+    end
+       
+    % Wait ISI
     WaitSecs(1);
-      
+    
     % Draw a fixation cross
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
@@ -43,7 +47,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     
     % Flip to the screen
     Screen('Flip', screenInfo.window);
-        
+       
     % Wait ISI
     WaitSecs(2.5);
     
@@ -54,9 +58,14 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     % Check if win
     if sum(nonzeros(ismember(reelInfo.outcome.dspSymbols, reelInfo.outcome.centre))) == 3
         
+        if reelInfo.highlight ~= 0
         % Highlight winning grid positions and show payout amount
         highlight_win(screenInfo, reelInfo);
-               
+        end
+        
+        % Display payout
+        display_payout(screenInfo, reelInfo);
+        
         % Send information to outputData
         if reelInfo.outcome.trialNumber > 0
         outputData.match(reelInfo.outcome.trialNumber) = 1;
@@ -69,7 +78,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     
     % Send event marker (Outcome Stimulus)
     
-    % Flip to the screen
+    % Flip to the screen (outcome stimulus, payout, reel highlights)
     Screen('Flip', screenInfo.window);
   
 end
