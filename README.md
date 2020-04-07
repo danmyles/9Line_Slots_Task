@@ -32,7 +32,10 @@ Make sure you have the following software and MATLAB packages installed:
 
 ## Config
 
-Explanation of how config file works will go here
+Explanation of how config file works will go here.
+
+May end up having to change "reelInfo" to config? Or have reelInfo read 
+from a config file that the user can pre-set...
 
 ## Functions
 
