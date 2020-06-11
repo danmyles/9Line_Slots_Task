@@ -28,7 +28,7 @@ function [reelInfo] = spin_L(screenInfo, reelInfo, start_from)
     
     % Derive 4 index values to select symbols on reelstrip. 
     
-    % The switch function handles the expections at the begining and end of
+    % The switch function handles the exceptions at the begining and end of
     % the reel strip, replacing the n-2, n-1, and n+1 values to wrap the
     % reelstrip around itself.
     
