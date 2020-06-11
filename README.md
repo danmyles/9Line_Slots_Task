@@ -10,7 +10,7 @@ output:
     theme: paper
     highlight: monochrome
 ---
-
+# 9 Line Slot Task
 ## Dependancies
 
 Make sure you have the following software and MATLAB packages installed:
@@ -31,6 +31,31 @@ Make sure you have the following software and MATLAB packages installed:
     - *boot_exp.m* - A MATLAB function to run set_up scripts. Must be located in code directory.
     - *begin_experiment.m* - Run this script to begin the experiment. You may need to modify config files to setup experiment as desired
 
+## Flow
+
+Diagram of how experiment operates will be displayed here
+
+This experiment is broken down into a multitude of functions. The rough order of operations is something like (see comments within each function for more details):
+
+  1. Experiment Script (contains over-all structure)
+	  2. Call "boot_exp.m"
+		  3. This runs a series of set up functions:
+			  - Start clock ("tic")
+			  - Set file path
+			  - Set up Psychtoolbox screen –> save to "screenInfo"
+			  - Set up the slot machine grid –> save to "screenInfo"
+			  - Set up reelInfo, creates:
+				  - Shape, size and colour information for reel symbols
+				  - Possible payout amounts, and display parameters
+				  - Position information for the reel positions
+				  - The sequence of symbols across the "reel strips"
+			  - Set up a table for experiment output (trial by trial)
+			  - Set max priority (limit processing power consumed by background activities)
+	  1.  The loading screen function is called throughout to display a little graphic as the experiment progresses through these early set up procedures. Generating the reel strips can take a moment.
+	  2.  [Instructions]
+	  2.  We can then call the update stops function to generate a starting reel position, and the draw shapes and draw grid function to fill in the screen.
+	  3.  
+
 ## Config
 
 Explanation of how config file works will go here.
@@ -42,7 +67,12 @@ from a config file that the user can pre-set...
 
 Explanation of the purpose of each function will go here
 
-## Flow Diagram
+## How is the sequence of reel symbols allocated
 
-Diagram of how experiment operates will be displayed here
+I felt that the most balanced way to assign the sequence of symbols along the reel would be to include every possible sequence of 3 symbols (for each vertical position). I was familiar with the concept of de Bruijn sequences, in which a set (or "alphabet") of outcomes is ordered into a long cyclic (in that it is repeating) sequence which includes every permutation of some subsequence length (see: https://en.wikipedia.org/wiki/De_Bruijn_sequence). 
 
+I wanted something similar, with the exception that repeats [1, 1, 1] OR [2, 5, 2] would not occur. This was because I did not want cases in which two wins on the same symbol could occur simultaneously. I came across some code to produce a "Katz sequence" which prevents consecutive repeats: 
+
+Brimijoin, W. O., & O'Neill, W. E. (2010). Patterned tone sequences reveal non-linear interactions in auditory spectrotemporal receptive fields in the inferior colliculus. Hearing Research, 267(1-2), 96-110. https://doi.org/10.1016/j.heares.2010.04.005
+
+However, this did not prevent cases in which a repeat occurred within the subsequence non-simultaneously. So it took a bit of editing. Because of the way I came at this problem it had the code to generate deBruij or Katz style reels so I have left that in as an option, see "generate_reelstrip.m".

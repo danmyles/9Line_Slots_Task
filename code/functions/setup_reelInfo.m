@@ -114,8 +114,9 @@ reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 %       1 = Win highlighting (only wins are highlighted, after they occur)
 %       2 = Full highlighting. Both potential matches prior to final symbol
 %           and wins are highlighted.
+%       3 = Potential match highlighting only (wins are not highlighted)
 
-reelInfo.highlight = 0;
+reelInfo.highlight = 3;
 
 end
 

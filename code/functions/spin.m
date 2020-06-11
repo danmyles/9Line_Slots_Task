@@ -27,7 +27,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     % Wait ISI
     WaitSecs(0.5);
     
-    if reelInfo.highlight == 2
+    if reelInfo.highlight == 2 || reelInfo.highlight == 3
         
     % Highlight Active Reels
     % [outputData] = highlight_reels(screenInfo, reelInfo, outputData);
@@ -60,7 +60,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
         
         win = 1;
         
-        if reelInfo.highlight ~= 0
+        if reelInfo.highlight == 1 || reelInfo.highlight == 2
         % Highlight winning grid positions and show payout amount
         highlight_win(screenInfo, reelInfo);
         end

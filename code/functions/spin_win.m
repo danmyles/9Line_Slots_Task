@@ -50,7 +50,7 @@ function [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData)
     WaitSecs(0.5);
     
     
-    if reelInfo.highlight == 2
+    if reelInfo.highlight == 2 || reelInfo.highlight == 3
         % Highlight Active Reels
         % [outputData] = highlight_reels(screenInfo, reelInfo, outputData);
         [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData);
@@ -79,7 +79,7 @@ function [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData)
     % Check if win
     if sum(nonzeros(ismember(reelInfo.outcome.dspSymbols, reelInfo.outcome.centre))) == 3
         
-        if reelInfo.highlight ~= 0
+        if reelInfo.highlight == 1 || reelInfo.highlight == 2
             % Highlight winning grid positions and show payout amount
             highlight_win(screenInfo, reelInfo);
         end

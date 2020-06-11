@@ -21,22 +21,21 @@ function [screenInfo] = setup_screen()
 
 % Here we call some default settings for setting up Psychtoolbox
 PsychDefaultSetup(2);
+
+% Do you need to run SyncTest?
 Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
 % Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
-% Get the screen numbers. This gives us a number for each of the screens
-% attached to our computer.
-% For help see: Screen Screens?
+% Get the numbers for each screen. 
+% This gives us a number for each of the screens attached to our computer.
 screenInfo.screens = Screen('Screens');
 
-% We select the minimum of these numbers if we plan to draw to our laptop or main screen. 
-% If we choose maximum this will draw to an external screen (if connected)
-% screenInfo.screenNumber = min(screenInfo.screens);
-screenInfo.screenNumber = max(screenInfo.screens);
+% Choose screen to display to
+screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
+% screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
 
 % Define white (white will be 1 and black 0). This is because
 % luminace values are (in general) defined between 0 and 1.
-% For help see: help BlackIndex
 screenInfo.black = BlackIndex(screenInfo.screenNumber);
 screenInfo.white = WhiteIndex(screenInfo.screenNumber);
 

@@ -1,6 +1,6 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
-
+       
 % TO DO: I may need to add outputData as input and output to a
 % number of functions. For instance, if we are using it to track the trial
 % number.
@@ -11,6 +11,9 @@
 %                                   reelstrips
 %   - RGB values for the symbols. 
 %   - Sequential or simultaneous reel highlighting
+
+%% TODO ? SAVE ALL SCREEN INFO TO FILE.
+% see: http://www.martinszinte.net/Martin_Szinte/Teaching_files/Prog_c6.pdf
 
 % TO DO: add output path to setup_file
 % TO DO: create a function that sets up all experimental variables etc
@@ -48,11 +51,11 @@
 %% I'm toying around with the load screen. Seems silly to have it create 
 % wait time. Perhaps best to use the dots . ... .....
 
-loading_screen(screenInfo, reelInfo, 4)
+loading_screen(screenInfo, reelInfo, 4)                                
 
 % WaitSecs(0.25);
 
-% Randomly draws postion at which to stop reels and fill reel_info
+% Randomly draws postion       at which to stop reels and fill reel_info
 [reelInfo] = update_stops(reelInfo);
 
 loading_screen(screenInfo, reelInfo, 5)
