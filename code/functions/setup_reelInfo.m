@@ -36,6 +36,7 @@ function [reelInfo] = setup_reelInfo(screenInfo)
 % ----------------------------------------------------------------------
 
 %% SET UP reelInfo DATA STRUCTURES
+reelInfo.trialIndex = 0; % iterator to keep track of trials
 
 %% Basic symbol information
 reelInfo.num_symbols = 5; % Circle, diamond, triangle, rectangle, pentagon, 
@@ -46,7 +47,7 @@ reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 
 %% Payout information
 % Set possible payout amounts here
-reelInfo.payout.amounts = [0, 60, 120, 500];
+reelInfo.payout.amounts = reelInfo.multipliers .* reelInfo.lineBet;
 % Slightly smaller rect for payout display background
 reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
 reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
@@ -77,20 +78,16 @@ reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
 reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
 reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
-loading_screen(screenInfo, reelInfo, 1);
-
 %% Load in reel strip pattern
 % Progress loading screen
-loading_screen(screenInfo, reelInfo, 2)
-
-% This is generated in create_experiment. Only needs to be done once.
-reelInfo.reelstrip = readtable('reelstrip.csv');
+loading_screen(screenInfo, reelInfo, 1);
+loading_screen(screenInfo, reelInfo, 2);
+loading_screen(screenInfo, reelInfo, 3);
 
 % Get reel length to allow relative scripting for length of the reelstrips
 reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 
-% Progress loading screen
-loading_screen(screenInfo, reelInfo, 3)
+
 
 %% Define reel highlighting behaviour
 

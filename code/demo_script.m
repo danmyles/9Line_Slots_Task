@@ -55,7 +55,7 @@ loading_screen(screenInfo, reelInfo, 4)
 
 % WaitSecs(0.25);
 
-% Randomly draws postion       at which to stop reels and fill reel_info
+% Randomly draws postion at which to stop reels and fill reel_info
 [reelInfo] = update_stops(reelInfo);
 
 loading_screen(screenInfo, reelInfo, 5)

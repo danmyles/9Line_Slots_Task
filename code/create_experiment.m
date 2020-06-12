@@ -36,46 +36,35 @@
 
 repeatSymbols = 0;
 
-[reelstrip] = generate_reelstrip(5, 3, repeatSymbols);
+[reelInfo.reelstrip] = generate_reelstrip(5, 3, repeatSymbols);
 
-writematrix(reelstrip, 'config/reelstrip.csv')
+writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 % Generate Experiment Outcomes
 
 n = 100; % Number of experiments to generate (sample size plus dropout).
 
-nTrials = 375; % Number of trials (length of experiment)
+reelInfo.nTrials = 375; % Number of trials (length of experiment)
 
 % How much was bet per line
-lineBet = 10;
+reelInfo.lineBet = 10;
 
 % How much was bet in total
-totalBet = lineBet * 9;
+reelInfo.totalBet = reelInfo.lineBet * 9;
 
 % Set multipliers
-multipliers = [4, 8, 10, 14, 77.7];
+reelInfo.multipliers = [4, 8, 10, 14, 77.7];
 
 % Set credits
-credits = 20000;
+reelInfo.credits = 20000;
+
+%% TODO: Create trial and block structure
 
 % Load in empty output table and add credits
-[outputEmpty] = setup_output(nTrials);
-outputEmpty.credits(1) = credits;
+[outputEmpty] = setup_output(reelInfo.nTrials);
+outputEmpty.credits(1) = reelInfo.credits;
 
-% Set up tables for each participant
-experiment = struct('participant0', outputEmpty);
-
-%% This is an interim solution. 
-% I will probably want to come back and generate output for every
-% participant.
-
-% for i = 1:n
-% experiment.(['participant' num2str(i)]) = outputEmpty;
-% experiment.(['participant' num2str(i)]).participantID(:) = i;
-% end
-
-
-for i = 1:nTrials
+for i = 1:reelInfo.nTrials
         
         % Generate random reel symbols for each reel and centre (without replacement)
         outputEmpty(i, 11:17) = array2table([randperm(5, 3), randsample(1:5, 1), randperm(5, 3)]);
@@ -90,12 +79,12 @@ for i = 1:nTrials
         % Add data for wins (payout etc)
         if outputEmpty.match(i) == 1
             
-            outputEmpty.multiplier(i) = randsample(multipliers, 1);
-            outputEmpty.payout(i) = outputEmpty.multiplier(i) .* lineBet;
-            outputEmpty.netOutcome(i) = outputEmpty.payout(i) - totalBet;
+            outputEmpty.multiplier(i) = randsample(reelInfo.multipliers, 1);
+            outputEmpty.payout(i) = outputEmpty.multiplier(i) .* reelInfo.lineBet;
+            outputEmpty.netOutcome(i) = outputEmpty.payout(i) - reelInfo.totalBet;
             
         else
-            outputEmpty.netOutcome(i) = outputEmpty.netOutcome(i) - totalBet;
+            outputEmpty.netOutcome(i) = outputEmpty.netOutcome(i) - reelInfo.totalBet;
         end
         
         % Update credits
@@ -104,16 +93,20 @@ end
 
 % Run the above twice to generate some dummy data.
 experiment.participant0 = outputEmpty;
-experiment.participant00 = outputEmpty;
+experiment.participant0.participantID(:) = 0;
+
+
+experiment.participant00 = outputEmpty(1:10, :);
+experiment.participant00.participantID(:) = 00;
 
 save config/experiment.mat -struct experiment
+save config/reelInfo.mat reelInfo
 
 % To load back just a single participant use:
-ID = 'participant0';
+ID = 'participant00';
 load('experiment.mat', ID)
 
-
-
+load('config/reelInfo.mat')
 
 
 

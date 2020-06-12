@@ -65,12 +65,9 @@ R3 = zeros(nTrials, 1); % Bottom right
 shown = zeros(nTrials, 1);
 
 outputData = table(participantID, TrialN, blockID, blockN, cueLines, match, ... 
-    multiplier, payout, netOutcome, credits, PRPTime, ...
+    multiplier, payout, netOutcome, credits, ...
     L1, L2, L3, CS, R1, R2, R3, ...
-    shown);
-
-%% Create trial and block structure
-
+    PRPTime, shown);
 
 
 end

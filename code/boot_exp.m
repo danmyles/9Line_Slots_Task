@@ -39,6 +39,22 @@ tic; % you can read time elapsed since tic; with toc
 % Get directories relative to file location
 [fileInfo] = setup_file();
 
+% Load in reelInfo from config file
+load('config/reelInfo.mat')
+
+% Ask user for session Info:
+ID = inputdlg({'Numeric Participant ID:'}, 'Please enter session info', [1, 100]);
+ID = ['participant' num2str(ID{1})];
+
+%% DAN SORT THIS OUT...
+% Prefill and setup outputData table
+
+% Load up participant experiment data
+outputData = load('experiment.mat', ID)
+
+[outputData] = setup_output();
+%%
+
 % Set up screen
 [screenInfo] = setup_screen();
 
@@ -47,11 +63,6 @@ tic; % you can read time elapsed since tic; with toc
 
 % Set up reel.Info struct
 [reelInfo] = setup_reelInfo(screenInfo);
-
-% May put screen launch here...?
-
-% Prefill and setup outputData table
-[outputData] = setup_output();
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);
