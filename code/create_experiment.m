@@ -46,8 +46,6 @@ n = 100; % Number of experiments to generate (sample size plus dropout).
 
 nTrials = 375; % Number of trials (length of experiment)
 
-[outputEmpty] = setup_output(nTrials);
-
 % How much was bet per line
 lineBet = 10;
 
@@ -58,20 +56,24 @@ totalBet = lineBet * 9;
 multipliers = [4, 8, 10, 14, 77.7];
 
 % Set credits
-outputEmpty.credits(1) = 20000;
+credits = 20000;
+
+% Load in empty output table and add credits
+[outputEmpty] = setup_output(nTrials);
+outputEmpty.credits(1) = credits;
 
 % Set up tables for each participant
-experiment = cell('participant0', outputEmpty);
+experiment = struct('participant0', outputEmpty);
 
 for i = 1:n
 experiment.(['participant' num2str(i)]) = outputEmpty;
 experiment.(['participant' num2str(i)]).participantID(:) = i;
 end
 
+experiment.(['participant' num2str(ii)])(i, 11:17)
 
-for ii = 1:n
-    
-    for i = 1:nTrials
+for i = 1:nTrials
+        
         % Generate random reel symbols for each reel and centre (without replacement)
         outputEmpty(i, 11:17) = array2table([randperm(5, 3), randsample(1:5, 1), randperm(5, 3)]);
         
@@ -95,14 +97,8 @@ for ii = 1:n
         
         % Update credits
         outputEmpty.credits(i:height(outputEmpty)) = (outputEmpty.credits(i) + outputEmpty.netOutcome(i));
-        
-    end
-    
-    experiment.(['participant' num2str(ii)]) = outputEmpty;
-    experiment.(['participant' num2str(ii)]).participantID(:) = ii;
-    [outputEmpty] = setup_output(nTrials);
-    disp(ii)
 end
+
 
 
 
