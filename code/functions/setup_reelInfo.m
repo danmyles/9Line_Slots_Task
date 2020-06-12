@@ -38,7 +38,6 @@ function [reelInfo] = setup_reelInfo(screenInfo)
 %% SET UP reelInfo DATA STRUCTURES
 
 %% Basic symbol information
-reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
 reelInfo.num_symbols = 5; % Circle, diamond, triangle, rectangle, pentagon, 
 % This Rect is used to set the base dimensions used in many of our shapes.
 % Computed relative to the screen size so that the shapes are proportional accross monitors.
@@ -80,32 +79,18 @@ reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
 loading_screen(screenInfo, reelInfo, 1);
 
-%% Define reel strip pattern
+%% Load in reel strip pattern
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 2)
 
-n = reelInfo.num_symbols; % Number of reel symbols - "alphabet"
-k = 3; % Number of vertical reel positions - "word length"
+% This is generated in create_experiment. Only needs to be done once.
+reelInfo.reelstrip = readtable('reelstrip.csv');
 
-% By default generate_reelstrip will generate a sequence of symbols that 
-% does not include repeats. This feature can be changed as below by
-% defining the repeatSymbols setting.
-
-% Determine reelstrip structure
-%       0 = no repetition of symbols within subsequences
-%       1 = de Bruijn sequence 
-%       2 = Kautz sequence
-% For more information see documentation inside generate_reelstrip function
-
-reelInfo.repeatSymbols = 0;
-
-[reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo);
-
-loading_screen(screenInfo, reelInfo, 3)
-
-% It will be very useful to know the length of these reels for other
-% functions. By using this we can keep large amounts of the code relative
-% to allow the length of the reelstrips to change
-
+% Get reel length to allow relative scripting for length of the reelstrips
 reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
+
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 3)
 
 %% Define reel highlighting behaviour
 

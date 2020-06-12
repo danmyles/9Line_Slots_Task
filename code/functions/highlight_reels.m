@@ -11,7 +11,7 @@ function [outputData] = highlight_reels(screenInfo, reelInfo, outputData)
     
     [C, IA, IB] = intersect(reelInfo.outcome.dspSymbols(1:3, 1), reelInfo.outcome.dspSymbols(1:3, 3), 'stable');
     
-    % We need to add 6 to IB so that we can use it to inde gridPos
+    % We need to add 6 to IB so that we can use it to index gridPos
     IB = IB + 6;
     
     Screen('FrameRect', screenInfo.window, reelInfo.colours(C, :)', screenInfo.gridPos(IA, :)', screenInfo.gridPenWidthPixel.*3);

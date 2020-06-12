@@ -36,17 +36,11 @@ rng shuffle; % See notes below
 % Start a stopwatch
 tic; % you can read time elapsed since tic; with toc
 
-% Set up directories relative to file location
-[fileInfo.Path, fileInfo.Name] = fileparts(mfilename('fullpath'));
-cd(fileInfo.Path); % Change working directory
-addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top path
-
-% Add remaining directories    
-[fileInfo] = setup_file(fileInfo);
+% Get directories relative to file location
+[fileInfo] = setup_file();
 
 % Set up screen
 [screenInfo] = setup_screen();
-
 
 % Set up grid
 [screenInfo] = setup_grid(screenInfo);
