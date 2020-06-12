@@ -65,12 +65,15 @@ outputEmpty.credits(1) = credits;
 % Set up tables for each participant
 experiment = struct('participant0', outputEmpty);
 
-for i = 1:n
-experiment.(['participant' num2str(i)]) = outputEmpty;
-experiment.(['participant' num2str(i)]).participantID(:) = i;
-end
+%% This is an interim solution. 
+% I will probably want to come back and generate output for every
+% participant.
 
-experiment.(['participant' num2str(ii)])(i, 11:17)
+% for i = 1:n
+% experiment.(['participant' num2str(i)]) = outputEmpty;
+% experiment.(['participant' num2str(i)]).participantID(:) = i;
+% end
+
 
 for i = 1:nTrials
         
@@ -98,6 +101,21 @@ for i = 1:nTrials
         % Update credits
         outputEmpty.credits(i:height(outputEmpty)) = (outputEmpty.credits(i) + outputEmpty.netOutcome(i));
 end
+
+% Run the above twice to generate some dummy data.
+experiment.participant0 = outputEmpty;
+experiment.participant00 = outputEmpty;
+
+save config/experiment.mat -struct experiment
+
+% To load back just a single participant use:
+ID = 'participant0';
+load('experiment.mat', ID)
+
+
+
+
+
 
 
 
