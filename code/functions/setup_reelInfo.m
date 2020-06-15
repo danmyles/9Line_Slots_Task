@@ -1,4 +1,4 @@
-function [reelInfo] = setup_reelInfo(screenInfo)
+function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % ----------------------------------------------------------------------
 % setup_reelInfo()
 % ----------------------------------------------------------------------

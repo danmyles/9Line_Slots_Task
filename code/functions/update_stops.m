@@ -1,4 +1,4 @@
-function [reelInfo] = update_stops(reelInfo)
+ function [reelInfo] = update_stops(reelInfo)
     % ----------------------------------------------------------------------
     % update_stops()
     % ----------------------------------------------------------------------

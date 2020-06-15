@@ -46,14 +46,9 @@ load('config/reelInfo.mat')
 ID = inputdlg({'Numeric Participant ID:'}, 'Please enter session info', [1, 100]);
 ID = ['participant' num2str(ID{1})];
 
-%% DAN SORT THIS OUT...
-% Prefill and setup outputData table
-
 % Load up participant experiment data
-outputData = load('experiment.mat', ID)
-
-[outputData] = setup_output();
-%%
+outputData = load('experiment.mat', ID);
+outputData = outputData.(ID);
 
 % Set up screen
 [screenInfo] = setup_screen();
@@ -62,11 +57,17 @@ outputData = load('experiment.mat', ID)
 [screenInfo] = setup_grid(screenInfo);
 
 % Set up reel.Info struct
-[reelInfo] = setup_reelInfo(screenInfo);
+[reelInfo] = setup_reelInfo(screenInfo, reelInfo);
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
 end
+
+
+
+
+
+
 

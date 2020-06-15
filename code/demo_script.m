@@ -99,7 +99,7 @@ end
 
 payoutText = ['<b>', 'Now all wins!'];
 
-% Draw winning amount to centre
+% Draw text to centre
 [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
     'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
     'xalign','center','yalign','center','xlayout','center');
