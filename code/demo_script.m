@@ -48,36 +48,9 @@
 % (screenInfo, output file, output path, reelinfo, )
 [screenInfo, reelInfo, fileInfo, outputData] = boot_exp();
 
-%% I'm toying around with the load screen. Seems silly to have it create 
-% wait time. Perhaps best to use the dots . ... .....
-
-loading_screen(screenInfo, reelInfo, 4)                                
-
-% WaitSecs(0.25);
-
-% Randomly draws postion at which to stop reels and fill reel_info
-[reelInfo] = update_stops(reelInfo);
-
+%% I'm toying around with the load screen. Seems silly to have it create                          
+loading_screen(screenInfo, reelInfo, 4)
 loading_screen(screenInfo, reelInfo, 5)
-
-% Wait for a key press
-KbWait(-1, 2);
-
-% Iteratively display assortment of symbols to get started (just looks nice)
-for i = 1:6
-    
-    % Fill out screen w/ symbols [1:5, 1]
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR(1:i, :), trim_centre(reelInfo.outcome.dspSymbols))
-    
-    % Draw a grid
-    draw_grid(screenInfo);
-    
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
-    WaitSecs(screenInfo.ifi.*8);
-    
-end
 
 % Wait for a key press
 KbWait(-1, 2);

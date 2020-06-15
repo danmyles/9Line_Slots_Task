@@ -84,11 +84,6 @@ loading_screen(screenInfo, reelInfo, 1);
 loading_screen(screenInfo, reelInfo, 2);
 loading_screen(screenInfo, reelInfo, 3);
 
-% Get reel length to allow relative scripting for length of the reelstrips
-reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
-
-
-
 %% Define reel highlighting behaviour
 
 % This allows the user to set the highlighting behaviour of the slot game

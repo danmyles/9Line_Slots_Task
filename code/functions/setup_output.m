@@ -52,6 +52,10 @@ credits = zeros(nTrials, 1);
 % Time between final stimulus onset and next trial input
 PRPTime = zeros(nTrials, 1);
 
+% Reel Stoping Indices
+LStop = zeros(nTrials, 1);
+RStop = zeros(nTrials, 1);
+
 % Symbol codes for each position
 L1 = zeros(nTrials, 1); % Top left
 L2 = zeros(nTrials, 1); % .
@@ -66,7 +70,7 @@ shown = zeros(nTrials, 1);
 
 outputData = table(participantID, TrialN, blockID, blockN, cueLines, match, ... 
     multiplier, payout, netOutcome, credits, ...
-    L1, L2, L3, CS, R1, R2, R3, ...
+    LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ...
     PRPTime, shown);
 
 

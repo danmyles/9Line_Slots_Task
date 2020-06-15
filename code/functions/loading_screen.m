@@ -75,5 +75,6 @@ function [] = loading_screen(screenInfo, reelInfo, loadingstage)
     
     % Flip to the screen
     Screen('Flip', screenInfo.window);
+    
 end
 

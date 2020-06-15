@@ -33,15 +33,18 @@
     % Project : 9_Line_Slots_Task
     % Version : 2019a
     % ----------------------------------------------------------------------
+      
+    % Update reelInfo iterator
+    reelInfo.trialIndex = reelInfo.trialIndex + 1 ;
     
-    % Draw a payout amount (if win occurs)
-    reelInfo.outcome.payout = randsample(reelInfo.payout.amounts, 1);
+    % Get payout amount (if win occurs)
+    reelInfo.outcome.payout = ;
     
-    % Draw a random position to index each reelstrip
-    reelInfo.outcome.stops(1:2) = randsample(reelInfo.reel_length, 2, true);
+    % Get reel position to for each reelstrip
+    reelInfo.outcome.stops(1:2) = ;
     
-    % Draw a random symbol (1:5) to display at centre position
-    reelInfo.outcome.centre = randsample(1:5, 1, true);
+    % Get centre symbol
+    reelInfo.outcome.centre = ;
     
     % Find all indices for above and below the stops on reel 1 & 2
     % Then update reel information

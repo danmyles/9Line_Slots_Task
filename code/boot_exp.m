@@ -40,14 +40,14 @@ tic; % you can read time elapsed since tic; with toc
 [fileInfo] = setup_file();
 
 % Load in reelInfo from config file
-load('config/reelInfo.mat')
+load([fileInfo.config 'reelInfo.mat'])
 
 % Ask user for session Info:
 ID = inputdlg({'Numeric Participant ID:'}, 'Please enter session info', [1, 100]);
 ID = ['participant' num2str(ID{1})];
 
 % Load up participant experiment data
-outputData = load('experiment.mat', ID);
+outputData = load([fileInfo.config 'experiment.mat'], ID);
 outputData = outputData.(ID);
 
 % Set up screen
