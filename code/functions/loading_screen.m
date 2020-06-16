@@ -1,5 +1,5 @@
 function [] = loading_screen(screenInfo, reelInfo, loadingstage)
-    
+    % loading_screen(screenInfo, reelInfo, loadingstage)
     % These variables are used to determine the size of each of our logo shapes
     baseRect = [0 0 50 50];
     radius = max(baseRect)/1.5;

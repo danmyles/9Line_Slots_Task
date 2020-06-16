@@ -1,6 +1,7 @@
 function [stop] = expandStopINDEX(reelInfo, stop, nback, nforward)
-% This function takes a single stop value and expands it nback and n
-% forward to return a vector 
+    % expandStopINDEX(reelInfo, stop, nback, nforward)
+    % This function takes a single stop value and expands it nback and n
+    % forward to return a vector
     
     % Expand value to vector
     stop = (stop-nback):(stop+nforward);
@@ -17,3 +18,5 @@ function [stop] = expandStopINDEX(reelInfo, stop, nback, nforward)
         end
         
     end
+    
+end

@@ -1,11 +1,14 @@
- function [reelInfo] = update_stops(reelInfo)
+ function [reelInfo] = present_trial(reelInfo)
     % ----------------------------------------------------------------------
-    % update_stops()
+    % [reelInfo] = present_trial(reelInfo)
     % ----------------------------------------------------------------------
     % Goal of the function :
-    % This function randomly draws a reel postion at which to stop. This
-    % number is used to index reelstrip1 and reelstrip2 to select the symbols
+    % This function uses the reelInfo iterator to draw out the next reel 
+    % stop from the output file and present a trial. Reelstops are used to 
+    % index reelstrip 1 and reelstrip 2 to select the symbols
     % to be draw to the screen.
+    % Spin animation is handled seperately by the spin functions.
+    % 
     %
     % This function then updates the reelInfo.sym_shape matrix with the symbol
     % identities. This information is then passed back to the update_reelInfo
@@ -23,42 +26,39 @@
     %
     % ----------------------------------------------------------------------
     % Input(s) :
-    % reelInfo ? takes the reelstrips as input
+    % reelInfo: reelstrips, trialIndex
+    % outputData: stop position, win/loss, payout amount
     % ----------------------------------------------------------------------
     % Output(s):
-    % reelInfo - provides updated symbol positions to sym_shape
+    % reelInfo: provides updated symbol positions to sym_shape
+    % outputData: updates shown 0 -> 1
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : August 2019
+    % Last update : June 2020
     % Project : 9_Line_Slots_Task
-    % Version : 2019a
+    % Version : 2020a
     % ----------------------------------------------------------------------
       
     % Update reelInfo iterator
     reelInfo.trialIndex = reelInfo.trialIndex + 1 ;
     
+    % Bump previous reelInfo.outcome to reelInfo.previous
+    reelInfo.previous = reelInfo.outcome;
+    
     % Get payout amount (if win occurs)
-    reelInfo.outcome.payout = ;
+    reelInfo.outcome.payout = outputData.payout(reelInfo.trialIndex);
     
     % Get reel position to for each reelstrip
-    reelInfo.outcome.stops(1:2) = ;
-    
+    reelInfo.outcome.stops(1) = outputData.LStop(reelInfo.trialIndex);
+    reelInfo.outcome.stops(2) = outputData.RStop(reelInfo.trialIndex);
+       
     % Get centre symbol
-    reelInfo.outcome.centre = ;
+    reelInfo.outcome.centre = outputData.CS(reelInfo.trialIndex);
     
     % Find all indices for above and below the stops on reel 1 & 2
     % Then update reel information
     for i = [1, 2]
-        switch reelInfo.outcome.stops(i)
-            case 1
-                reelInfo.outcome.allstops(:, i) = [reelInfo.reel_length, 1, 2];
-            case reelInfo.reel_length
-                reelInfo.outcome.allstops(:, i) = [reelInfo.reel_length - 1, reelInfo.reel_length, 1];
-            otherwise
-                reelInfo.outcome.allstops(:, i) = [reelInfo.outcome.stops(i) - 1, ...
-                    reelInfo.outcome.stops(i), ...
-                    reelInfo.outcome.stops(i) + 1];
-        end
+        reelInfo.outcome.allstops(:, i) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(i), 1, 1);
     end
     
     % Fill out sym_shape from reel w/ allstops
@@ -66,4 +66,12 @@
     reelInfo.outcome.dspSymbols(2, 2) = reelInfo.outcome.centre;
     reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 2), 2);
     
-end
+ end
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 

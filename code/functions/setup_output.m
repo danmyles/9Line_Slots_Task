@@ -1,6 +1,6 @@
 function [outputData] = setup_output(nTrials)
 % ----------------------------------------------------------------------
-% setup_output()
+% setup_output(nTrials)
 % ----------------------------------------------------------------------
 % Goal of the function :
 %  - Define total trials

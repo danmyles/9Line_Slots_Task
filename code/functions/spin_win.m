@@ -1,5 +1,5 @@
 function [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData)
-    
+    % [reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData)
     % Bump previous reelInfo.outcome to reelInfo.previous
     reelInfo.previous = reelInfo.outcome;
     

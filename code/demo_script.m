@@ -44,16 +44,31 @@
 % artifacts from previous stimuli affecting the result. ~1000 ms from
 % fixation cross to display of final symbol.
 
+%% Run setup scripts
 % Start experiment and run all setup functions 
 % (screenInfo, output file, output path, reelinfo, )
 [screenInfo, reelInfo, fileInfo, outputData] = boot_exp();
 
-%% I'm toying around with the load screen. Seems silly to have it create                          
+% Load screen                         
 loading_screen(screenInfo, reelInfo, 4)
 loading_screen(screenInfo, reelInfo, 5)
 
 % Wait for a key press
 KbWait(-1, 2);
+
+%% Instructions
+
+%% Display reels
+% Display outcome stimulus
+draw_grid(screenInfo);
+draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
+Screen('Flip', screenInfo.window);
+
+%% Practice section
+
+%% First block
+
+% Update
 
 % Spin both reels - present a trial
 
@@ -70,6 +85,7 @@ for i = 1:5
     end
 end
 
+% Now display wins only.
 payoutText = ['<b>', 'Now all wins!'];
 
 % Draw text to centre

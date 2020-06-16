@@ -1,6 +1,6 @@
 function [fileInfo] = setup_file(fileInfo)
 % -------------------------------------------------------------------------
-% setup_file()
+% setup_file(fileInfo)
 % -------------------------------------------------------------------------
 % Goal of the function :
 % add remaining directories to MATLAB path

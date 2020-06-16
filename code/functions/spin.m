@@ -1,12 +1,5 @@
 function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
-    
-    % Bump previous reelInfo.outcome to reelInfo.previous
-    reelInfo.previous = reelInfo.outcome;
-    
-    reelInfo.outcome.trialNumber = reelInfo.outcome.trialNumber + 1;
-    
-    % Update stops
-    [reelInfo] = update_stops(reelInfo);
+    % [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
 
     % Spin first reel.
     

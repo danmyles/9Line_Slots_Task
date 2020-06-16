@@ -1,6 +1,6 @@
 function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % ----------------------------------------------------------------------
-% setup_reelInfo()
+% [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % ----------------------------------------------------------------------
 % Goal of the function :
 %
@@ -53,12 +53,23 @@ reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
 reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
 
 %% Outcome information
-reelInfo.outcome.trialNumber = 0 ; % Set N trial to 0 (for indexing output)
-reelInfo.outcome.stops = zeros(1, 2); % Vector with stops for L and R reel
-reelInfo.outcome.centre = 0; % Symbol to be displayed at centre
-reelInfo.outcome.allstops = zeros(3, 2); % Indices for above and below the stop for reel 1 & 2
-reelInfo.outcome.dspSymbols = zeros(3, 3); % Symbols codes displayed at this spin
-reelInfo.outcome.payout = 0; % Payout amount if win occurs.
+% I've filled all this out with a random draw. This provides a random 
+% starting position for the reels when the exp loads.
+reelInfo.outcome.stops = randi(reelInfo.reel_length, 1, 2); % Vector with stops for L and R reel
+reelInfo.outcome.centre = randi(5, 1); % Symbol to be displayed at centre
+
+% Indices for above and below the stop for reel 1 & 2
+for i = [1, 2]
+    reelInfo.outcome.allstops(:, i) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(i), 1, 1);
+end
+
+% Symbol codes displayed at startup/ replaced with each spin
+reelInfo.outcome.dspSymbols = zeros(3, 3); 
+reelInfo.outcome.dspSymbols(:, 1) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 1), 1);
+reelInfo.outcome.dspSymbols(2, 2) = reelInfo.outcome.centre;
+reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 2), 2);
+
+reelInfo.outcome.payout = max(reelInfo.payout.amounts); % Payout amount if win occurs on intro spin.
 
 reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
 

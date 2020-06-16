@@ -1,5 +1,5 @@
 function [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData)
-    
+    % highlight_reels_seq(screenInfo, reelInfo, outputData)
     % intersect() finds the locations in which the values of the two
     % vectors are the same.
     % C contains the identities of the matched elements, in our case the
