@@ -84,10 +84,10 @@ for i = 1:reelInfo.nTrials
     % enter them to the output table.
     
     % Left
-    outputEmpty(i, 13:15) = array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.LStop(i)), 1)');
+    outputEmpty(i, 13:15) = array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.LStop(i), 1, 1), 1)');
     
     % Right
-    outputEmpty(i, 17:19) = array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.RStop(i)), 2)');
+    outputEmpty(i, 17:19) = array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.RStop(i), 1, 1), 2)');
         
     % Find potential matches, sum and add to output
     [LIA, LOCB] = ismember(outputEmpty{i, 13:15}, outputEmpty{i, 17:19});
