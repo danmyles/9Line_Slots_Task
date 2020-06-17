@@ -96,29 +96,32 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
         draw_rate = 3;
     end
     
-    % Present previous
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.previous.dspSymbols));
-    Screen('Flip', screenInfo.window);
-    
-    % Without centre
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, reelInfo.previous.dspSymbols(:, [1, 3]));
-    draw_grid(screenInfo);
-    Screen('Flip', screenInfo.window);
-    
+    % Start spin sequence
     for i = 1:numel(right(:, 1))*draw_rate
+              
+        % Update Y positions until the final symbol reaches top position
         
+        if left(1, 3) ~= screenInfo.splitposY(1)
+            
+            left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
+
+        end
+        
+        if right(1, 3) ~= screenInfo.splitposY(1)
+            
+            right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/draw_rate);
+            
+        end
+        
+        % Draw new values to screen
         draw_shapes(screenInfo, reelInfo, left(:, 2:3), left(:, 1));
         draw_shapes(screenInfo, reelInfo, right(:, 2:3), right(:, 1));
         draw_grid(screenInfo);
+        
+        % Flip Screen
         Screen('Flip', screenInfo.window);
         
-        if left(1, 3) ~= 237
-            left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
-        end
-        
-        right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/draw_rate);
-        
+        % Send event markers
     end
     
 end
