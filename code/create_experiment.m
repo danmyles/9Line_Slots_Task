@@ -15,6 +15,8 @@
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------
+% Shuffle RNG
+rng shuffle;
 
 %% Get directory
 % Add 9LST to path before running!
@@ -84,10 +86,12 @@ for i = 1:reelInfo.nTrials
     % enter them to the output table.
     
     % Left
-    outputEmpty(i, 13:15) = array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.LStop(i), 1, 1), 1)');
+    outputEmpty(i, 13:15) = ... 
+        array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.LStop(i), 1, 1), 1)');
     
     % Right
-    outputEmpty(i, 17:19) = array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.RStop(i), 1, 1), 2)');
+    outputEmpty(i, 17:19) = ... 
+        array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.RStop(i), 1, 1), 2)');
         
     % Find potential matches, sum and add to output
     [LIA, LOCB] = ismember(outputEmpty{i, 13:15}, outputEmpty{i, 17:19});
@@ -131,7 +135,7 @@ for i = 1:numel(filenames)
 end
 
 % Save reelstrips to config directory
-save [fileInfo.config 'reelInfo.mat'] reelInfo
+save([fileInfo.config 'reelInfo.mat'], 'reelInfo')
 
 
 
