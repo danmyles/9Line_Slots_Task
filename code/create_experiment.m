@@ -113,20 +113,25 @@ for i = 1:reelInfo.nTrials
 end
 
 % Save data and (short form) for testing
-experiment.participant0 = outputEmpty;
-experiment.participant0.participantID(:) = 0;
+output.participant0 = outputEmpty;
+output.participant0.participantID(:) = 0;
 
-experiment.participant00 = outputEmpty(1:10, :);
-experiment.participant00.participantID(:) = 00;
+output.participant00 = outputEmpty(1:10, :);
+output.participant00.participantID(:) = 00;
 
-save [fileInfo.config 'experiment.mat'] -struct experiment
+filenames = fieldnames(output);
+
+% Save each participant data table to input folder 
+% These will be selected by the experimenter at the beginning of the exp.
+for i = 1:numel(filenames)
+    
+    i = filenames{i};
+    save([fileInfo.input i '.mat'], '-struct', 'output', char(i) )
+    
+end
+
+% Save reelstrips to config directory
 save [fileInfo.config 'reelInfo.mat'] reelInfo
-
-% To load back just a single participant use:
-ID = 'participant00';
-load('experiment.mat', ID)
-
-load([fileInfo.config 'reelInfo.mat'])
 
 
 

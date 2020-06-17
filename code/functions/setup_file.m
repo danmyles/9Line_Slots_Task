@@ -20,7 +20,8 @@ function [fileInfo] = setup_file(fileInfo)
 [fileInfo.fun] = [fileparts(which("setup_file.m")) filesep]; %functions subfolder
 fileInfo.path = fileInfo.fun(1:end-10); % head directory subfolder
 fileInfo.config = [fileInfo.path 'config' filesep]; % config subfolder
-fileInfo.instructions = [fileInfo.path 'instructions' filesep]; % participant instructions subfolder
+fileInfo.instructions = [fileInfo.config 'instructions' filesep]; % participant instructions subfolder
+fileInfo.input = [fileInfo.config 'inputData' filesep]; % empty participant data structures with outcome information
 fileInfo.output = [fileInfo.path(1:end-5) 'output' filesep]; % output subfolder
 
 cd(fileInfo.path); % Change working directory

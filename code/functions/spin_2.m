@@ -10,7 +10,7 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
     % Input(s) :
     % screenInfo, reelInfo
     % also takes "start_from". This is the index from which the animation
-    % should start. 
+    % should start.
     % i.e. it will animate from start_from to start_from + 1
     % ----------------------------------------------------------------------
     % Output(s):
@@ -18,9 +18,9 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
     % But purpose is to draw the animation to the screen.
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : Spetember 2019
+    % Last update : June 2020
     % Project : 9_Line_Slots_Task
-    % Version : 2019a
+    % Version : 2020a
     % ----------------------------------------------------------------------
     
     % NOTE: THESE ANIMATIONS ARE DESIGNED TO PROGRESS 1 PLACE BEYOND
@@ -33,12 +33,12 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
     % It should draw ~10 symbols out in front of the next stopping position
     % and then progress them down until the stop is displayed at centre.
     
-    % Get the symbols preceeding outcome on the reel strip to spin 
+    % Get the symbols preceeding outcome on the reel strip to spin
     % through
     left = expandStopINDEX(reelInfo, reelInfo.outcome.stops(1), 1, 20)';
     right = expandStopINDEX(reelInfo, reelInfo.outcome.stops(2), 1, 30)';
     
-    % Check if previous position is somewhere in next spin (but let firt 10 symbols go).    
+    % Check if previous position is somewhere in next spin (but let firt 10 symbols go).
     [LIA, LOCB] = ismember(reelInfo.previous.dspSymbols(1, 1), reelInfo.reelstrip(left(11:end), 1));
     
     if LIA == 1 % If so slice this into the upcoming symbols
@@ -52,7 +52,7 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
     end
     
     % Same again for RHS
-
+    
     [LIA, LOCB] = ismember(reelInfo.previous.dspSymbols(1, 3), reelInfo.reelstrip(right(21:end), 2));
     
     if LIA == 1 % If so slice this into the upcoming symbols
@@ -72,7 +72,7 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
     % fill column 2 with x values
     left(:, 2) = reelInfo.pos.L(1);
     right(:, 2) = reelInfo.pos.R(1);
-
+    
     % fill column 3 with y values
     
     % Create vector to adjust Y positions
@@ -96,7 +96,7 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
         draw_rate = 3;
     end
     
-    % Present previous 
+    % Present previous
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.previous.dspSymbols));
     Screen('Flip', screenInfo.window);
@@ -117,9 +117,7 @@ function [reelInfo] = spin_2(screenInfo, reelInfo)
             left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
         end
         
-        if right(1, 3) ~= 237
-            right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/draw_rate);
-        end
+        right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/draw_rate);
         
     end
     

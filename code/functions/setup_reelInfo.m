@@ -30,7 +30,7 @@ function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % reelInfo - All sub struct are listed below
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 7th April 2020
+% Last update : June 2020
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------

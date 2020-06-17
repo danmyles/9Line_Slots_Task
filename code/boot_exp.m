@@ -1,6 +1,6 @@
-function [screenInfo, reelInfo, fileInfo, outputData] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
-% boot_exp()
+% [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
 % Goal of the function :
 %  - Housekeeping
@@ -8,13 +8,17 @@ function [screenInfo, reelInfo, fileInfo, outputData] = boot_exp()
 %  - Run all setup functions
 % ----------------------------------------------------------------------
 % Input(s) :
-% NONE
+%   NONE
 % ----------------------------------------------------------------------
 % Output(s):
-% screenInfo, reelInfo
+%   screenInfo : runs the PTB screen setup and returns screen information
+%   reelInfo : load in the reelstrips and other info from config .mat file
+%   fileInfo : directory information
+%   outputData - loaded with user selected .mat file
+%   ID : Participant ID
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 24 July 2019
+% Last update : June 2020
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------
@@ -40,14 +44,23 @@ tic; % you can read time elapsed since tic; with toc
 [fileInfo] = setup_file();
 
 % Load in reelInfo from config file
-load([fileInfo.config 'reelInfo.mat'])
+load([fileInfo.config 'reelInfo.mat']);
 
-% Ask user for session Info:
-ID = inputdlg({'Numeric Participant ID:'}, 'Please enter session info', [1, 100]);
-ID = ['participant' num2str(ID{1})];
+% Ask user to select inputData containing session info:
+disp([newline '    **Select Participant Input File**' newline]);
+[ID,fileInfo.input] = uigetfile('*.mat', 'Select Participant Input File', fileInfo.input);
+
+if ID == 0 
+   error('User cancelled experiment') 
+end
+
+% We pulled out the path from the UI selected file. Updates fileInfo if neccesary
+% Clean up fileInfo.input
+[fileInfo.input, ID, EXT] = fileparts([fileInfo.input ID]);
+fileInfo.input = [fileInfo.input filesep];
 
 % Load up participant experiment data
-outputData = load([fileInfo.config 'experiment.mat'], ID);
+outputData = load([fileInfo.input ID EXT], ID);
 outputData = outputData.(ID);
 
 % Set up screen
