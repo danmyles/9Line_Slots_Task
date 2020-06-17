@@ -73,6 +73,13 @@
     %% Spin reels
     % ----------------------------------------------------------------------
     
+    % Event Marker (Spin Animation Begin)
+    
+    % Spin reels
+    spin(screenInfo, reelInfo);
+    
+    % Event Marker (Spin Animation Complete)
+    
     % Wait ISI
     WaitSecs(0.5);
         
@@ -80,12 +87,105 @@
     %% Reel highlighting
     % ----------------------------------------------------------------------
     
+    % Check if active
     if reelInfo.highlight == 2 || reelInfo.highlight == 3
-        
-    % Highlight Active Reels
+    
+    % ----------------------------------------------------------------------
+    % Highlight Active Reels Simultaneously
+    % ----------------------------------------------------------------------
+    % I've disabled this because I prefered the simulateous option.
+    % You could comment it back in if desired.
+    
     % [outputData] = highlight_reels(screenInfo, reelInfo, outputData);
-    [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData); 
-              
+    
+    % Flip to the screen
+    % Screen('Flip', screenInfo.window);
+    
+    % Event marker (Highlight Appears)
+    %
+    
+    % Wait time between highlighted reels
+    WaitSecs(1);
+    
+    % Re-draw Without Highlights
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+    
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+	% Event marker (Highlighting Complete)
+    %
+    
+    % ----------------------------------------------------------------------
+    % Highlight Active Reels Sequentially
+    % ----------------------------------------------------------------------
+    
+    % This required a fair bit a messing about. Easier if we had some extra
+    % variables I could toy with
+    
+    % Reel 1
+    A = reelInfo.outcome.dspSymbols(1:3, 1);
+    
+    % Reel 2
+    B = reelInfo.outcome.dspSymbols(1:3, 3);  
+
+    % C contains the identities of the matched elements, in our case the
+    % symbol or shape code.
+    % intersect() finds the locations in which the values of the two
+    % vectors are the same.
+    
+    [C] = intersect(A, B, 'stable');
+    
+    % 1st arg contains indices for where these matches occur in argument A .
+    % 2nd arg the same for argument B.
+    % 'stable' returns the indices in IA and IB in the order that they
+    % occur in argument A
+    
+    % Print highlighted squares to screen one match at a time
+    % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
+    
+    for i = 1:numel(C)
+        
+        Ai = ismember(A, C(i));
+        Bi = ismember(B, C(i));
+        
+        % Reel 1 Highlights:
+        highlight_pos = screenInfo.gridPos(1:3, :);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
+        % Place another square on the inside of the highlight square (looks nice)
+        highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+        Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
+        
+        % Reel 2 Highlights:
+        highlight_pos = screenInfo.gridPos(7:9, :);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
+        % Place another square on the inside of the highlight square (looks nice)
+        highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+        Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
+        
+        draw_grid(screenInfo);
+        draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+        
+        % Flip to the screen
+        Screen('Flip', screenInfo.window);
+        
+        % Event marker (Highlight Appears)
+        
+        % Wait time between highlighted reels
+        WaitSecs(1);
+        
+    end
+    
+	% Re-draw without highlights
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+    
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+	% Event marker (Highlighting Complete)
+    
     end
        
     % Wait ISI
@@ -100,7 +200,6 @@
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
     draw_fixation(screenInfo);
     
-   
     % Flip to the screen
     Screen('Flip', screenInfo.window);
 

@@ -1,4 +1,4 @@
-function [reelInfo] = spin_2(screenInfo, reelInfo)
+function [reelInfo] = spin(screenInfo, reelInfo)
     % ----------------------------------------------------------------------
     % spin(screenInfo, reelInfo)
     % ----------------------------------------------------------------------

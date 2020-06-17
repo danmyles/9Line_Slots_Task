@@ -44,7 +44,10 @@
 % artifacts from previous stimuli affecting the result. ~1000 ms from
 % fixation cross to display of final symbol.
 
+% ----------------------------------------------------------------------
 %% Run setup scripts
+% ----------------------------------------------------------------------
+
 % Start experiment and run all setup functions 
 % (screenInfo, output file, output path, reelinfo, )
 [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp();
@@ -56,21 +59,26 @@ loading_screen(screenInfo, reelInfo, 5)
 % Wait for a key press
 KbWait(-1, 2);
 
+% ----------------------------------------------------------------------
 %% Instructions
+% ----------------------------------------------------------------------
 
+% ----------------------------------------------------------------------
 %% Display reels
+% ----------------------------------------------------------------------
+
 % Display outcome stimulus
 draw_grid(screenInfo);
 draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
 Screen('Flip', screenInfo.window);
 
+% ----------------------------------------------------------------------
 %% Practice section
+% ----------------------------------------------------------------------
 
+% ----------------------------------------------------------------------
 %% First block
-
-% Update
-
-% Spin both reels - present a trial
+% ----------------------------------------------------------------------
 
 for i = 1:5
     [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
