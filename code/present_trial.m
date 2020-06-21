@@ -1,4 +1,4 @@
- function [reelInfo] = present_trial(reelInfo)
+ function [reelInfo, outputData] = present_trial(reelInfo, screenInfo, outputData)
     % ----------------------------------------------------------------------
     % [reelInfo] = present_trial(reelInfo)
     % ----------------------------------------------------------------------
@@ -57,6 +57,9 @@
        
     % Get centre symbol
     reelInfo.outcome.centre = outputData.CS(reelInfo.trialIndex);
+    
+    % Get win/match T/F value
+    reelInfo.outcome.match = outputData.match(reelInfo.trialIndex);
     
     % Find all indices for above and below the stops on reel 1 & 2
     % Then update reel information
@@ -204,22 +207,15 @@
     Screen('Flip', screenInfo.window);
 
     % Send event marker (Fixation Cross)
-    
-    % Wait ISI
-    WaitSecs(2.5);
-    
+       
 	% ----------------------------------------------------------------------    
     %% Outcome stimulus
     % ----------------------------------------------------------------------
     
-     % Display outcome stimulus
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
-    
     % Check if win
-    if sum(nonzeros(ismember(reelInfo.outcome.dspSymbols, reelInfo.outcome.centre))) == 3
+    if reelInfo.outcome.match == 1
         
-        win = 1;
+        % Win
         
         if reelInfo.highlight == 1 || reelInfo.highlight == 2
         % Highlight winning grid positions and show payout amount
@@ -227,36 +223,52 @@
         end
         
         % Display payout
-        draw_payout(screenInfo, reelInfo, win);
+        draw_payout(screenInfo, reelInfo, 1);
         
-        % Send information to outputData
-        if reelInfo.outcome.trialNumber > 0
-        outputData.match(reelInfo.outcome.trialNumber) = 1;
-        outputData.payout(reelInfo.outcome.trialNumber) = reelInfo.outcome.payout;
-        % Output netOutcome
-        % outputData.netOutcome(reelInfo.outcome.trialNumber) = reelInfo.outcome.payout;
-        end
     else
         
         % Loss
-        win = 0;
+        
+        % Display outcome stimulus
+        draw_grid(screenInfo);
+        draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
         
         % Display payout shape, but not text
-        draw_payout(screenInfo, reelInfo, win);
+        draw_payout(screenInfo, reelInfo, 0);
         
     end
-      
+    
+    % Wait ISI
+    % wait_time = rand * (tmax-tmin) + tmin;
+    % start_time = GetSecs;
+    
+    % Wait ISI and then display Stimulus
+    if GetSecs-start_time > ISI
     % Flip to the screen (outcome stimulus, payout, reel highlights)
-    Screen('Flip', screenInfo.window);
+    [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
+    end
+    
+ %
+    keydown = 0;
+    
+    while(~keyDown)
+        
+     
+        
+        [keyDown, KeyPressTime] = KbCheck(-1);
+        WaitSecs(0.001); % delay to prevent CPU hogging
+        
+    end
     
     % Send event marker (Outcome Stimulus)
     
+    % Get PRP time
+    PRP = KeyPressTime - StimulusOnsetTime;
+    outputData.PRP(reelInfo.trialIndex) = PRP;
+    
     % Update outputData w/ 'shown'
-       
-	% ----------------------------------------------------------------------    
-    %% Prompt next trial
-    % ----------------------------------------------------------------------
-        
+    outputData.shown(reelInfo.trialIndex) = 1;
+    
  end
 
  

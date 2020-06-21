@@ -36,13 +36,28 @@ rng shuffle;
 %       2 = Kautz sequence
 % For more information see documentation inside generate_reelstrip function
 
+% -------------------------------------------------------------------------
+%% Gerenate Reelstrips
+% -------------------------------------------------------------------------
+
 repeatSymbols = 0;
 
 [reelInfo.reelstrip] = generate_reelstrip(5, 3, repeatSymbols);
 
 writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
-% Generate Experiment Outcomes
+% -------------------------------------------------------------------------
+%% Timing Information
+% -------------------------------------------------------------------------
+
+% Set timing information for experiment
+reelInfo.timing.jitter = 100;
+reelInfo.timing.ISI = 200;
+reelInfo.timing.fixationcross = 500;
+
+% -------------------------------------------------------------------------
+%% Generate Experiment Outcomes
+% -------------------------------------------------------------------------
 
 n = 100; % Number of experiments to generate (sample size plus dropout).
 

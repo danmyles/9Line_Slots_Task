@@ -89,7 +89,6 @@ reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
 reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
 reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
-%% Load in reel strip pattern
 % Progress loading screen
 loading_screen(screenInfo, reelInfo, 1);
 loading_screen(screenInfo, reelInfo, 2);

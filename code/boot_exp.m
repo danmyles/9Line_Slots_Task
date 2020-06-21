@@ -29,6 +29,8 @@ close all;
 clearvars;
 rng shuffle; % See notes below
 
+% HideCursor % Off when debugging
+
 % It is recomended that the rng be reseeded at the beginning of any MATLAB 
 % session if we wish to think of output from the rng as being
 % statistically independent. Only needs to be done once at the start of the

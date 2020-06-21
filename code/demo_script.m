@@ -76,6 +76,8 @@ Screen('Flip', screenInfo.window);
 %% Practice section
 % ----------------------------------------------------------------------
 
+[reelInfo, outputData] = present_trial(reelInfo, screenInfo, outputData);
+
 % ----------------------------------------------------------------------
 %% First block
 % ----------------------------------------------------------------------
@@ -103,24 +105,11 @@ payoutText = ['<b>', 'Now all wins!'];
 
 % Flip to the screen
     Screen('Flip', screenInfo.window);
+   
+% ----------------------------------------------------------------------
+%% END text
+% ----------------------------------------------------------------------  
     
-KbWait(-1, 2);
-
-for i = 1:5
-    
-[reelInfo, outputData] = spin_win(screenInfo, reelInfo, outputData);
-    
-    % Wait for a key press and store the name or the key
-    [secs, keyCode] = KbWait(-1, 2);
-    keyPressed = KbName(keyCode);
-    
-    % Exit code if Esc is pressed
-    if strcmpi(keyPressed,'escape')
-        sca;
-    end
-    
-end
-
 % Set up text for final text display
     Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
     Screen('TextFont', screenInfo.window, 'Garamond');
