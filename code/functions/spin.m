@@ -95,12 +95,12 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     % draw rate is the number of times a symbol is redrawn between
     % reel positions.
     if ~ exist("draw_rate")
-        draw_rate = 2;
+        draw_rate = 3;
     end
     
     % Somewhat hacky iterator for spin sequence
-    % Number of rows in the right var, minus three because these are 
-    % already progressed onto the screen. 
+    % Number of rows in the right var, minus three because these are
+    % already progressed onto the screen.
     
     it = (numel(right(:, 1))-3);
     
@@ -109,7 +109,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     
     % Start spin sequence
     for i = 1:it
-              
+        
         % Update Y positions until the final symbol reaches top position
         
         if left(1, 3) ~= screenInfo.splitposY(1)
@@ -134,7 +134,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
         
     end
     
-    % Enter 
+    % Enter
     outputData.RDuration(reelInfo.trialIndex) = OnsetTime - outputData.BeginTime(reelInfo.trialIndex);
     
 end
