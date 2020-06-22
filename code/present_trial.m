@@ -45,6 +45,9 @@
     % Update reelInfo iterator
     reelInfo.trialIndex = reelInfo.trialIndex + 1 ;
     
+    % Get BeginTime
+    outputData.BeginTime(reelInfo.trialIndex) = GetSecs;
+    
     % Bump previous reelInfo.outcome to reelInfo.previous
     reelInfo.previous = reelInfo.outcome;
     
@@ -79,7 +82,7 @@
     % Event Marker (Spin Animation Begin)
     
     % Spin reels
-    spin(screenInfo, reelInfo);
+    [outputData] = spin(screenInfo, reelInfo, outputData);
     
     % Event Marker (Spin Animation Complete)
     
@@ -237,6 +240,9 @@
     
     % Update outputData w/ 'shown'
     outputData.shown(reelInfo.trialIndex) = 1;
+    
+    % Get BeginTime
+    outputData.CSTime(reelInfo.trialIndex) = StimulusOnsetTime;
     
     % Wait minimum trial time if neccesary (likely already elapsed)
     while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome

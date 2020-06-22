@@ -1,4 +1,4 @@
-function [reelInfo] = spin(screenInfo, reelInfo)
+function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     % ----------------------------------------------------------------------
     % spin(screenInfo, reelInfo)
     % ----------------------------------------------------------------------
@@ -98,7 +98,6 @@ function [reelInfo] = spin(screenInfo, reelInfo)
         draw_rate = 3;
     end
     
-
     % Somewhat hacky iterator for spin sequence
     % Number of rows in the right var, minus three because these are 
     % already progressed onto the screen. 
@@ -116,7 +115,10 @@ function [reelInfo] = spin(screenInfo, reelInfo)
         if left(1, 3) ~= screenInfo.splitposY(1)
             
             left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
-
+            
+            % Enter ~ approx LDuration
+            outputData.LDuration = GetSecs - outputData.BeginTime;
+            
         end
         
         % For loop takes care of stopping the right reel.
@@ -128,9 +130,12 @@ function [reelInfo] = spin(screenInfo, reelInfo)
         draw_grid(screenInfo);
         
         % Flip Screen
-        Screen('Flip', screenInfo.window);
+        [~, OnsetTime] = Screen('Flip', screenInfo.window);
         
     end
-       
+    
+    % Enter 
+    outputData.RDuration = OnsetTime - outputData.BeginTime;
+    
 end
 
