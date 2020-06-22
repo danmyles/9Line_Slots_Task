@@ -94,6 +94,16 @@ loading_screen(screenInfo, reelInfo, 1);
 loading_screen(screenInfo, reelInfo, 2);
 loading_screen(screenInfo, reelInfo, 3);
 
+% -------------------------------------------------------------------------
+%% Timing Information
+% -------------------------------------------------------------------------
+
+% Set timing information for experiment in seconds
+reelInfo.timing.jitter = 0.200; % Add 0 - 200 ms to FC/Outcome ISI
+reelInfo.timing.fixationCross = 0.400; % Minimum Time for fiaxtion cross
+reelInfo.timing.highlight = 0.500; % Reel Highlighting doesn't need to be jittered
+reelInfo.timing.outcome = 1.000; % Minimum Time before participant can proceed to next trial
+
 %% Define reel highlighting behaviour
 
 % This allows the user to set the highlighting behaviour of the slot game

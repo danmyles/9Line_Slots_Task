@@ -71,7 +71,7 @@ KbWait(-1, 2);
 draw_grid(screenInfo);
 draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
 Screen('Flip', screenInfo.window);
-
+  
 % ----------------------------------------------------------------------
 %% Practice section
 % ----------------------------------------------------------------------

@@ -47,10 +47,10 @@ function [] = highlight_reels_seq(screenInfo, reelInfo)
         % Flip to the screen
         Screen('Flip', screenInfo.window);
         
-        % Event Marker for 
+        % Event Marker
         
         % Wait time between highlighted reels
-        WaitSecs(1);
+        WaitSecs(reelInfo.timing.highlight);
         
     end
     

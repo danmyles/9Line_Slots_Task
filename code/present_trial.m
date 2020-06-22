@@ -84,46 +84,18 @@
     % Event Marker (Spin Animation Complete)
     
     % Wait ISI
-    WaitSecs(0.5);
+    WaitSecs(reelInfo.timing.highlight);
         
 	% ----------------------------------------------------------------------
-    %% Reel highlighting
+    %% Highlight Active Reels Sequentially
     % ----------------------------------------------------------------------
+    
+    % I have some old code in a function called "highlight reels" if you 
+    % want this done simultaneously.
     
     % Check if active
     if reelInfo.highlight == 2 || reelInfo.highlight == 3
-    
-    % ----------------------------------------------------------------------
-    % Highlight Active Reels Simultaneously
-    % ----------------------------------------------------------------------
-    % I've disabled this because I prefered the simulateous option.
-    % You could comment it back in if desired.
-    
-    % [outputData] = highlight_reels(screenInfo, reelInfo, outputData);
-    
-    % Flip to the screen
-    % Screen('Flip', screenInfo.window);
-    
-    % Event marker (Highlight Appears)
-    %
-    
-    % Wait time between highlighted reels
-    WaitSecs(1);
-    
-    % Re-draw Without Highlights
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-    
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
-	% Event marker (Highlighting Complete)
-    %
-    
-    % ----------------------------------------------------------------------
-    % Highlight Active Reels Sequentially
-    % ----------------------------------------------------------------------
-    
+
     % This required a fair bit a messing about. Easier if we had some extra
     % variables I could toy with
     
@@ -176,7 +148,7 @@
         % Event marker (Highlight Appears)
         
         % Wait time between highlighted reels
-        WaitSecs(1);
+        WaitSecs(reelInfo.timing.highlight);
         
     end
     
@@ -190,13 +162,13 @@
 	% Event marker (Highlighting Complete)
     
     end
-       
-    % Wait ISI
-    WaitSecs(1);
-    
+          
 	% ----------------------------------------------------------------------
     %% Fixation cross
     % ----------------------------------------------------------------------
+    
+    % Wait ISI
+    WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
     
     % Draw a fixation cross
     draw_grid(screenInfo);
@@ -207,13 +179,16 @@
     Screen('Flip', screenInfo.window);
 
     % Send event marker (Fixation Cross)
-       
+    
+    % Wait ISI
+    WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
+    
 	% ----------------------------------------------------------------------    
     %% Outcome stimulus
     % ----------------------------------------------------------------------
     
     % Check if win
-    if reelInfo.outcome.match == 1
+    if outputData.match(reelInfo.trialIndex) == 1
         
         % Win
         
@@ -237,23 +212,13 @@
         draw_payout(screenInfo, reelInfo, 0);
         
     end
-    
-    % Wait ISI
-    % wait_time = rand * (tmax-tmin) + tmin;
-    % start_time = GetSecs;
-    
-    % Wait ISI and then display Stimulus
-    if GetSecs-start_time > ISI
-    % Flip to the screen (outcome stimulus, payout, reel highlights)
+       
+    % Flip to the screen (outcome stimulus, payout, win highlights)
     [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
-    end
     
- %
-    keydown = 0;
+    keyDown = 0;
     
     while(~keyDown)
-        
-     
         
         [keyDown, KeyPressTime] = KbCheck(-1);
         WaitSecs(0.001); % delay to prevent CPU hogging

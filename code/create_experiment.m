@@ -47,15 +47,6 @@ repeatSymbols = 0;
 writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 % -------------------------------------------------------------------------
-%% Timing Information
-% -------------------------------------------------------------------------
-
-% Set timing information for experiment
-reelInfo.timing.jitter = 100;
-reelInfo.timing.ISI = 200;
-reelInfo.timing.fixationcross = 500;
-
-% -------------------------------------------------------------------------
 %% Generate Experiment Outcomes
 % -------------------------------------------------------------------------
 
