@@ -48,7 +48,7 @@ KbWait(-1, 2);
 
 % Display outcome stimulus
 draw_grid(screenInfo);
-draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
+draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 Screen('Flip', screenInfo.window);
   
 % ----------------------------------------------------------------------
