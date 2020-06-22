@@ -5,14 +5,13 @@ function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % Goal of the function :
 %
 % SET UP THE reelInfo DATA STRUCTURE
-% This function sets up a data struct that will contain information about
-% the positions of each symbol determined by the spin, as well as
-% information neccesary to draw the shapes the draw. 
-%
 % This function and the data structure it sets up have become the 
 % defacto major config file. Many of the key information about the
 % animations and display settings used in the experiment can be tweaked
 % here
+%
+% This function sets up a data struct that will contain information about
+% neccesary to draw the shapes the draw.
 %
 % Symbol codes are loosely assigned by number of sides (exc diam)
 %
@@ -35,10 +34,14 @@ function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-%% SET UP reelInfo DATA STRUCTURES
+% -------------------------------------------------------------------------
+%% Trial Index
+% -------------------------------------------------------------------------
 reelInfo.trialIndex = 0; % iterator to keep track of trials
 
+% -------------------------------------------------------------------------
 %% Basic symbol information
+% -------------------------------------------------------------------------
 reelInfo.num_symbols = 5; % Circle, diamond, triangle, rectangle, pentagon, 
 % This Rect is used to set the base dimensions used in many of our shapes.
 % Computed relative to the screen size so that the shapes are proportional accross monitors.
@@ -52,7 +55,29 @@ reelInfo.payout.amounts = reelInfo.multipliers .* reelInfo.lineBet;
 reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
 reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
 
-%% Outcome information
+%% Subsets of reel positions
+% To streamline drawing shapes to different combinations of reel positions
+% a few subsets of screen position will be useful. These are all saved
+% within a nested data structure:
+reelInfo.pos.L = screenInfo.splitpos(1:3, :); % Position dimensions for left reel
+reelInfo.pos.R = screenInfo.splitpos(7:9, :); % Position dimensions for right reel
+reelInfo.pos.LR = [reelInfo.pos.L; reelInfo.pos.R]; % All except centre
+reelInfo.pos.All = [reelInfo.pos.L; screenInfo.screenCenter; reelInfo.pos.R]; % All
+
+%% RGB values for symbol colours
+reelInfo.colours(1,:) = [238/255, 000/255, 001/255]; % circ
+reelInfo.colours(2,:) = [000/255, 162/255, 255/255]; % diam
+reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
+reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
+reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
+
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 1);
+
+% -------------------------------------------------------------------------
+%% Outcomes
+% -------------------------------------------------------------------------
+
 % I've filled all this out with a random draw. This provides a random 
 % starting position for the reels when the exp loads.
 reelInfo.outcome.stops = randi(reelInfo.reel_length, 1, 2); % Vector with stops for L and R reel
@@ -73,38 +98,22 @@ reelInfo.outcome.payout = max(reelInfo.payout.amounts); % Payout amount if win o
 
 reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
 
-%% Subsets of reel positions
-% To streamline drawing shapes to different combinations of reel positions
-% a few subsets of screen position will be useful. These are all saved
-% within a nested data structure:
-reelInfo.pos.L = screenInfo.splitpos(1:3, :); % Position dimensions for left reel
-reelInfo.pos.R = screenInfo.splitpos(7:9, :); % Position dimensions for right reel
-reelInfo.pos.LR = [reelInfo.pos.L; reelInfo.pos.R]; % All except centre
-reelInfo.pos.All = [reelInfo.pos.L; screenInfo.screenCenter; reelInfo.pos.R]; % All
-
-%% RGB values for symbol colours
-reelInfo.colours(1,:) = [238/255, 000/255, 001/255]; % circ
-reelInfo.colours(2,:) = [000/255, 162/255, 255/255]; % diam
-reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
-reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
-reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
-
-% Progress loading screen
-loading_screen(screenInfo, reelInfo, 1);
-loading_screen(screenInfo, reelInfo, 2);
-loading_screen(screenInfo, reelInfo, 3);
-
 % -------------------------------------------------------------------------
 %% Timing Information
 % -------------------------------------------------------------------------
 
 % Set timing information for experiment in seconds
 reelInfo.timing.jitter = 0.200; % Add 0 - 200 ms to FC/Outcome ISI
-reelInfo.timing.fixationCross = 0.400; % Minimum Time for fiaxtion cross
 reelInfo.timing.highlight = 0.500; % Reel Highlighting doesn't need to be jittered
+reelInfo.timing.fixationCross = 0.600; % Minimum Time for fiaxtion cross
 reelInfo.timing.outcome = 1.000; % Minimum Time before participant can proceed to next trial
 
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 2);
+
+% -------------------------------------------------------------------------
 %% Define reel highlighting behaviour
+% -------------------------------------------------------------------------
 
 % This allows the user to set the highlighting behaviour of the slot game
 %       0 = No highlights (neither wins, nor potential matches)
@@ -114,6 +123,9 @@ reelInfo.timing.outcome = 1.000; % Minimum Time before participant can proceed t
 %       3 = Potential match highlighting only (wins are not highlighted)
 
 reelInfo.highlight = 3;
+
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 3);
 
 end
 

@@ -162,14 +162,14 @@
 	% Event marker (Highlighting Complete)
     
     end
-          
+    
+    % Wait ISI
+    WaitSecs(.2);
+    
 	% ----------------------------------------------------------------------
     %% Fixation cross
     % ----------------------------------------------------------------------
-    
-    % Wait ISI
-    WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
-    
+       
     % Draw a fixation cross
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
@@ -187,6 +187,14 @@
     %% Outcome stimulus
     % ----------------------------------------------------------------------
     
+    % Draw grid 
+    draw_grid(screenInfo);
+     
+    % Draw shapes
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
+    
+    % Draw centre text/whitespace/payout
+    
     % Check if win
     if outputData.match(reelInfo.trialIndex) == 1
         
@@ -203,11 +211,7 @@
     else
         
         % Loss
-        
-        % Display outcome stimulus
-        draw_grid(screenInfo);
-        draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
-        
+               
         % Display payout shape, but not text
         draw_payout(screenInfo, reelInfo, 0);
         
@@ -215,6 +219,8 @@
        
     % Flip to the screen (outcome stimulus, payout, win highlights)
     [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
+    
+    % Send event marker (Outcome Stimulus)
     
     keyDown = 0;
     
@@ -225,8 +231,6 @@
         
     end
     
-    % Send event marker (Outcome Stimulus)
-    
     % Get PRP time
     PRP = KeyPressTime - StimulusOnsetTime;
     outputData.PRP(reelInfo.trialIndex) = PRP;
@@ -234,6 +238,11 @@
     % Update outputData w/ 'shown'
     outputData.shown(reelInfo.trialIndex) = 1;
     
+    % Wait minimum trial time if neccesary (likely already elapsed)
+    while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome
+        WaitSecs(0.001); % delay to prevent CPU hogging
+    end
+       
  end
 
  
