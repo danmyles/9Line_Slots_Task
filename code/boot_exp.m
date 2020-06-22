@@ -39,8 +39,9 @@ rng shuffle; % See notes below
 % The deBruijn package notes also recomend reseeding MATLAB rng prior to 
 % each session.
 
-% Start a stopwatch
-tic; % you can read time elapsed since tic; with toc
+% Get time
+sessionInfo.start = GetSecs;
+sessionInfo.date = date;
 
 % Get directories relative to file location
 [fileInfo] = setup_file();

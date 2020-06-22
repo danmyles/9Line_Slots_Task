@@ -119,6 +119,13 @@ payoutText = ['<b>', 'Now all wins!'];
     
 KbWait(-1, 2);
 
+% Session end time
+sessionInfo.end = GetSecs;
+sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
+sessionInfo.shown = sum(outputData.shown);
+
+% Open notes for experimenter to add details.
+
 % Clear the screen
 sca;
 
