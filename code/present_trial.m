@@ -40,10 +40,10 @@
     % ----------------------------------------------------------------------
     
     % ----------------------------------------------------------------------
-    %% Update with next trial %%
+    %% 
     % ----------------------------------------------------------------------   
     % Update reelInfo iterator
-    reelInfo.trialIndex = reelInfo.trialIndex + 1 ;
+    reelInfo.trialIndex = (reelInfo.trialIndex + 1);
     
     % Get BeginTime
     outputData.BeginTime(reelInfo.trialIndex) = GetSecs;
@@ -82,7 +82,7 @@
     % Event Marker (Spin Animation Begin)
     
     % Spin reels
-    [outputData] = spin(screenInfo, reelInfo, outputData);
+    [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
     
     % Event Marker (Spin Animation Complete)
     
@@ -195,9 +195,7 @@
      
     % Draw shapes
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
-    
-    % Draw centre text/whitespace/payout
-    
+       
     % Check if win
     if outputData.match(reelInfo.trialIndex) == 1
         
@@ -241,7 +239,7 @@
     % Update outputData w/ 'shown'
     outputData.shown(reelInfo.trialIndex) = 1;
     
-    % Get BeginTime
+    % Outcome Stimulus Onset Time
     outputData.CSTime(reelInfo.trialIndex) = StimulusOnsetTime;
     
     % Wait minimum trial time if neccesary (likely already elapsed)

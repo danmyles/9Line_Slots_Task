@@ -17,6 +17,8 @@
 % ----------------------------------------------------------------------
 % Shuffle RNG
 rng shuffle;
+clear all
+clearvars;
 
 %% Get directory
 % Add 9LST to path before running!

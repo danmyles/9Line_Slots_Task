@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp()
 % ----------------------------------------------------------------------
 % [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
