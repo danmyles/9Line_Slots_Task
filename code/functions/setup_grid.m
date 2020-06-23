@@ -23,8 +23,8 @@ function [screenInfo] = setup_grid(screenInfo)
 % of the screen, from there we can move the rectangles to a new position. 
 % [top-left-x top-left-y bottom-right-x bottom-right-y].
 screenInfo.gridRect = screenInfo.windowRect;
-screenInfo.gridRect(3) = screenInfo.gridRect(3) * .20; % proportion of total screen size
-screenInfo.gridRect(4) = screenInfo.gridRect(4) * .24; % proportion of total screen size
+screenInfo.gridRect(3) = screenInfo.gridRect(3) * (1/5); % proportion of total screen size
+screenInfo.gridRect(4) = screenInfo.gridRect(4) * (1/4); % proportion of total screen size
 
 %% Width of the grid lines.
 screenInfo.gridPenWidthPixel = floor(screenInfo.windowRect(4)/300);
