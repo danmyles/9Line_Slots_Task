@@ -25,6 +25,9 @@
 %% Run setup scripts
 % ----------------------------------------------------------------------
 
+% Timing while debugging (delete later)
+tic
+
 % Event Marker (Start)
 
 % Start experiment and run all setup functions 

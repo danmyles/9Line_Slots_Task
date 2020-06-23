@@ -26,6 +26,8 @@ screenInfo.gridRect = screenInfo.windowRect;
 screenInfo.gridRect(3) = screenInfo.gridRect(3) * (1/5); % proportion of total screen size
 screenInfo.gridRect(4) = screenInfo.gridRect(4) * (1/4); % proportion of total screen size
 
+screenInfo.gridRect = floor(screenInfo.gridRect); % Drop any pesky decimals
+
 %% Width of the grid lines.
 screenInfo.gridPenWidthPixel = floor(screenInfo.windowRect(4)/300);
 
