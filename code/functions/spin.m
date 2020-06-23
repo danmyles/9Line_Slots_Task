@@ -108,7 +108,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     it = it .* draw_rate;
     
     % Start spin sequence
-    parfor i = 1:it
+    for i = 1:it
         
         % Update Y positions until the final symbol reaches top position
         

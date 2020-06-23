@@ -1,4 +1,4 @@
-function [] = draw_fixation(screenInfo)
+function [] = draw_fixation(screenInfo, reelInfo)
 % ----------------------------------------------------------------------
 % draw_fixation(screenInfo)
 % ----------------------------------------------------------------------
@@ -18,10 +18,10 @@ function [] = draw_fixation(screenInfo)
 % ----------------------------------------------------------------------
 
 % Set the size of the fixation cross arms in pixels
-fixCrossDimPix = screenInfo.gridRect(4)/8;
+fixCrossDimPix = floor(screenInfo.gridRect(4)/8);
 
 % Set the line width for our fixation cross
-lineWidthPix = 1;
+lineWidthPix = 3;
 
 % Now we set the coordinates (these are all relative to zero we will let
 % the drawing routine center the cross in the center of our monitor for us)
@@ -30,6 +30,13 @@ yCoords = [0, 0, -fixCrossDimPix, fixCrossDimPix];
 allCoords = [xCoords; yCoords];
 
 % Draw a fixation cross in black at the centre of the screen
+% Citation
+
+Screen('FillOval', screenInfo.window, screenInfo.black, CenterRectOnPoint([0, 0, fixCrossDimPix, fixCrossDimPix], screenInfo.xCenter, screenInfo.yCenter), 600)
+
 Screen('DrawLines', screenInfo.window, allCoords,...
-    lineWidthPix, screenInfo.black, screenInfo.screenCenter, 2);
+    lineWidthPix, screenInfo.white, screenInfo.screenCenter, 2);
+
+Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), CenterRectOnPoint([0, 0, 6, 6], screenInfo.xCenter, screenInfo.yCenter), 60)
+
 end

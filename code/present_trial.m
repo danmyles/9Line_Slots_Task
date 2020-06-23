@@ -167,7 +167,7 @@
     end
     
     % Wait ISI
-    WaitSecs(.2);
+    WaitSecs(reelInfo.timing.highlight);
     
 	% ----------------------------------------------------------------------
     %% Fixation cross
@@ -176,7 +176,7 @@
     % Draw a fixation cross
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-    draw_fixation(screenInfo);
+    draw_fixation(screenInfo, reelInfo);
     
     % Flip to the screen
     Screen('Flip', screenInfo.window);

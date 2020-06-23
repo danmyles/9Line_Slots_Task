@@ -25,18 +25,16 @@
 %% Run setup scripts
 % ----------------------------------------------------------------------
 
-% Timing while debugging (delete later)
-tic
-
 % Event Marker (Start)
+tic;
 
 % Start experiment and run all setup functions 
 % (screenInfo, output file, output path, reelinfo, )
 [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp();
 
 % Load screen                         
-loading_screen(screenInfo, reelInfo, 4)
-loading_screen(screenInfo, reelInfo, 5)
+loading_screen(screenInfo, reelInfo, 4);
+loading_screen(screenInfo, reelInfo, 5);
 
 % Wait for a key press
 KbWait(-1, 2);
@@ -64,7 +62,7 @@ for i = 1:10
 
 end
 
-toc
+toc;
 
 % ----------------------------------------------------------------------
 %% First block
