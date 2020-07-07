@@ -43,6 +43,38 @@ KbWait(-1, 2);
 %% Instructions
 % ----------------------------------------------------------------------
 
+% Set up text for final text display
+    Screen('TextSize', screenInfo.window, 26);
+    Screen('TextFont', screenInfo.window, 'Courier');
+    Screen('TextColor', screenInfo.window, screenInfo.black);
+
+% Hacky workaround for annoying psychtoolbox textbounds behaviour.
+linespace = '                                                                         ';
+    
+for i = 1:length(instructions.opening)
+    
+% Draw text to centre 
+ 
+% Screen('DrawLine', screenInfo.window, screenInfo.black, 0, screenInfo.yCenter, screenInfo.screenXpixels, screenInfo.yCenter)
+
+DrawFormattedText2(['|' linespace instructions.opening{i} linespace '|'], ...
+    'win', screenInfo.window, ...
+    'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
+    'xalign','center','yalign','center','xlayout','center');
+
+% Draw text to centre 
+DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
+
+Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ... 
+    get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 25, 25]));
+
+% Flip to the screen
+Screen('Flip', screenInfo.window);
+
+KbWait(-1, 2)
+    
+end
+
 % ----------------------------------------------------------------------
 %% Display reels
 % ----------------------------------------------------------------------
@@ -50,6 +82,7 @@ KbWait(-1, 2);
 % Display outcome stimulus
 draw_grid(screenInfo);
 draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
 Screen('Flip', screenInfo.window);
   
 % ----------------------------------------------------------------------

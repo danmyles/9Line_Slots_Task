@@ -58,6 +58,10 @@ screenInfo.splitposY = [screenInfo.yCenter - screenInfo.Y_adjust,...
                         screenInfo.yCenter + screenInfo.Y_adjust];
                    
 
+% Some places to draw text:
+screenInfo.cont = (screenInfo.screenYpixels - (screenInfo.yCenter/4));
+screenInfo.ydot = (screenInfo.cont + screenInfo.screenYpixels)/2;
+                    
 % Each of these central points are useful for a number of tasks so we will
 % save them for later use
 
