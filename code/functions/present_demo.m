@@ -1,65 +1,45 @@
- function [reelInfo, outputData] = present_trial(reelInfo, screenInfo, outputData)
+ function [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, demo)
     % ----------------------------------------------------------------------
-    % [reelInfo] = present_trial(reelInfo)
+    % [reelInfo] = present_demo(reelInfo)
     % ----------------------------------------------------------------------
     % Goal of the function :
-    % This function uses the reelInfo iterator to draw out the next reel 
-    % stop from the output file and present a trial. Reelstops are used to 
-    % index reelstrip 1 and reelstrip 2 to select the symbols
-    % to be draw to the screen.
-    % Spin animation is handled seperately by the spin functions.
-    % 
-    %
-    % This function then updates the reelInfo.sym_shape matrix with the symbol
-    % identities. This information is then passed back to the update_reelInfo
-    % function so that position information can be determined for each of the
-    % symbols relative to their grid position
-    %
-    %
-    % Symbol codes are loosely assigned by number of sides (exc diam)
-    %
-    %                       1 = circle
-    %                       2 = diamond
-    %                       3 = triangle
-    %                       4 = rectangle
-    %                       5 = pentagon
+    % This function is a simplified version of the present_trial function
+    % designed to display the demo and practice spins during the
+    % introduction.
     %
     % ----------------------------------------------------------------------
     % Input(s) :
     % reelInfo: reelstrips, trialIndex
-    % outputData: stop position, win/loss, payout amount
+    % demoSequence: stop position, win/loss, payout amount
     % ----------------------------------------------------------------------
     % Output(s):
     % reelInfo: provides updated symbol positions to sym_shape
-    % outputData: updates shown 0 -> 1, records timing info.
+    % demoSequence: updates shown 0 -> 1
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : June 2020
+    % Last update : July 2020
     % Project : 9_Line_Slots_Task
     % Version : 2020a
     % ----------------------------------------------------------------------
        
     % Update reelInfo iterator
-    reelInfo.trialIndex = (reelInfo.trialIndex + 1);
-    
-    % Get BeginTime
-    outputData.BeginTime(reelInfo.trialIndex) = GetSecs;
-    
+    reelInfo.demoIndex = (reelInfo.demoIndex + 1);
+       
     % Bump previous reelInfo.outcome to reelInfo.previous
     reelInfo.previous = reelInfo.outcome;
     
     % Get payout amount (if win occurs)
-    reelInfo.outcome.payout = outputData.payout(reelInfo.trialIndex);
+    reelInfo.outcome.payout = demoSequence.payout(reelInfo.demoIndex);
     
     % Get reel position to for each reelstrip
-    reelInfo.outcome.stops(1) = outputData.LStop(reelInfo.trialIndex);
-    reelInfo.outcome.stops(2) = outputData.RStop(reelInfo.trialIndex);
+    reelInfo.outcome.stops(1) = demoSequence.LStop(reelInfo.demoIndex);
+    reelInfo.outcome.stops(2) = demoSequence.RStop(reelInfo.demoIndex);
        
     % Get centre symbol
-    reelInfo.outcome.centre = outputData.CS(reelInfo.trialIndex);
+    reelInfo.outcome.centre = demoSequence.CS(reelInfo.demoIndex);
     
     % Get win/match T/F value
-    reelInfo.outcome.match = outputData.match(reelInfo.trialIndex);
+    reelInfo.outcome.match = demoSequence.match(reelInfo.demoIndex);
     
     % Find all indices for above and below the stops on reel 1 & 2
     % Then update reel information
@@ -76,12 +56,8 @@
     %% Spin reels
     % ----------------------------------------------------------------------
     
-    % Event Marker (Spin Animation Begin)
-    
     % Spin reels
-    [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
-    
-    % Event Marker (Spin Animation Complete)
+    [reelInfo, demoSequence] = spin(screenInfo, reelInfo, demoSequence, demo);
     
     % Wait ISI
     WaitSecs(reelInfo.timing.highlight);
@@ -90,15 +66,12 @@
     %% Highlight Active Reels Sequentially
     % ----------------------------------------------------------------------
     
-    % I have some old code in a function called "highlight reels" if you 
-    % want this done simultaneously.
+    % The demo only displays wins accross the centre line. So this section
+    % has been edited to account for that.
     
     % Check if active
     if reelInfo.highlight == 2 || reelInfo.highlight == 3
-
-    % This required a fair bit a messing about. Easier if we had some extra
-    % variables I could toy with
-    
+   
     % Reel 1
     A = reelInfo.outcome.dspSymbols(1:3, 1);
     
@@ -120,25 +93,23 @@
     % Print highlighted squares to screen one match at a time
     % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
     
-    for i = 1:numel(C)
-        
-        Ai = ismember(A, C(i));
-        Bi = ismember(B, C(i));
+    if A(2) == B(2)
         
         % Reel 1 Highlights:
-        highlight_pos = screenInfo.gridPos(1:3, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
+        highlight_pos = screenInfo.gridPos(2, :);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C, :), highlight_pos, screenInfo.gridPenWidthPixel.*3);
         % Place another square on the inside of the highlight square (looks nice)
-        highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+        highlight_pos = [highlight_pos(:, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(:, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
         Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
         
         % Reel 2 Highlights:
-        highlight_pos = screenInfo.gridPos(7:9, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
+        highlight_pos = screenInfo.gridPos(8, :);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C, :)', highlight_pos', screenInfo.gridPenWidthPixel.*3);
         % Place another square on the inside of the highlight square (looks nice)
-        highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+        highlight_pos = [highlight_pos(:, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(:, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
         Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
         
+        % Draw the rest
         draw_grid(screenInfo);
         draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
         
@@ -194,7 +165,7 @@
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, nonzeros(reelInfo.outcome.dspSymbols));
        
     % Check if win
-    if outputData.match(reelInfo.trialIndex) == 1
+    if demoSequence.match(reelInfo.demoIndex) == 1
         
         % Win
         
@@ -231,13 +202,13 @@
     
     % Get PRP time
     PRP = KeyPressTime - StimulusOnsetTime;
-    outputData.PRP(reelInfo.trialIndex) = PRP;
+    demoSequence.PRP(reelInfo.demoIndex) = PRP;
     
     % Update outputData w/ 'shown'
-    outputData.shown(reelInfo.trialIndex) = 1;
+    demoSequence.shown(reelInfo.demoIndex) = 1;
     
     % Outcome Stimulus Onset Time
-    outputData.CSTime(reelInfo.trialIndex) = StimulusOnsetTime;
+    demoSequence.CSTime(reelInfo.demoIndex) = StimulusOnsetTime;
     
     % Wait minimum trial time if neccesary (likely already elapsed)
     while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome

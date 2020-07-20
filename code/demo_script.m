@@ -26,6 +26,8 @@
 % ----------------------------------------------------------------------
 
 % Event Marker (Start)
+
+% Start Task Timer
 tic;
 
 % Start experiment and run all setup functions 
@@ -39,52 +41,124 @@ loading_screen(screenInfo, reelInfo, 5);
 % Wait for a key press
 KbWait(-1, 2);
 
+% GET INSTRUCTIONS
+
+
 % ----------------------------------------------------------------------
-%% Instructions
+%% Opening Instructions
 % ----------------------------------------------------------------------
 
-% Set up text for final text display
-    Screen('TextSize', screenInfo.window, 26);
-    Screen('TextFont', screenInfo.window, 'Courier');
-    Screen('TextColor', screenInfo.window, screenInfo.black);
-
-% Hacky workaround for annoying psychtoolbox textbounds behaviour.
-linespace = '                                                                         ';
+% Display first 4 lines
+for i = 1:4   
+    % Text draw.
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+       
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
     
-for i = 1:length(instructions.opening)
-    
-% Draw text to centre 
- 
-% Screen('DrawLine', screenInfo.window, screenInfo.black, 0, screenInfo.yCenter, screenInfo.screenXpixels, screenInfo.yCenter)
-
-DrawFormattedText2(['|' linespace instructions.opening{i} linespace '|'], ...
-    'win', screenInfo.window, ...
-    'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
-    'xalign','center','yalign','center','xlayout','center');
-
-% Draw text to centre 
-DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
-
-Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ... 
-    get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 25, 25]));
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-KbWait(-1, 2)
-    
+    % Wait for keypress
+    KbWait(-1, 2);
 end
 
-% ----------------------------------------------------------------------
-%% Display reels
-% ----------------------------------------------------------------------
+% It looks like this:
 
-% Display outcome stimulus
+% Display 
 draw_grid(screenInfo);
 draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
 Screen('Flip', screenInfo.window);
-  
+
+% Wait for keypress
+KbWait(-1, 2);
+
+% Display next two lines
+for i = 5:6   
+    % Text draw.
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+       
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+end
+
+% Show spinning reels:
+draw_grid(screenInfo);
+draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
+Screen('Flip', screenInfo.window);
+
+% Wait for keypress
+KbWait(-1, 2);
+
+% Show a win
+[reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+
+% Display next two lines
+for i = 7:8   
+    % Text draw.
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+       
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+end
+
+    % Text draw.
+    draw_text(screenInfo, reelInfo, instructions, ... 
+        ['So in the previous example the payout was ' num2str(reelInfo.multipliers(end)*10) ' credits']);
+
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+
+    % Show spinning reels:
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, reelInfo.outcome.dspSymbols);
+    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
+    Screen('Flip', screenInfo.window);
+   
+    % Wait for keypress
+    KbWait(-1, 2);
+    
+    % Text draw.
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{9});
+       
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+
+    % Show spinning reels:
+draw_grid(screenInfo);
+draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
+Screen('Flip', screenInfo.window);
+
+% Wait for keypress
+KbWait(-1, 2);
+
+% Show a win
+[reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+    
+% Display next two lines
+for i = 10:12  
+    % Text draw.
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+       
+    % Flip to the screen
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+end
+
 % ----------------------------------------------------------------------
 %% Practice section
 % ----------------------------------------------------------------------
@@ -95,23 +169,10 @@ for i = 1:10
 
 end
 
-toc;
-
 % ----------------------------------------------------------------------
 %% First block
 % ----------------------------------------------------------------------
 
-% Now display wins only.
-payoutText = ['<b>', 'Now all wins!'];
-
-% Draw text to centre
-[cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
-    'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
-    'xalign','center','yalign','center','xlayout','center');
-
-% Flip to the screen
-    Screen('Flip', screenInfo.window);
-   
 % ----------------------------------------------------------------------
 %% END text
 % ----------------------------------------------------------------------  

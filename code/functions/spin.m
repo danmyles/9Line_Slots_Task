@@ -1,4 +1,4 @@
-function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
+function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     % ----------------------------------------------------------------------
     % spin(screenInfo, reelInfo)
     % ----------------------------------------------------------------------
@@ -26,12 +26,22 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
     % NOTE: THESE ANIMATIONS ARE DESIGNED TO PROGRESS 1 PLACE BEYOND
     % THEIR START VALUE.
     
+
+          
     % Some notes.
     % I want to re-organise this function so that both reels spin
     % simultaneously, the left reel should stop before the right.
     
     % It should draw ~10 symbols out in front of the next stopping position
     % and then progress them down until the stop is displayed at centre.
+    
+    % We also use this function for the demo. Which requires that we skip a
+    % few operations to simplyfy things.
+    
+    % Fill in the value if missing:
+    if ~exist("demo")
+        demo = 0;
+    end
     
     % Get the symbols preceeding outcome on the reel strip to spin
     % through
@@ -116,8 +126,10 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
             
             left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
             
+            if demo ~= 1
             % Enter ~ approx LDuration
             outputData.LDuration(reelInfo.trialIndex) = GetSecs - outputData.BeginTime(reelInfo.trialIndex);
+            end
             
         end
         
@@ -134,8 +146,10 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData)
         
     end
     
+    if demo ~= 1
     % Enter
     outputData.RDuration(reelInfo.trialIndex) = OnsetTime - outputData.BeginTime(reelInfo.trialIndex);
+    end
     
 end
 
