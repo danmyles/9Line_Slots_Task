@@ -47,107 +47,89 @@ setup_instructions
 %% Opening Instructions
 % ----------------------------------------------------------------------
 
-% Display first 4 lines
+% 1 - 'Hello.'
+% 2 - 'Welcome to the 9 Line Slot Task.'
+% 3 - 'In this experiment you will play a simple slot machine.'
+% 4 - 'It looks like this:'
 for i = 1:4
+    
     % Text draw.
     draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+    Screen('Flip', screenInfo.window);  % Flip to the screen
+    KbWait(-1, 2);                      % Wait for keypress
     
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
-    % Wait for keypress
-    KbWait(-1, 2);
 end
 
-% It looks like this:
-
-% Display
+% Display Reels
 draw_grid(screenInfo);
 draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-Screen('Flip', screenInfo.window);
+Screen('Flip', screenInfo.window);  % Flip to the screen
+KbWait(-1, 2);                      % Wait for keypress
 
-% Wait for keypress
-KbWait(-1, 2);
-
+% WIN DEMO
 % While loop to allow user to repeat instructions if desired.
 keyCode = 38;
 
 while keyCode == 38
     
-    % Display next two lines
+    % 5 - 'When you play each reel will spin just like a slot machine...'; ...
+    % 6 - 'If three symbols line up a win occurs.'; ...
     for i = 5:6
+       
         % Text draw.
         draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+        Screen('Flip', screenInfo.window);  % Flip to the screen
+        KbWait(-1, 2);                      % Wait for keypress
         
-        % Flip to the screen
-        Screen('Flip', screenInfo.window);
-        
-        % Wait for keypress
-        KbWait(-1, 2);
     end
     
     % Show reels:
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
     DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-    Screen('Flip', screenInfo.window);
-    
-    % Wait for keypress
-    KbWait(-1, 2);
+    Screen('Flip', screenInfo.window);  % Flip to the screen
+    KbWait(-1, 2);                      % Wait for keypress
     
     % Show a win
     [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
     
     % Display next two lines
+    % 7 - 'Nice!'; ...
+    % 8 - 'When a match occurs the centre symbol will display the amount won'; ...
     for i = 7:8
-        % Text draw.
         draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
-        
-        % Flip to the screen
-        Screen('Flip', screenInfo.window);
-        
-        % Wait for keypress
-        KbWait(-1, 2);
+        Screen('Flip', screenInfo.window);  % Flip to the screen
+        KbWait(-1, 2);                      % Wait for keypress
     end
     
-    % Text draw.
+    % So in the previous example the payout was .... credits
     draw_text(screenInfo, reelInfo, instructions, ...
         ['So in the previous example the payout was ' num2str(reelInfo.multipliers(end)*10) ' credits']);
-    
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
-    % Wait for keypress
-    KbWait(-1, 2);
+    Screen('Flip', screenInfo.window);  % Flip to the screen
+    KbWait(-1, 2);                      % Wait for keypress
     
     % Show previous outcome:
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
     draw_payout(screenInfo, reelInfo, 1); % Display payout
     DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-    Screen('Flip', screenInfo.window);
+    Screen('Flip', screenInfo.window);  % Flip to the screen
+    KbWait(-1, 2);                      % Wait for keypress
     
-    % Wait for keypress
-    KbWait(-1, 2);
-    
-    % Text draw.
+    % 9 - 'If the centre position doesn't match you do not win credits'
     draw_text(screenInfo, reelInfo, instructions, instructions.opening{9});
+    Screen('Flip', screenInfo.window);  % Flip to the screen
+    KbWait(-1, 2);                      % Wait for keypress
     
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
-    % Wait for keypress
-    KbWait(-1, 2);
-    
+	% LOSS DEMO
     % Show spinning reels:
     draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
+	draw_payout(screenInfo, reelInfo, 1); % Display payout
     DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-    Screen('Flip', screenInfo.window);
-    
-    % Wait for keypress
-    KbWait(-1, 2);
+    Screen('Flip', screenInfo.window);  % Flip to the screen
+    KbWait(-1, 2);                      % Wait for keypress
     
     % Show a loss
     [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
