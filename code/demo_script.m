@@ -70,109 +70,147 @@ Screen('Flip', screenInfo.window);
 % Wait for keypress
 KbWait(-1, 2);
 
-% Display next two lines
-for i = 5:6
+% While loop to allow user to repeat instructions if desired.
+keyCode = 38;
+
+while keyCode == 38
+    
+    % Display next two lines
+    for i = 5:6
+        % Text draw.
+        draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+        
+        % Flip to the screen
+        Screen('Flip', screenInfo.window);
+        
+        % Wait for keypress
+        KbWait(-1, 2);
+    end
+    
+    % Show reels:
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+    
+    % Show a win
+    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+    
+    % Display next two lines
+    for i = 7:8
+        % Text draw.
+        draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+        
+        % Flip to the screen
+        Screen('Flip', screenInfo.window);
+        
+        % Wait for keypress
+        KbWait(-1, 2);
+    end
+    
     % Text draw.
-    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+    draw_text(screenInfo, reelInfo, instructions, ...
+        ['So in the previous example the payout was ' num2str(reelInfo.multipliers(end)*10) ' credits']);
     
     % Flip to the screen
     Screen('Flip', screenInfo.window);
     
     % Wait for keypress
     KbWait(-1, 2);
-end
-
-% Show reels:
-draw_grid(screenInfo);
-draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-Screen('Flip', screenInfo.window);
-
-% Wait for keypress
-KbWait(-1, 2);
-
-% Show a win
-[reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
-
-% Display next two lines
-for i = 7:8
+    
+    % Show previous outcome:
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
+    draw_payout(screenInfo, reelInfo, 1); % Display payout
+    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
+    Screen('Flip', screenInfo.window);
+    
+    % Wait for keypress
+    KbWait(-1, 2);
+    
     % Text draw.
-    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{9});
     
     % Flip to the screen
     Screen('Flip', screenInfo.window);
     
     % Wait for keypress
     KbWait(-1, 2);
-end
-
-% Text draw.
-draw_text(screenInfo, reelInfo, instructions, ...
-    ['So in the previous example the payout was ' num2str(reelInfo.multipliers(end)*10) ' credits']);
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% Wait for keypress
-KbWait(-1, 2);
-
-% Show spinning reels:
-draw_grid(screenInfo);
-draw_shapes(screenInfo, reelInfo, reelInfo.pos.All, reelInfo.outcome.dspSymbols);
-DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-Screen('Flip', screenInfo.window);
-
-% Wait for keypress
-KbWait(-1, 2);
-
-% Text draw.
-draw_text(screenInfo, reelInfo, instructions, instructions.opening{9});
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% Wait for keypress
-KbWait(-1, 2);
-
-% Show spinning reels:
-draw_grid(screenInfo);
-draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-Screen('Flip', screenInfo.window);
-
-% Wait for keypress
-KbWait(-1, 2);
-
-% Show a loss
-[reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
-
-% Display next two lines
-for i = 10:12
-    % Text draw.
-    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
     
-    % Flip to the screen
+    % Show spinning reels:
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
     Screen('Flip', screenInfo.window);
     
     % Wait for keypress
     KbWait(-1, 2);
+    
+    % Show a loss
+    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+    
+    % :'(
+    draw_text(screenInfo, reelInfo, instructions, instructions.opening{10});
+    Screen('Flip', screenInfo.window);                  % Flip
+    KbWait(-1, 2);                                      % Wait for keypress
+    
+    end
+    
+    keyCode = 0;
+    
+    % View these instructions again?
+    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
+    Screen('Flip', screenInfo.window);
+    [~, keyCode] = KbWait(-1, 2);
+    
+    % set key down and wait for user to make key press
+    keyCode = find(keyCode);
+    
 end
 
 % ----------------------------------------------------------------------
 %% Explain Lines
 % ----------------------------------------------------------------------
 
-% Display next two lines
-for i = 1:7
+% While loop to allow user to repeat instructions if desired.
+keyCode = 38;
+
+while keyCode == 38
     
-    % Text draw.
-    draw_text(screenInfo, reelInfo, instructions, instructions.lines{i});
+    % 'There are 5 different symbols:'; ...
+    draw_text(screenInfo, reelInfo, instructions, instructions.lines{1}); % Text Draw
+    Screen('Flip', screenInfo.window);                                    % Screen flip
+    KbWait(-1, 2);                                                        % Wait for user input
     
-    % Flip to the screen
+    % Show symbols:
+    draw_text(screenInfo, reelInfo, instructions, ''); % Empty text draw to get any key text.
+    inArow(screenInfo, reelInfo);                      % Quick function to draw five symbols to centre.
+    Screen('Flip', screenInfo.window);                 % Screen flip
+    KbWait(-1, 2);                                     % Wait for user input
+    
+    % 2 - 'Match 3 of any symbol and the machine will payout!'; ...
+    % 3 - 'There are 9 different ways that a three symbol match can occur'; ...
+    for i = 2:3
+        draw_text(screenInfo, reelInfo, instructions, instructions.lines{i}); % Text Draw
+        Screen('Flip', screenInfo.window);                                    % Screen flip
+        KbWait(-1, 2);                                                        % Wait for user input
+    end
+    
+    % Throw up 9 lines one at a time
+    demo_lines(screenInfo, reelInfo, instructions);
+    
+    keyCode = 0;
+    
+    % View these instructions again?
+    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
     Screen('Flip', screenInfo.window);
+    [~, keyCode] = KbWait(-1, 2);
     
-    % Wait for keypress
-    KbWait(-1, 2);
+    % set key down and wait for user to make key press
+    keyCode = find(keyCode);
     
 end
 
@@ -180,16 +218,87 @@ end
 %% Explain Betting
 % ----------------------------------------------------------------------
 
+% While loop to allow user to repeat instructions if desired.
+keyCode = 38;
+
+while keyCode == 38
+        
+    % Reset keyCode
+    keyCode = 0;
+    
+    % Cycle through betting instructions.
+    for i = 1:length(instructions.betting)
+        draw_text(screenInfo, reelInfo, instructions, instructions.betting{i}); % Text Draw
+        Screen('Flip', screenInfo.window);                                      % Screen flip
+        KbWait(-1, 2);                                                          % Wait for user input
+    end
+    
+    % View these instructions again?
+    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
+    Screen('Flip', screenInfo.window);
+	[~, keyCode] = KbWait(-1, 2);
+    
+    % set key down and wait for user to make key press   
+    keyCode = find(keyCode);
+    
+end
+
 % ----------------------------------------------------------------------
 %% Explain Fixation Cross
 % ----------------------------------------------------------------------
+
+% While loop to allow user to repeat instructions if desired.
+keyCode = 38;
+
+while keyCode == 38
+    
+    % Reset keyCode
+    keyCode = 0;
+    
+    % Cycle through fixation cross instructions.
+    for i = 1:length(instructions.fixation)
+        
+        i = [instructions.linespace1 instructions.fixation{i} instructions.linespace2];
+
+        % Text Draw
+        DrawFormattedText(screenInfo.window, i, 'center', screenInfo.yCenter + floor(screenInfo.gridRect(4)/8) * 3); 
+
+        % Draw any key text
+        DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
+        
+        % Draw a little red dot :)
+        Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
+            get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]) ... 
+            );
+        
+        draw_fixation(screenInfo, reelInfo);    % Fixation cross
+        Screen('Flip', screenInfo.window);      % Screen flip
+        
+        KbWait(-1, 2);                          % Wait for user input
+        
+    end
+    
+    % View these instructions again?
+    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
+    Screen('Flip', screenInfo.window);
+	[~, keyCode] = KbWait(-1, 2);
+    
+    % set key down and wait for user to make key press   
+    keyCode = find(keyCode);
+    
+end
+
+% Debugging
+DrawFormattedText(screenInfo.window,'End of debugging', 'center', screenInfo.yCenter);
+Screen('Flip', screenInfo.window);
+KbWait(-1, 2);
 
 % ----------------------------------------------------------------------
 %% Practice section
 % ----------------------------------------------------------------------
 
 % This should run continously until the experimenter comes in to enter a
-% key to close the experiment. The actual experiment should start from a
+% key to begin the experiment. The actual experiment should start from a
 % seperate script.
 
 for i = 1:10
@@ -197,6 +306,10 @@ for i = 1:10
     [reelInfo, outputData] = present_trial(reelInfo, screenInfo, outputData);
     
 end
+
+% ----------------------------------------------------------------------
+%% Introduce Task
+% ----------------------------------------------------------------------
 
 % ----------------------------------------------------------------------
 %% First block

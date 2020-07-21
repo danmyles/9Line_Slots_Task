@@ -18,21 +18,26 @@ function [] = draw_text(screenInfo, reelInfo, instructions, text)
 % ----------------------------------------------------------------------
 
 % Set up text size etc.
-Screen('TextSize', screenInfo.window, 26);
-Screen('TextFont', screenInfo.window, 'Courier');
-Screen('TextColor', screenInfo.window, screenInfo.black);
+% Screen('TextSize', screenInfo.window, 26);
+% Screen('TextFont', screenInfo.window, 'Courier');
+% Screen('TextColor', screenInfo.window, screenInfo.black);
 
 % Set up text for final text display
-DrawFormattedText2([instructions.linespace1 text instructions.linespace2], ...
+
+% Note the hacky workaround for annoying psychtoolbox textbounds behaviour.
+% The | character sets the height (y dim) of every line to be the same
+% The spaces (repmat) drive the | outside of the window.
+
+DrawFormattedText2(['|' repmat(' ', 1, 200) text repmat(' ', 1, 200) '|'], ...
     'win', screenInfo.window, ...
     'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
     'xalign','center','yalign','center','xlayout','center');
 
-% Draw text to centre
+% Draw any key text
 DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
 
 % Draw a little red dot :)
 Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
-    get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 25, 25]));
+    get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]));
 
 end

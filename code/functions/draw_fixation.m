@@ -29,12 +29,13 @@ xCoords = [-fixCrossDimPix, fixCrossDimPix, 0, 0];
 yCoords = [0, 0, -fixCrossDimPix, fixCrossDimPix];
 allCoords = [xCoords; yCoords];
 
-% Draw a fixation cross in black at the centre of the screen
-% Citation
+% Draw a fixation cross at the centre of the screen
+
+% Citation: 
 
 Screen('FillOval', screenInfo.window, screenInfo.black, CenterRectOnPoint([0, 0, fixCrossDimPix, fixCrossDimPix], screenInfo.xCenter, screenInfo.yCenter), 600)
 
-Screen('DrawLines', screenInfo.window, allCoords,...
+Screen('DrawLines', screenInfo.window, allCoords, ...
     lineWidthPix, screenInfo.white, screenInfo.screenCenter, 2);
 
 Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), CenterRectOnPoint([0, 0, 6, 6], screenInfo.xCenter, screenInfo.yCenter), 60)
