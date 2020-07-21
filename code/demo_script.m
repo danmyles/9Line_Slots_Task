@@ -138,9 +138,7 @@ while keyCode == 38
     draw_text(screenInfo, reelInfo, instructions, instructions.opening{10});
     Screen('Flip', screenInfo.window);                  % Flip
     KbWait(-1, 2);                                      % Wait for keypress
-    
-    end
-    
+       
     keyCode = 0;
     
     % View these instructions again?
