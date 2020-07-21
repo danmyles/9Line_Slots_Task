@@ -73,6 +73,9 @@ keyCode = 38;
 
 while keyCode == 38
     
+    % Reset demo interator
+    reelInfo.demoIndex = 0;
+    
     % 5 - 'When you play each reel will spin just like a slot machine...'; ...
     % 6 - 'If three symbols line up a win occurs.'; ...
     for i = 5:6
@@ -238,7 +241,7 @@ while keyCode == 38
     % Cycle through fixation cross instructions.
     for i = 1:length(instructions.fixation)
         
-        i = [instructions.linespace1 instructions.fixation{i} instructions.linespace2];
+        i = ['|' repmat(' ', 1, 200) instructions.fixation{i} repmat(' ', 1, 200) '|'];
 
         % Text Draw
         DrawFormattedText(screenInfo.window, i, 'center', screenInfo.yCenter + floor(screenInfo.gridRect(4)/8) * 3); 
