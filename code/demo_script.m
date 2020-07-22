@@ -43,6 +43,12 @@ KbWait(-1, 2);
 % Get instructions and demo spins.
 setup_instructions
 
+%% TEXT SETUP 
+% Setup some default text settings for the window
+Screen('TextSize', screenInfo.window, 20);
+Screen('TextFont', screenInfo.window, 'Helvetica Neue');
+Screen('TextColor', screenInfo.window, screenInfo.black);
+
 % ----------------------------------------------------------------------
 %% Opening Instructions
 % ----------------------------------------------------------------------
