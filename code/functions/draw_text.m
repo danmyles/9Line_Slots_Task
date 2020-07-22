@@ -17,11 +17,6 @@ function [] = draw_text(screenInfo, reelInfo, instructions, text)
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-% Set up text size etc.
-% Screen('TextSize', screenInfo.window, 26);
-% Screen('TextFont', screenInfo.window, 'Courier');
-% Screen('TextColor', screenInfo.window, screenInfo.black);
-
 % Set up text for final text display
 
 % Note the hacky workaround for annoying psychtoolbox textbounds behaviour.

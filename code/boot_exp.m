@@ -79,6 +79,8 @@ outputData = outputData.(ID);
 priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
+
+
 end
 
 

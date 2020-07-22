@@ -87,10 +87,10 @@ screenInfo.hertz = FrameRate(screenInfo.window);
 screenInfo.nominalHertz = Screen('NominalFrameRate', screenInfo.window);
 
 %% TEXT SETUP 
-% Will probably relocate to a text setup function eventually
-% Setup the text type for the window
-Screen('TextFont', screenInfo.window, 'Arial');
-Screen('TextSize', screenInfo.window, 36);
+% Setup some default text settings for the window
+Screen('TextSize', screenInfo.window, 20);
+Screen('TextFont', screenInfo.window, 'Helvetica Neue');
+Screen('TextColor', screenInfo.window, screenInfo.black);
 
 %% TODO ? SAVE ALL SCREEN INFO TO FILE.
 % see: http://www.martinszinte.net/Martin_Szinte/Teaching_files/Prog_c6.pdf
