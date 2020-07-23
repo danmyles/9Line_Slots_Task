@@ -56,11 +56,8 @@ n = 100; % Number of experiments to generate (sample size plus dropout).
 
 reelInfo.nTrials = 375; % Number of trials (length of experiment)
 
-% How much was bet per line
-reelInfo.lineBet = 10;
-
-% How much was bet in total
-reelInfo.totalBet = reelInfo.lineBet * 9;
+% Choose Low bet and high bet amounts
+reelInfo.lineBet = [1, 10];
 
 % Set multipliers
 reelInfo.multipliers = [4, 8, 10, 14, 77.7];

@@ -1,27 +1,109 @@
-screenL = screenInfo.windowRect;
-screenL(3) = screenL(3)/2;
-screenR = [screenL(3), 0, screenInfo.windowRect(3:4)];
+% screenInfo, reelInfo, outcomeData
 
-rect = screenL * 0.65;
+% Needs to go in the create experiment script.
+reelInfo.nBetLow = 170;
+reelInfo.nBetHigh = 200;
+reelInfo.lineBet = [1, 10];
 
-% Left Rect
-[x, y] = RectCenter(screenL);           % Get centre of left side of screen
-rectL = CenterRectOnPoint(rect, x, y);  % Get rect coords for FrameRect
-textL = InsetRect(rectL, 75, 75);       % Inset smaller box for text draws
+% Randomly pick a side to draw each bet to
+side = randsample(1:2, 2, false);
 
-% Right Rect (as above)
-[x, y] = RectCenter(screenR);
-rectR = CenterRectOnPoint(rect, x, y);
-textR = InsetRect(rectR, 75, 75);
+% ------------------------------------------------------------------------
+% DRAW BET
+% ------------------------------------------------------------------------
 
-Screen('FrameRect', screenInfo.window, screenInfo.black, rectR, screenInfo.gridPenWidthPixel);
-Screen('FrameRect', screenInfo.window, screenInfo.black, rectL, screenInfo.gridPenWidthPixel);
+[rectR, rectL] = draw_Bet(screenInfo, reelInfo, side);
 
-DrawFormattedText2('Bet High', ... 
-                   'win', screenInfo.window, ...
-                   'winRect', textL, ...
-                   'sx', 'center', 'sy', 'top', ...
-                   
-                  )
+[~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
 
-Screen('Flip', screenInfo.window);
+% Event Marker (show bet)
+
+% ------------------------------------------------------------------------
+% WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
+% ------------------------------------------------------------------------
+
+escapeKey = KbName('ESCAPE');
+leftKey = KbName('LeftArrow');
+rightKey = KbName('RightArrow');
+
+keyCode = 0;
+keyWait = 0;
+
+while ~keyWait
+    
+    % Get Key Press Code and Timing
+    [keyDown, KeyPressTime, keyCode] = KbCheck(-1);
+    
+    % Get keyCode
+    keyCode = find(keyCode);
+    
+    if keyCode == leftKey | keyCode == rightKey
+        
+        keyWait = 1;
+        
+    elseif keyCode == escapeKey
+        
+        sca;
+        
+    end
+    
+end
+
+% Bet Choice Response Time
+BetChoiceRT = KeyPressTime - StimulusOnsetTime;
+
+% Get participant choice
+
+% If side = [1, 2] then LOW  HIGH
+% If side = [2, 1] then HIGH LOW
+
+if keyCode == leftKey
+    
+    betChoice = reelInfo.lineBet(side(1));
+    % Highlight choice with a red box
+    Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectL, screenInfo.gridPenWidthPixel .* 3)
+    
+elseif keyCode == rightKey
+    
+    betChoice = reelInfo.lineBet(side(2));
+    
+    % Highlight choice with a red box
+    Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectR, screenInfo.gridPenWidthPixel .* 3)
+    
+end
+
+% Send event marker (Bet Choice)
+
+% Highlight choice
+draw_Bet(screenInfo, reelInfo, side); % Throw last screen.
+Screen('Flip', screenInfo.window); % Flip
+
+% Update outputData
+% Index + 1 because the iterator tics over at the present trial script
+% betChoice
+% outputData.BetChoice(reelInfo.trialIndex + 1) = 
+
+% totalBet
+
+% payout
+
+% netOutcome
+
+% Betting page response time
+% outputData.BetChoiceRT(reelInfo.trialIndex + 1) = BetChoiceRT;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

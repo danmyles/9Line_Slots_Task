@@ -63,7 +63,6 @@ screenInfo.screenCenter = [screenInfo.xCenter, screenInfo.yCenter];
 
 % Set up alpha-blending for smooth (anti-aliased) lines
 Screen('BlendFunction', screenInfo.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-Screen('Preference', 'TextAntiAliasing', 2); %% TESTING THIS 
 
 % This preference setting selects the high quality text renderer 
 % each operating system:
