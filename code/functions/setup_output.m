@@ -75,15 +75,24 @@ R1 = zeros(nTrials, 1); % .
 R2 = zeros(nTrials, 1); % .
 R3 = zeros(nTrials, 1); % Bottom right
 
+% Length of time take to make betChoice
+BetChoiceRT = zeros(nTrials, 1);
+
+% Participant choice to bet high/bet low
+betChoice = zeros(nTrials, 1);
+
+% betChoice * nLines
+totalBet = zeros(nTrials, 1);
+
 % Vector to fill when trial has been displayed
 shown = zeros(nTrials, 1);
 
-outputData = table(participantID, TrialN, blockID, blockN, ... 
-    LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ...
-    cueLines, match, ... 
-    multiplier, payout, netOutcome, credits, ...
-    shown, BeginTime, LDuration, RDuration, CSTime, PRP);
-
+outputData = table(... 
+    participantID, TrialN, blockID, blockN, ...   % Exp Info
+    LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
+    cueLines, match, ...                          % Win/Loss
+    betChoice, totalBet, multiplier, payout, netOutcome, credits, ... % Bet Info
+    shown, BetChoiceRT, BeginTime, LDuration, RDuration, CSTime, PRP);% Post Display Info
 
 end
 
