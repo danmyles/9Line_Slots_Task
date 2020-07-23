@@ -54,10 +54,14 @@ writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 n = 100; % Number of experiments to generate (sample size plus dropout).
 
-reelInfo.nTrials = 375; % Number of trials (length of experiment)
+reelInfo.nTrials = 400; % Number of trials (length of experiment)
 
 % Choose Low bet and high bet amounts
 reelInfo.lineBet = [1, 10];
+
+% Set maximum number of each betting choice
+reelInfo.nBetLow = reelInfo.nTrials/2;
+reelInfo.nBetHigh = reelInfo.nTrials/2;
 
 % Set multipliers
 reelInfo.multipliers = [4, 8, 10, 14, 77.7];

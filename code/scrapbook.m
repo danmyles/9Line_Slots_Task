@@ -1,10 +1,5 @@
 % screenInfo, reelInfo, outcomeData
 
-% Needs to go in the create experiment script.
-reelInfo.nBetLow = 170;
-reelInfo.nBetHigh = 200;
-reelInfo.lineBet = [1, 10];
-
 % Randomly pick a side to draw each bet to
 side = randsample(1:2, 2, false);
 
@@ -44,6 +39,7 @@ while ~keyWait
     elseif keyCode == escapeKey
         
         sca;
+        return
         
     end
     
@@ -91,8 +87,6 @@ Screen('Flip', screenInfo.window); % Flip
 
 % Betting page response time
 % outputData.BetChoiceRT(reelInfo.trialIndex + 1) = BetChoiceRT;
-
-
 
 
 

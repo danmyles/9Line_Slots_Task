@@ -1,13 +1,16 @@
 %% Script to draw a 9 random symbols onscreen one reel at a time
 % Simple script for debugging and development
 
-%% TODO ? SAVE ALL SCREEN INFO TO FILE.
+%% TODO ? SAVE ALL SCREEN INFO TO FILE?
 
-% TO DO: Series of tests and checks for all video features to ensure
+%% TODO ? SET ALL EVENT MARKERS
+% Be sure to add markers from betChoice
+
+%% TO DO: Series of tests and checks for all video features to ensure
 % accurate timing. For instance checking the recorded inter frame interval
 % or refresh rate against those desired.
 
-% TO DO: HideCursor; To hide the mouse cursor? but this is annoying when
+%% TO DO: HideCursor; To hide the mouse cursor? but this is annoying when
 % debugging. Probably put this in setup_exp?
 
 %% TO DO SET SPEED OF PLAY
