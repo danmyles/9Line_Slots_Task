@@ -19,6 +19,8 @@ function [outputData] = setup_output(nTrials)
 % Version : 2020a
 % ----------------------------------------------------------------------
 
+% ---- Trial Info: ----
+
 % Participant Identifier
 participantID = zeros(nTrials, 1);
 
@@ -31,36 +33,7 @@ blockID = zeros(nTrials, 1);
 % Trial number within block
 blockN = zeros(nTrials, 1);
 
-% Number of cued lines during reel highlight phase ie potential wins
-cueLines = zeros(nTrials, 1);
-
-% Did a winning match occur? (0 = No, 1 = Yes)
-match = zeros(nTrials, 1);
-
-% Multiplier (if win)
-multiplier = zeros(nTrials, 1);
-
-% What was payout (0:payout_max) in cents
-payout = zeros(nTrials, 1);
-
-% net loss or payout (payout - bet) in cents
-netOutcome = zeros(nTrials, 1);
-
-% Number of credits remaining (after spin)
-credits = zeros(nTrials, 1);
-
-% Time between final stimulus onset and next trial input
-PRP = zeros(nTrials, 1);
-
-% Duration of each reel spins
-LDuration = zeros(nTrials, 1);
-RDuration = zeros(nTrials, 1);
-
-% When did trial begin
-BeginTime = zeros(nTrials, 1);
-
-% When was outcome presented
-CSTime = zeros(nTrials, 1);
+% ---- Reel stops and symbols ---- 
 
 % Reel Stoping Indices
 LStop = zeros(nTrials, 1);
@@ -75,8 +48,13 @@ R1 = zeros(nTrials, 1); % .
 R2 = zeros(nTrials, 1); % .
 R3 = zeros(nTrials, 1); % Bottom right
 
-% Length of time take to make betChoice
-BetChoiceRT = zeros(nTrials, 1);
+% Number of cued lines during reel highlight phase ie potential wins
+cueLines = zeros(nTrials, 1);
+
+% Did a winning match occur? (0 = No, 1 = Yes)
+match = zeros(nTrials, 1);
+
+% ---- Outcome and Betting Info ---- 
 
 % Participant choice to bet high/bet low
 betChoice = zeros(nTrials, 1);
@@ -84,15 +62,53 @@ betChoice = zeros(nTrials, 1);
 % betChoice * nLines
 totalBet = zeros(nTrials, 1);
 
+% Multiplier (if win)
+multiplier = zeros(nTrials, 1);
+
+% What was the payout in credits
+payout = zeros(nTrials, 1);
+
+% net outcome (payout - bet) in credits
+netOutcome = zeros(nTrials, 1);
+
+% Number of credits remaining (after bet)
+credits = zeros(nTrials, 1);
+
+% ---- Timing Info ----
+
 % Vector to fill when trial has been displayed
 shown = zeros(nTrials, 1);
 
+% Time of Bet Choice Screen flip
+BetChoiceSFT = zeros(nTrials, 1);
+
+% Length of time take to make betChoice
+BetChoiceRT = zeros(nTrials, 1);
+
+% Time of 9lST display screen flip (show reels)
+ReelSFT = zeros(nTrials, 1);
+
+% Time that spin sequence begins
+ReelSpinSFT = zeros(nTrials, 1);
+
+% Duration of each reel spin
+LStopSF = zeros(nTrials, 1);
+RStopSF = zeros(nTrials, 1);
+
+% When was outcome presented
+CSTime = zeros(nTrials, 1);
+
+% Time between final stimulus onset and next trial input
+PRP = zeros(nTrials, 1);
+
+% ------------------------------------------------------------------------
+% Add all of above into table
+% ------------------------------------------------------------------------
 outputData = table(... 
     participantID, TrialN, blockID, blockN, ...   % Exp Info
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
     betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
-    shown, BetChoiceRT, BeginTime, LDuration, RDuration, CSTime, PRP); % Post Display Info
+    shown, BetChoiceSFT, BetChoiceRT, ReelSFT, ReelSpinSFT, LStopSF, RStopSF, CSTime, PRP); % Post Display Info
 
 end
-

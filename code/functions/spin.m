@@ -128,7 +128,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
             
             if demo ~= 1
             % Enter ~ approx LDuration
-            outputData.LDuration(reelInfo.trialIndex) = GetSecs - outputData.BeginTime(reelInfo.trialIndex);
+            outputData.LStopSF(reelInfo.trialIndex) = GetSecs;
             end
             
         end
@@ -148,7 +148,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     
     if demo ~= 1
     % Enter
-    outputData.RDuration(reelInfo.trialIndex) = OnsetTime - outputData.BeginTime(reelInfo.trialIndex);
+    outputData.RStopSF(reelInfo.trialIndex) = OnsetTime;
     end
     
 end
