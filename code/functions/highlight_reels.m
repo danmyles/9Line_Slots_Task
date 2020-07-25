@@ -1,5 +1,5 @@
-function [outputData] = highlight_reels(screenInfo, reelInfo, outputData)
-    
+function [] = highlight_reels(screenInfo, reelInfo)
+    % [] = highlight_reels(screenInfo, reelInfo)
     % intersect() finds the locations in which the values of the two
     % vectors are the same.
     % C contains the identities of the matched elements, in our case the
@@ -11,7 +11,7 @@ function [outputData] = highlight_reels(screenInfo, reelInfo, outputData)
     
     [C, IA, IB] = intersect(reelInfo.outcome.dspSymbols(1:3, 1), reelInfo.outcome.dspSymbols(1:3, 3), 'stable');
     
-    % We need to add 6 to IB so that we can use it to inde gridPos
+    % We need to add 6 to IB so that we can use it to index gridPos
     IB = IB + 6;
     
     Screen('FrameRect', screenInfo.window, reelInfo.colours(C, :)', screenInfo.gridPos(IA, :)', screenInfo.gridPenWidthPixel.*3);
@@ -74,29 +74,9 @@ function [outputData] = highlight_reels(screenInfo, reelInfo, outputData)
         
     end
     
-    
-    %% Send number of matched lines to outpuData
-    
-    if reelInfo.outcome.trialNumber ~= 0
-        
-        for i = 1:numel(C)
-            
-            Ai = ismember(A, C(i));
-            Bi = ismember(B, C(i));
-                      
-            outputData.cueLines(reelInfo.outcome.trialNumber) = ...
-                outputData.cueLines(reelInfo.outcome.trialNumber) + ...
-                (sum(Ai) .* sum(Bi));
-            
-        end
-    end
-    
     % Re-draw shapes and grid 
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-    
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
     
 end
 

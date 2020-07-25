@@ -1,5 +1,5 @@
-function [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData)
-    
+function [] = highlight_reels_seq(screenInfo, reelInfo)
+    % highlight_reels_seq(screenInfo, reelInfo)
     % intersect() finds the locations in which the values of the two
     % vectors are the same.
     % C contains the identities of the matched elements, in our case the
@@ -27,14 +27,6 @@ function [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData)
         Ai = ismember(A, C(i));
         Bi = ismember(B, C(i));
         
-        
-        %% Send number of matched lines to outpuData
-        if reelInfo.outcome.trialNumber > 0
-            outputData.cueLines(reelInfo.outcome.trialNumber) = ...
-                outputData.cueLines(reelInfo.outcome.trialNumber) + ...
-                (sum(Ai) .* sum(Bi));
-        end
-        
         % Reel 1 Highlights:
         highlight_pos = screenInfo.gridPos(1:3, :);
         Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
@@ -55,7 +47,10 @@ function [outputData] = highlight_reels_seq(screenInfo, reelInfo, outputData)
         % Flip to the screen
         Screen('Flip', screenInfo.window);
         
-        WaitSecs(1);
+        % Event Marker
+        
+        % Wait time between highlighted reels
+        WaitSecs(reelInfo.timing.highlight);
         
     end
     

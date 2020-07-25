@@ -1,6 +1,6 @@
 function [k_perms] = get_permutations(n, k)
 % ----------------------------------------------------------------------
-% get_permutations()
+% get_permutations(n, k)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Generate a list of all permutations for n given k WITHOUT REPLACEMENT 

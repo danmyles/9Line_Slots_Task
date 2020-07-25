@@ -1,4 +1,4 @@
-function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
+function [reelstrip] = generate_reelstrip(n, k, repeatSymbols)
 % ----------------------------------------------------------------------
 % generate_reelstrip(n, k, reelInfo)
 % ----------------------------------------------------------------------
@@ -54,7 +54,7 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
     %% Reelstrips that include no repetition inside subsequences %%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    if reelInfo.repeatSymbols == 0
+    if repeatSymbols == 0
         
     % This part of the function will create a column vector in which each
     % symbol is represented by the numbers 1 - 5 (by default). This column
@@ -85,9 +85,8 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
     % are similar in a number of ways. For more information see citation 
     % list at the top of this function or the documentation below.
         
-        reelInfo.reelstrip(:, 1) = permutation_sequence(n, k);
-        loading_screen(screenInfo, reelInfo, 2)
-        reelInfo.reelstrip(:, 2) = permutation_sequence(n, k);       
+        reelstrip(:, 1) = permutation_sequence(n, k);
+        reelstrip(:, 2) = permutation_sequence(n, k);       
     end
     
     %% A NOTE:
@@ -99,7 +98,7 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
     %% Reelstrips that include repetition - de Bruijn sequence %%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    if reelInfo.repeatSymbols == 1
+    if repeatSymbols == 1
         
     % This part of the function will create a reel strip in which the sequence
     % of symbols along the reel will be arranged in a de Bruijn Sequence.
@@ -124,16 +123,15 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
     % For convenience I have located this function in ./functions
     % directory (deBruijn.m).
         
-        reelInfo.reelstrip(:, 1) = deBruijn(n, k);
-        loading_screen(screenInfo, reelInfo, 2)
-        reelInfo.reelstrip(:, 2) = deBruijn(n, k);
+        reelstrip(:, 1) = deBruijn(n, k);
+        reelstrip(:, 2) = deBruijn(n, k);
     end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% No consecutive repeats inside subsequences - "Kautz Sequence" %%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    if reelInfo.repeatSymbols == 2
+    if repeatSymbols == 2
     
     % This part of the function will create a reel strip in which the sequence
     % of symbols along the reel will be arranged in a Kautz Sequence.
@@ -154,9 +152,8 @@ function [reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo)
     % For convenience I have located this function in ./functions
     % directory (deBruijn.m).
         
-        reelInfo.reelstrip(:, 1) = kautz_generator(n, k);
-        loading_screen(screenInfo, reelInfo, 2)
-        reelInfo.reelstrip(:, 2) = kautz_generator(n, k);
+        reelstrip(:, 1) = kautz_generator(n, k);
+        reelstrip(:, 2) = kautz_generator(n, k);
     end
 end
 

@@ -1,5 +1,5 @@
 function [outputData] = highlight_win(screenInfo, reelInfo, outputData)
-    
+    % [outputData] = highlight_win(screenInfo, reelInfo, outputData)
     % Get the positions for winning symbols
     highlight_pos = ismember(reelInfo.outcome.dspSymbols, reelInfo.outcome.centre);
     highlight_pos = screenInfo.gridPos(highlight_pos, :);

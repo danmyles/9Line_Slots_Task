@@ -1,18 +1,17 @@
-function [reelInfo] = setup_reelInfo(screenInfo)
+function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % ----------------------------------------------------------------------
-% setup_reelInfo()
+% [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 % ----------------------------------------------------------------------
 % Goal of the function :
 %
 % SET UP THE reelInfo DATA STRUCTURE
-% This function sets up a data struct that will contain information about
-% the positions of each symbol determined by the spin, as well as
-% information neccesary to draw the shapes the draw. 
-%
 % This function and the data structure it sets up have become the 
 % defacto major config file. Many of the key information about the
 % animations and display settings used in the experiment can be tweaked
 % here
+%
+% This function sets up a data struct that will contain information about
+% neccesary to draw the shapes the draw.
 %
 % Symbol codes are loosely assigned by number of sides (exc diam)
 %
@@ -30,15 +29,19 @@ function [reelInfo] = setup_reelInfo(screenInfo)
 % reelInfo - All sub struct are listed below
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 7th April 2020
+% Last update : June 2020
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-%% SET UP reelInfo DATA STRUCTURES
-
+% -------------------------------------------------------------------------
+%% Trial Index
+% -------------------------------------------------------------------------
+reelInfo.trialIndex = 0; % iterator to keep track of trials
+reelInfo.demoIndex = 0; % Copy of the above used to progress demo/instructions
+% -------------------------------------------------------------------------
 %% Basic symbol information
-reelInfo.colours = zeros(5, 3);   % RGB values for all the colours
+% -------------------------------------------------------------------------
 reelInfo.num_symbols = 5; % Circle, diamond, triangle, rectangle, pentagon, 
 % This Rect is used to set the base dimensions used in many of our shapes.
 % Computed relative to the screen size so that the shapes are proportional accross monitors.
@@ -47,20 +50,10 @@ reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 
 %% Payout information
 % Set possible payout amounts here
-reelInfo.payout.amounts = [0, 60, 120, 500];
+reelInfo.payout.max = max(reelInfo.multipliers) .* max(reelInfo.lineBet);
 % Slightly smaller rect for payout display background
 reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
 reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
-
-%% Outcome information
-reelInfo.outcome.trialNumber = 0 ; % Set N trial to 0 (for indexing output)
-reelInfo.outcome.stops = zeros(1, 2); % Vector with stops for L and R reel
-reelInfo.outcome.centre = 0; % Symbol to be displayed at centre
-reelInfo.outcome.allstops = zeros(3, 2); % Indices for above and below the stop for reel 1 & 2
-reelInfo.outcome.dspSymbols = zeros(3, 3); % Symbols codes displayed at this spin
-reelInfo.outcome.payout = 0; % Payout amount if win occurs.
-
-reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
 
 %% Subsets of reel positions
 % To streamline drawing shapes to different combinations of reel positions
@@ -78,36 +71,49 @@ reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
 reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
 reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
+% Progress loading screen
 loading_screen(screenInfo, reelInfo, 1);
 
-%% Define reel strip pattern
+% -------------------------------------------------------------------------
+%% Outcomes
+% -------------------------------------------------------------------------
 
-n = reelInfo.num_symbols; % Number of reel symbols - "alphabet"
-k = 3; % Number of vertical reel positions - "word length"
+% I've filled all this out with a random draw. This provides a random 
+% starting position for the reels when the exp loads.
+reelInfo.outcome.stops = randi(reelInfo.reel_length, 1, 2); % Vector with stops for L and R reel
+reelInfo.outcome.centre = randi(5, 1); % Symbol to be displayed at centre
 
-% By default generate_reelstrip will generate a sequence of symbols that 
-% does not include repeats. This feature can be changed as below by
-% defining the repeatSymbols setting.
+% Indices for above and below the stop for reel 1 & 2
+for i = [1, 2]
+    reelInfo.outcome.allstops(:, i) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(i), 1, 1);
+end
 
-% Determine reelstrip structure
-%       0 = no repetition of symbols within subsequences
-%       1 = de Bruijn sequence 
-%       2 = Kautz sequence
-% For more information see documentation inside generate_reelstrip function
+% Symbol codes displayed at startup/ replaced with each spin
+reelInfo.outcome.dspSymbols = zeros(3, 3); 
+reelInfo.outcome.dspSymbols(:, 1) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 1), 1);
+reelInfo.outcome.dspSymbols(2, 2) = reelInfo.outcome.centre;
+reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 2), 2);
 
-reelInfo.repeatSymbols = 0;
+reelInfo.outcome.payout = reelInfo.payout.max; % Payout amount if win occurs on intro spin.
 
-[reelInfo] = generate_reelstrip(screenInfo, n, k, reelInfo);
+reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
 
-loading_screen(screenInfo, reelInfo, 3)
+% -------------------------------------------------------------------------
+%% Timing Information
+% -------------------------------------------------------------------------
 
-% It will be very useful to know the length of these reels for other
-% functions. By using this we can keep large amounts of the code relative
-% to allow the length of the reelstrips to change
+% Set timing information for experiment in seconds
+reelInfo.timing.jitter = 0.200; % Add 0 - 200 ms to FC/Outcome ISI
+reelInfo.timing.highlight = 0.500; % Reel Highlighting doesn't need to be jittered
+reelInfo.timing.fixationCross = 0.800; % Minimum Time for fixation cross
+reelInfo.timing.outcome = 1.000; % Minimum Time before participant can proceed to next trial
 
-reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 2);
 
+% -------------------------------------------------------------------------
 %% Define reel highlighting behaviour
+% -------------------------------------------------------------------------
 
 % This allows the user to set the highlighting behaviour of the slot game
 %       0 = No highlights (neither wins, nor potential matches)
@@ -117,6 +123,9 @@ reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 %       3 = Potential match highlighting only (wins are not highlighted)
 
 reelInfo.highlight = 3;
+
+% Progress loading screen
+loading_screen(screenInfo, reelInfo, 3);
 
 end
 

@@ -25,10 +25,7 @@ function [outputData] = draw_payout(screenInfo, reelInfo, win, outputData)
     if win == 1
         
         % Set up text for payout display
-        Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
-        Screen('TextFont', screenInfo.window, 'Garamond');
-        Screen('TextColor', screenInfo.window, screenInfo.black);
-        payoutText = ['<b>', sprintf('%g', reelInfo.outcome.payout)];
+        payoutText = ['<b><font=Helvetica Neue>', '<size=', sprintf('%g', reelInfo.payout.textSize), '>', sprintf('%g', reelInfo.outcome.payout)];
         
         % Draw winning amount to centre
         [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...

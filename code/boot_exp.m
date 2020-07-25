@@ -1,6 +1,6 @@
-function [screenInfo, reelInfo, fileInfo, outputData] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
-% boot_exp()
+% [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
 % Goal of the function :
 %  - Housekeeping
@@ -8,60 +8,64 @@ function [screenInfo, reelInfo, fileInfo, outputData] = boot_exp()
 %  - Run all setup functions
 % ----------------------------------------------------------------------
 % Input(s) :
-% NONE
+%   NONE
 % ----------------------------------------------------------------------
 % Output(s):
-% screenInfo, reelInfo
+%   screenInfo : runs the PTB screen setup and returns screen information
+%   reelInfo : load in the reelstrips and other info from config .mat file
+%   fileInfo : directory information
+%   outputData - loaded with user selected .mat file
+%   ID : Participant ID
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 24 July 2019
+% Last update : June 2020
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-% Clear the workspace and the screen
-sca;
-close all;
-clearvars;
-rng shuffle; % See notes below
+% Get directories relative to file location
+[fileInfo] = setup_file();
 
-% It is recomended that the rng be reseeded at the beginning of any MATLAB 
-% session if we wish to think of output from the rng as being
-% statistically independent. Only needs to be done once at the start of the
-% session.
+% Load in reelInfo from config file
+load([fileInfo.config 'reelInfo.mat']);
 
-% The deBruijn package notes also recomend reseeding MATLAB rng prior to 
-% each session.
+% Ask user to select inputData containing session info:
+disp([newline '    **Select Participant Input File**' newline]);
+[ID,fileInfo.input] = uigetfile('*.mat', 'Select Participant Input File', fileInfo.input);
 
-% Start a stopwatch
-tic; % you can read time elapsed since tic; with toc
+if ID == 0 
+   error('User cancelled experiment') 
+end
 
-% Set up directories relative to file location
-[fileInfo.Path, fileInfo.Name] = fileparts(mfilename('fullpath'));
-cd(fileInfo.Path); % Change working directory
-addpath([fileInfo.Path filesep 'functions' filesep]); % add functions folder top path
+% We pulled out the path from the UI selected file. Updates fileInfo if neccesary
+% Clean up fileInfo.input
+[fileInfo.input, ID, EXT] = fileparts([fileInfo.input ID]);
+fileInfo.input = [fileInfo.input filesep];
 
-% Add remaining directories    
-[fileInfo] = setup_file(fileInfo);
+% Load up participant experiment data
+outputData = load([fileInfo.input ID EXT], ID);
+outputData = outputData.(ID);
 
 % Set up screen
 [screenInfo] = setup_screen();
-
 
 % Set up grid
 [screenInfo] = setup_grid(screenInfo);
 
 % Set up reel.Info struct
-[reelInfo] = setup_reelInfo(screenInfo);
-
-% May put screen launch here...?
-
-% Prefill and setup outputData table
-[outputData] = setup_output();
+[reelInfo] = setup_reelInfo(screenInfo, reelInfo);
 
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
+
+
 end
+
+
+
+
+
+
 

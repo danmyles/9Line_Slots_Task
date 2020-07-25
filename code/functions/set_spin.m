@@ -1,4 +1,5 @@
 function [output] = set_spin(reelInfo, spin_from, spin_to)
+    % [output] = set_spin(reelInfo, spin_from, spin_to)
     % This function generates a vector that contains descending consecutive
     % integers between the start value and end value. With the added condition
     % that if values become larger reel_length they will start again at 1.

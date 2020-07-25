@@ -63,7 +63,6 @@ screenInfo.screenCenter = [screenInfo.xCenter, screenInfo.yCenter];
 
 % Set up alpha-blending for smooth (anti-aliased) lines
 Screen('BlendFunction', screenInfo.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-Screen('Preference', 'TextAntiAliasing', 2); %% TESTING THIS 
 
 % This preference setting selects the high quality text renderer 
 % each operating system:
@@ -85,12 +84,6 @@ screenInfo.hertz = FrameRate(screenInfo.window);
 % This is nothing to worry about. See Screen FrameRate? and Screen
 % GetFlipInterval? for more information
 screenInfo.nominalHertz = Screen('NominalFrameRate', screenInfo.window);
-
-%% TEXT SETUP 
-% Will probably relocate to a text setup function eventually
-% Setup the text type for the window
-Screen('TextFont', screenInfo.window, 'Arial');
-Screen('TextSize', screenInfo.window, 36);
 
 %% TODO ? SAVE ALL SCREEN INFO TO FILE.
 % see: http://www.martinszinte.net/Martin_Szinte/Teaching_files/Prog_c6.pdf

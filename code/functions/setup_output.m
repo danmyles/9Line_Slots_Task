@@ -1,6 +1,6 @@
-function [outputData] = setup_output()
+function [outputData] = setup_output(nTrials)
 % ----------------------------------------------------------------------
-% setup_output()
+% setup_output(nTrials)
 % ----------------------------------------------------------------------
 % Goal of the function :
 %  - Define total trials
@@ -19,60 +19,103 @@ function [outputData] = setup_output()
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-%% How many trials are there in total?
-% May want to fill this filled using information from trial structures
-n = 500;
+% ---- Trial Info: ----
+
+% Participant Identifier
+participantID = zeros(nTrials, 1);
 
 % Total number of trials
-TrialN = [1:n]';
+TrialN = [1:nTrials]';
 
-% Block Identifier (0 = Practice, 1 = 1 lines, 9 = 9 lines etc)
-blockID = zeros(n, 1);
+% Block Identifier (Will probably run in blocks of 50 or so with breaks)
+blockID = zeros(nTrials, 1);
 
 % Trial number within block
-blockN = zeros(n, 1);
+blockN = zeros(nTrials, 1);
 
-% Number of cued lines during reel highlight phase
-cueLines = zeros(n, 1);
+% ---- Reel stops and symbols ---- 
 
-% Did a match occur? (0 = No, 1 = Yes)
-match = zeros(n, 1);
-
-% How much was bet in cents
-totalBet = zeros(n, 1);
-
-% What was payout (0:payout_max) in cents
-payout = zeros(n, 1);
-
-% net loss or payout (payout - bet) in cents
-netOutcome = zeros(n, 1);
-
-% Number of credits remaining (after spin)
-credits = zeros(n, 1);
-
-% Time between final stimulus onset and next trial input
-PRPTime = zeros(n, 1);
+% Reel Stoping Indices
+LStop = zeros(nTrials, 1);
+RStop = zeros(nTrials, 1);
 
 % Symbol codes for each position
-L1 = zeros(n, 1); % Top left
-L2 = zeros(n, 1); % .
-L3 = zeros(n, 1); % .
-CS = zeros(n, 1); % Centre position
-R1 = zeros(n, 1); % .
-R2 = zeros(n, 1); % .
-R3 = zeros(n, 1); % Bottom right
+L1 = zeros(nTrials, 1); % Top left
+L2 = zeros(nTrials, 1); % .
+L3 = zeros(nTrials, 1); % .
+CS = zeros(nTrials, 1); % Centre position
+R1 = zeros(nTrials, 1); % .
+R2 = zeros(nTrials, 1); % .
+R3 = zeros(nTrials, 1); % Bottom right
+
+% Number of cued lines during reel highlight phase ie potential wins
+cueLines = zeros(nTrials, 1);
+
+% Did a winning match occur? (0 = No, 1 = Yes)
+match = zeros(nTrials, 1);
+
+% ---- Outcome and Betting Info ---- 
+
+% Participant choice to bet high/bet low
+betChoice = zeros(nTrials, 1);
+
+% betChoice * nLines
+totalBet = zeros(nTrials, 1);
+
+% Multiplier (if win)
+multiplier = zeros(nTrials, 1);
+
+% What was the payout in credits
+payout = zeros(nTrials, 1);
+
+% net outcome (payout - bet) in credits
+netOutcome = zeros(nTrials, 1);
+
+% Number of credits remaining (after bet)
+credits = zeros(nTrials, 1);
+
+% ---- Timing Info ----
 
 % Vector to fill when trial has been displayed
-shown = zeros(n, 1);
+shown = zeros(nTrials, 1);
 
-outputData = table(TrialN, blockID, blockN, cueLines, match, totalBet, ...
-    payout, credits, netOutcome, PRPTime, ...
-    L1, L2, L3, CS, R1, R2, R3, ...
-    shown);
+% Time of Bet Choice Screen flip
+BetChoiceSFT = zeros(nTrials, 1);
 
-%% Create trial and block structure
+% Length of time take to make betChoice
+BetChoiceRT = zeros(nTrials, 1);
 
+% Time of 9lST display screen flip (show reels)
+ReelSFT = zeros(nTrials, 1);
 
+% Duration of each reel spin
+LStopSF = zeros(nTrials, 1);
+RStopSF = zeros(nTrials, 1);
+
+% Reel highlight timing
+HighlightEnd = zeros(nTrials, 1);
+
+% When was outcome presented
+FCTime = zeros(nTrials, 1);
+
+% When was outcome presented
+CSTime = zeros(nTrials, 1);
+
+% Time between final stimulus onset and next trial input
+PRP = zeros(nTrials, 1);
+
+% Time at trial end.
+TrialEnd = zeros(nTrials, 1);
+
+% ------------------------------------------------------------------------
+% Add all of above into table
+% ------------------------------------------------------------------------
+outputData = table(... 
+    participantID, TrialN, blockID, blockN, ...   % Exp Info
+    LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
+    cueLines, match, ...                          % Win/Loss
+    betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
+    shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
+    HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 
 end
-
