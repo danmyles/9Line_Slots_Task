@@ -1,7 +1,3 @@
-% screenInfo, reelInfo, outcomeData
-
-
-
 
 
 

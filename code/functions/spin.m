@@ -39,10 +39,10 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     % few operations to simplyfy things.
     
     % Fill in the value if missing:
-    if ~exist("demo")
+    if nargin < 4
         demo = 0;
     end
-    
+       
     % Get the symbols preceeding outcome on the reel strip to spin
     % through
     left = expandStopINDEX(reelInfo, reelInfo.outcome.stops(1), 1, 20)';

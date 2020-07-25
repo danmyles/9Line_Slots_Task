@@ -1,4 +1,4 @@
-function [rectR, rectL] = draw_Bet(screenInfo, reelInfo, side)
+function [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side)
 % ------------------------------------------------------------------------
 % draw_Bet(screenInfo, reelInfo, side)
 % ------------------------------------------------------------------------

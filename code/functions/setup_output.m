@@ -27,7 +27,7 @@ participantID = zeros(nTrials, 1);
 % Total number of trials
 TrialN = [1:nTrials]';
 
-% Block Identifier (0 = Practice, 9 = 9 lines etc)
+% Block Identifier (Will probably run in blocks of 50 or so with breaks)
 blockID = zeros(nTrials, 1);
 
 % Trial number within block

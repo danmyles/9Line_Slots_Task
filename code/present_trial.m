@@ -1,4 +1,4 @@
-function [reelInfo, outputData] = present_trial(reelInfo, screenInfo, outputData)
+function [reelInfo, outputData] = present_trial(screenInfo, reelInfo, outputData)
 % ----------------------------------------------------------------------
 % [reelInfo, outputData] = present_trial(reelInfo)
 % ----------------------------------------------------------------------
@@ -49,11 +49,6 @@ function [reelInfo, outputData] = present_trial(reelInfo, screenInfo, outputData
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-% Get BeginTime
-outputData.BeginTime(reelInfo.trialIndex) = GetSecs;
-
-%%%%%%%%%
-
 % ------------------------------------------------------------------------
 % DRAW BETTING SCREEN
 % ------------------------------------------------------------------------
@@ -61,11 +56,11 @@ outputData.BeginTime(reelInfo.trialIndex) = GetSecs;
 % Randomly pick a side to draw each bet to
 side = randsample(1:2, 2, false);
 
-[rectR, rectL] = draw_Bet(screenInfo, reelInfo, side);
+[rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side);
 
-[~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
+[~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
 
-% Event Marker (show bet)
+% EVENT MARKER (BET SCREEN FLIP)
 
 % ------------------------------------------------------------------------
 % WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
@@ -81,7 +76,7 @@ keyWait = 0;
 while ~keyWait
     
     % Get Key Press Code and Timing
-    [keyDown, KeyPressTime, keyCode] = KbCheck(-1);
+    [~, KeyPressTime, keyCode] = KbCheck(-1);
     
     % Get keyCode
     keyCode = find(keyCode);
@@ -89,6 +84,8 @@ while ~keyWait
     if keyCode == leftKey | keyCode == rightKey
         
         keyWait = 1;
+        
+        % EVENT MARKER (Bet Choice)
         
     elseif keyCode == escapeKey
         
@@ -100,98 +97,80 @@ while ~keyWait
 end
 
 % ------------------------------------------------------------------------
+% UPDATE reelInfo.trialIndex
+% ------------------------------------------------------------------------
+
+reelInfo.trialIndex = (reelInfo.trialIndex + 1);
+
+% ------------------------------------------------------------------------
 % UPDATE outputData
 % ------------------------------------------------------------------------
 
-% Bet Choice Response Time
-BetChoiceRT = KeyPressTime - StimulusOnsetTime;
-
-% Get participant choice
-
+% Get participant choice:
 % If side = [1, 2] then LOW  HIGH
 % If side = [2, 1] then HIGH LOW
 
 if keyCode == leftKey
     
     betChoice = reelInfo.lineBet(side(1));
-    % Highlight choice with a red box
+    % Highlight left choice with a red box
     Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectL, screenInfo.gridPenWidthPixel .* 3)
     
 elseif keyCode == rightKey
     
     betChoice = reelInfo.lineBet(side(2));
     
-    % Highlight choice with a red box
+    % Highlight right choice with a red box
     Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectR, screenInfo.gridPenWidthPixel .* 3)
     
 end
 
-% Send event marker (Bet Choice)
-
-% Highlight choice
-draw_Bet(screenInfo, reelInfo, side); % Throw last screen.
-Screen('Flip', screenInfo.window); % Flip
-
-%% ALSO REDUCE CREDIT COUNT AFTER CHOICE!
-
-%%
-
-    % Bump previous reelInfo.outcome to reelInfo.previous
-    reelInfo.previous = reelInfo.outcome;
-    
-    % Get payout amount (if win occurs)
-    reelInfo.outcome.payout = outputData.payout(reelInfo.trialIndex);
-    
-    % Get reel position to for each reelstrip
-    reelInfo.outcome.stops(1) = outputData.LStop(reelInfo.trialIndex);
-    reelInfo.outcome.stops(2) = outputData.RStop(reelInfo.trialIndex);
-       
-    % Get centre symbol
-    reelInfo.outcome.centre = outputData.CS(reelInfo.trialIndex);
-    
-    % Get win/match T/F value
-    reelInfo.outcome.match = outputData.match(reelInfo.trialIndex);
-
-
-%%
-
-% Update reelInfo trialIndex iterator
-reelInfo.trialIndex = (reelInfo.trialIndex + 1);
+totalBet = betChoice * 9;
 
 % Update credits
-outputEmpty.credits(trialIndex:height(outputEmpty)) = (outputEmpty.credits(trialIndex) + outputEmpty.netOutcome(trialIndex));
-
-if outputEmpty.match(reelInfo.trialIndex) == 1
-    
-    outputEmpty.payout(reelInfo.trialIndex) = outputEmpty.multiplier(reelInfo.trialIndex) .* reelInfo.lineBet;
-    outputEmpty.netOutcome(reelInfo.trialIndex) = outputEmpty.payout(reelInfo.trialIndex) - reelInfo.totalBet;
-    
+if reelInfo.trialIndex == 1
+    outputData.credits(reelInfo.trialIndex) = reelInfo.credits - totalBet;
 else
-    outputEmpty.netOutcome(reelInfo.trialIndex) = outputEmpty.netOutcome(reelInfo.trialIndex) - reelInfo.totalBet;
+    outputData.credits(reelInfo.trialIndex) = outputData.credits(reelInfo.trialIndex - 1) - totalBet;
 end
+   
+% Flip screen with choice highlighted and credits updated
+draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
+Screen('Flip', screenInfo.window); % Flip
 
+% Update remaining betting information.
+outputData.betChoice(reelInfo.trialIndex) = betChoice;
+outputData.totalBet(reelInfo.trialIndex) = totalBet;
+outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betChoice(reelInfo.trialIndex);
+outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialIndex) - outputData.totalBet(reelInfo.trialIndex);
 
-
-% Update outputData
-
-% betChoice
-% outputData.BetChoice(reelInfo.trialIndex + 1) = 
-
-% totalBet
-
-% payout
-
-% netOutcome
-
-% Betting page response time
-% outputData.BetChoiceRT(reelInfo.trialIndex + 1) = BetChoiceRT;
-
+% Add timing data to output 
+outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT;
+outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
 
 % ------------------------------------------------------------------------
 % END BET SCREEN BEGIN REEL SPIN SEQUENCE
 % ------------------------------------------------------------------------
 
-%%%%%%%%%
+% ------------------------------------------------------------------------
+% CUE UP NEXT REELINFO INFO...
+% ------------------------------------------------------------------------
+
+% Bump previous reelInfo.outcome to reelInfo.previous
+reelInfo.previous = reelInfo.outcome;
+
+% Get payout amount (if win occurs)
+reelInfo.outcome.payout = outputData.payout(reelInfo.trialIndex);
+
+% Get reel position to for each reelstrip
+reelInfo.outcome.stops(1) = outputData.LStop(reelInfo.trialIndex);
+reelInfo.outcome.stops(2) = outputData.RStop(reelInfo.trialIndex);
+
+% Get centre symbol
+reelInfo.outcome.centre = outputData.CS(reelInfo.trialIndex);
+
+% Get win/match T/F value
+reelInfo.outcome.match = outputData.match(reelInfo.trialIndex);
 
 % Find all indices for above and below the stops on reel 1 & 2
 % Then update reel information
@@ -208,12 +187,12 @@ reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops
 % SPIN REELS
 % ----------------------------------------------------------------------
 
-% Event Marker (Spin Animation Begin)
+% EVENT MARKER (Spin Animation Begin)
 
 % Spin reels
 [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
 
-% Event Marker (Spin Animation Complete)
+% EVENTMARKER (Spin Animation Complete)
 
 % Wait ISI
 WaitSecs(reelInfo.timing.highlight);
@@ -291,7 +270,7 @@ draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.
 % Flip to the screen
 Screen('Flip', screenInfo.window);
 
-% Event marker (Highlighting Complete)
+% EVENT MARKER (Highlighting Complete)
 
 end
 
@@ -310,7 +289,7 @@ draw_fixation(screenInfo, reelInfo);
 % Flip to the screen
 Screen('Flip', screenInfo.window);
 
-% Send event marker (Fixation Cross)
+% EVENT MARKER (Fixation Cross)
 
 % Wait ISI
 WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
@@ -350,7 +329,7 @@ end
 % Flip to the screen (outcome stimulus, payout, win highlights)
 [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
 
-% Send event marker (Outcome Stimulus)
+% EVENT MARKER (Outcome Stimulus)
 
 keyDown = 0;
 

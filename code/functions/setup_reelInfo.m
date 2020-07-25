@@ -50,7 +50,7 @@ reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 
 %% Payout information
 % Set possible payout amounts here
-reelInfo.payout.amounts = reelInfo.multipliers .* reelInfo.lineBet;
+reelInfo.payout.max = max(reelInfo.multipliers) .* max(reelInfo.lineBet);
 % Slightly smaller rect for payout display background
 reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
 reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
@@ -94,7 +94,7 @@ reelInfo.outcome.dspSymbols(:, 1) = reelInfo.reelstrip(reelInfo.outcome.allstops
 reelInfo.outcome.dspSymbols(2, 2) = reelInfo.outcome.centre;
 reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops(:, 2), 2);
 
-reelInfo.outcome.payout = max(reelInfo.payout.amounts); % Payout amount if win occurs on intro spin.
+reelInfo.outcome.payout = reelInfo.payout.max; % Payout amount if win occurs on intro spin.
 
 reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
 
