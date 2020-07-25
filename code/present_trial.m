@@ -72,6 +72,7 @@ rightKey = KbName('RightArrow');
 
 keyCode = 0;
 keyWait = 0;
+keyDown = 0;
 
 while ~keyWait
 
@@ -345,7 +346,9 @@ end
 % EVENT MARKER (Outcome Stimulus)
 
 keyDown = 0;
+KeyPressTime = 0;
 
+% Wait for key press
 while(~keyDown)
 
     [keyDown, KeyPressTime] = KbCheck(-1);
@@ -376,10 +379,16 @@ while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome
     WaitSecs(0.001); % delay to prevent CPU hogging
 end
 
+% Wait until key comes back up before starting next trial
+while keyDown
+    [keyDown, KeyUpTime] = KbCheck(-1);
+     WaitSecs(0.001); % delay to prevent CPU hogging
+end
+
 % EVENT MARKER – TRIAL END
 
 % Trial End Time to outputData
-outputData.TrialEnd(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
+outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
 
 end
 

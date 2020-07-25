@@ -309,9 +309,17 @@ end
 % Debugging
 DrawFormattedText(screenInfo.window,'End of debugging', 'center', screenInfo.yCenter);
 Screen('Flip', screenInfo.window);
-KbWait(-1, 2);
 
-sessionInfo.instrEndT = sessionInfo.start - GetSecs;
+% Wait for key press:
+keyDown = 1;
+
+% Wait until key comes back up before starting first trial
+while keyDown
+    [keyDown, KeyUpTime] = KbCheck(-1);
+     WaitSecs(0.001); % delay to prevent CPU hogging
+end
+
+sessionInfo.instrEndT = sessionInfo.start - KeyUpTime;
 
 % ----------------------------------------------------------------------
 %% Practice section
