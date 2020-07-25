@@ -149,6 +149,9 @@ outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialInd
 outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT - sessionInfo.start;
 outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
 
+% Allow long enough to view change to screen (highlight and counter)
+WaitSecs(reelInfo.timing.highlight);
+
 % ------------------------------------------------------------------------
 % END BET SCREEN BEGIN REEL SPIN SEQUENCE
 % ------------------------------------------------------------------------
@@ -288,9 +291,12 @@ draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.
 draw_fixation(screenInfo, reelInfo);
 
 % Flip to the screen
-Screen('Flip', screenInfo.window);
+[~, FixationOnsetTime] = Screen('Flip', screenInfo.window);
 
 % EVENT MARKER (Fixation Cross)
+
+% Get FC Timing
+outputData.FCTime(reelInfo.trialIndex) = FixationOnsetTime - sessionInfo.start;
 
 % Wait ISI
 WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));

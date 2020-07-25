@@ -321,9 +321,9 @@ sessionInfo.instrEndT = sessionInfo.start - GetSecs;
 % key to begin the experiment. The actual experiment should start from a
 % seperate script.
 
-for i = 1:2
+for i = 1:3
     
-    [reelInfo, outputData] = present_trial(screenInfo, reelInfo, outputData);
+    [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
     
 end
 

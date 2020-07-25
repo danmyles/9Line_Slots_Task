@@ -96,6 +96,9 @@ LStopSF = zeros(nTrials, 1);
 RStopSF = zeros(nTrials, 1);
 
 % When was outcome presented
+FCTime = zeros(nTrials, 1);
+
+% When was outcome presented
 CSTime = zeros(nTrials, 1);
 
 % Time between final stimulus onset and next trial input
@@ -112,6 +115,7 @@ outputData = table(...
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
     betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
-    shown, BetChoiceSFT, BetChoiceRT, ReelSFT, ReelSpinSFT, LStopSF, RStopSF, CSTime, PRP, TrialEnd); % Post Display Info
+    shown, BetChoiceSFT, BetChoiceRT, ReelSFT, ReelSpinSFT, LStopSF, RStopSF, ... 
+    FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 
 end
