@@ -52,7 +52,7 @@ writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 %% Generate Experiment Outcomes
 % -------------------------------------------------------------------------
 
-n = 100; % Number of experiments to generate (sample size plus dropout).
+n = 40; % Number of experiments to generate (sample size plus dropout).
 
 reelInfo.nTrials = 400; % Number of trials (length of experiment)
 
@@ -79,7 +79,10 @@ reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 outputEmpty.credits(1) = reelInfo.credits;
 
 %% Generate random reel index and fill outputData
-outputEmpty(:, 11:12) = array2table(randi(reelInfo.reel_length, reelInfo.nTrials, 2));
+% Get stop columns by column name:
+outputEmpty(:, contains(outputEmpty.Properties.VariableNames, 'Stop')) = ... 
+    array2table(randi(reelInfo.reel_length, reelInfo.nTrials, 2));
+    % ^ Randomly draw a stop position for each reel repeat x nTrials ...
 
 % Add central symbol
 outputEmpty.CS(:) = randi(5, reelInfo.nTrials, 1);
@@ -94,34 +97,37 @@ for i = 1:reelInfo.nTrials
     % Then index the reel strip using this vector to grab the symbols and
     % enter them to the output table.
     
+    % Two patterns to select columns by name:
+    patternL = ["L1","L2", "L3"];
+    patternR = ["R1","R2", "R3"];
+    
     % Left
-    outputEmpty(i, 13:15) = ... 
+    outputEmpty(i, contains(outputEmpty.Properties.VariableNames, patternL)) = ...
         array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.LStop(i), 1, 1), 1)');
     
-    % Right
-    outputEmpty(i, 17:19) = ... 
+    % Right 
+    outputEmpty(i, contains(outputEmpty.Properties.VariableNames, patternR)) = ...
         array2table(reelInfo.reelstrip(expandStopINDEX(reelInfo, outputEmpty.RStop(i), 1, 1), 2)');
         
     % Find potential matches, sum and add to output
-    [LIA, LOCB] = ismember(outputEmpty{i, 13:15}, outputEmpty{i, 17:19});
+    [LIA, LOCB] = ismember(... 
+        outputEmpty{i, contains(outputEmpty.Properties.VariableNames, patternL)}, ... 
+        outputEmpty{i, contains(outputEmpty.Properties.VariableNames, patternR)} ... 
+        );
+
+    % Number of lines to cue:
     outputEmpty.cueLines(i) = sum(LIA);
     
     % Check if win
-    outputEmpty.match(i) = ismember(outputEmpty.CS(i), outputEmpty{i, 13:15}(LIA));
+    outputEmpty.match(i) = ismember(outputEmpty.CS(i), ... 
+        outputEmpty{i, contains(outputEmpty.Properties.VariableNames, patternL)}(LIA));
     
-    % Add data for wins (payout etc)
+    % Randomly select a win multiplier (if a match occurs)
     if outputEmpty.match(i) == 1
         
         outputEmpty.multiplier(i) = randsample(reelInfo.multipliers, 1);
-        outputEmpty.payout(i) = outputEmpty.multiplier(i) .* reelInfo.lineBet;
-        outputEmpty.netOutcome(i) = outputEmpty.payout(i) - reelInfo.totalBet;
         
-    else
-        outputEmpty.netOutcome(i) = outputEmpty.netOutcome(i) - reelInfo.totalBet;
     end
-    
-    % Update credits
-    outputEmpty.credits(i:height(outputEmpty)) = (outputEmpty.credits(i) + outputEmpty.netOutcome(i));
     
 end
 

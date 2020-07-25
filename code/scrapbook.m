@@ -74,6 +74,20 @@ end
 draw_Bet(screenInfo, reelInfo, side); % Throw last screen.
 Screen('Flip', screenInfo.window); % Flip
 
+% Update # credits remaining
+% outputEmpty.credits
+
+        outputEmpty.payout(i) = outputEmpty.multiplier(i) .* reelInfo.lineBet;
+        outputEmpty.netOutcome(i) = outputEmpty.payout(i) - reelInfo.totalBet;
+        
+    else
+        outputEmpty.netOutcome(i) = outputEmpty.netOutcome(i) - reelInfo.totalBet;
+    end
+    
+    % Update credits
+    outputEmpty.credits(i:height(outputEmpty)) = (outputEmpty.credits(i) + outputEmpty.netOutcome(i));
+    
+
 % Update outputData
 % Index + 1 because the iterator tics over at the present trial script
 % betChoice

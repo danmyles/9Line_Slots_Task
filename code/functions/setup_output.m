@@ -91,8 +91,8 @@ outputData = table(...
     participantID, TrialN, blockID, blockN, ...   % Exp Info
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
-    betChoice, totalBet, multiplier, payout, netOutcome, credits, ... % Bet Info
-    shown, BetChoiceRT, BeginTime, LDuration, RDuration, CSTime, PRP);% Post Display Info
+    betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
+    shown, BetChoiceRT, BeginTime, LDuration, RDuration, CSTime, PRP); % Post Display Info
 
 end
 
