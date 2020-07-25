@@ -80,6 +80,9 @@ names = join([repmat(["Block_"], 9, 1), names], "");
 sessionInfo.timing.Properties.VariableNames = names;
 sessionInfo.timing.Properties.RowNames = ["BlockStart", "BlockEnd", "BreakStart", "BreakEnd"];
 
+% Add participant ID to sessionInfo
+sessionInfo.participantID = ID;
+
 % ----------------------------------------------------------------------
 % Task Instructions
 % ----------------------------------------------------------------------
