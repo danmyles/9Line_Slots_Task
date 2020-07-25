@@ -54,7 +54,12 @@ writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 n = 40; % Number of experiments to generate (sample size plus dropout).
 
-reelInfo.nTrials = 400; % Number of trials (length of experiment)
+% Block structure
+reelInfo.blocksize = 50;
+reelInfo.blockN = 9;
+
+% Number of trials (length of experiment)
+reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
 
 % Choose Low bet and high bet amounts
 reelInfo.lineBet = [1, 10];
@@ -64,15 +69,13 @@ reelInfo.nBetLow = reelInfo.nTrials/2;
 reelInfo.nBetHigh = reelInfo.nTrials/2;
 
 % Set multipliers
-reelInfo.multipliers = [4, 8, 10, 14, 77.7];
+reelInfo.multipliers = [5, 8, 10, 14, 70];
 
 % Set credits
 reelInfo.credits = 20000;
 
 % Get reel length to allow relative scripting for length of the reelstrips
 reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
-
-%% TODO: Create trial and block structure
 
 % Load in empty output table
 [outputEmpty] = setup_output(reelInfo.nTrials);
@@ -83,6 +86,11 @@ pattern = ["LStop","RStop"];
 outputEmpty(:, ismember(outputEmpty.Properties.VariableNames, pattern)) = ... 
     array2table(randi(reelInfo.reel_length, reelInfo.nTrials, 2));
     % ^ Randomly draw a stop position for each reel repeat x nTrials ...
+
+% Fill out Block N
+outputEmpty.blockN = repmat([1:reelInfo.blocksize]', reelInfo.blockN, 1);
+% Fill out Block ID
+outputEmpty.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
 
 % Add central symbol
 outputEmpty.CS(:) = randi(5, reelInfo.nTrials, 1);

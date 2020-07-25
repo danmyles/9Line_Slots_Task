@@ -62,9 +62,7 @@ sessionInfo.start = GetSecs;
 
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);
-
-% Get instructions and demo spins.
-[instructions, demoSequence] = setup_instructions(reelInfo, outputData);
+loading_screen(screenInfo, reelInfo, 5);
 
 %% TEXT SETUP 
 % Setup some default text settings for the window
@@ -72,286 +70,95 @@ Screen('TextSize', screenInfo.window, 20);
 Screen('TextFont', screenInfo.window, 'Helvetica Neue');
 Screen('TextColor', screenInfo.window, screenInfo.black);
 
-% Finished Load screen
-loading_screen(screenInfo, reelInfo, 5);
+%% Empty Table for block timing info
+% Empty table
+sessionInfo.timing = array2table(zeros(4, 9));
 
-% Wait for a key press
-KbWait(-1, 2);
-
-% ----------------------------------------------------------------------
-%% Opening Instructions
-% ----------------------------------------------------------------------
-
-% 1 - 'Hello.'
-% 2 - 'Welcome to the 9 Line Slot Task.'
-% 3 - 'In this experiment you will play a simple slot machine.'
-% 4 - 'It looks like this:'
-for i = 1:4
-    
-    % Text draw.
-    draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
-    Screen('Flip', screenInfo.window);  % Flip to the screen
-    KbWait(-1, 2);                      % Wait for keypress
-    
-end
-
-% Display Reels
-draw_grid(screenInfo);
-draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-Screen('Flip', screenInfo.window);  % Flip to the screen
-KbWait(-1, 2);                      % Wait for keypress
-
-% WIN DEMO
-% While loop to allow user to repeat instructions if desired.
-keyCode = 38;
-
-while keyCode == 38
-    
-    % Reset demo interator
-    reelInfo.demoIndex = 0;
-    
-    % 5 - 'When you play each reel will spin just like a slot machine...'; ...
-    % 6 - 'If three symbols line up a win occurs.'; ...
-    for i = 5:6
-       
-        % Text draw.
-        draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
-        Screen('Flip', screenInfo.window);  % Flip to the screen
-        KbWait(-1, 2);                      % Wait for keypress
-        
-    end
-    
-    % Show reels:
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-    Screen('Flip', screenInfo.window);  % Flip to the screen
-    KbWait(-1, 2);                      % Wait for keypress
-    
-    % Show a win
-    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
-    
-    % Display next two lines
-    % 7 - 'Nice!'; ...
-    % 8 - 'When a match occurs the centre symbol will display the amount won'; ...
-    for i = 7:8
-        draw_text(screenInfo, reelInfo, instructions, instructions.opening{i});
-        Screen('Flip', screenInfo.window);  % Flip to the screen
-        KbWait(-1, 2);                      % Wait for keypress
-    end
-    
-    % So in the previous example the payout was .... credits
-    draw_text(screenInfo, reelInfo, instructions, ...
-        ['So in the previous example the payout was ' num2str(reelInfo.multipliers(end)*10) ' credits']);
-    Screen('Flip', screenInfo.window);  % Flip to the screen
-    KbWait(-1, 2);                      % Wait for keypress
-    
-    % Show previous outcome:
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
-    draw_payout(screenInfo, reelInfo, 1); % Display payout
-    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-    Screen('Flip', screenInfo.window);  % Flip to the screen
-    KbWait(-1, 2);                      % Wait for keypress
-    
-    % 9 - 'If the centre position doesn't match you do not win credits'
-    draw_text(screenInfo, reelInfo, instructions, instructions.opening{9});
-    Screen('Flip', screenInfo.window);  % Flip to the screen
-    KbWait(-1, 2);                      % Wait for keypress
-    
-	% LOSS DEMO
-    % Show spinning reels:
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
-	draw_payout(screenInfo, reelInfo, 1); % Display payout
-    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-    Screen('Flip', screenInfo.window);  % Flip to the screen
-    KbWait(-1, 2);                      % Wait for keypress
-    
-    % Show a loss
-    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
-    
-    % :'(
-    draw_text(screenInfo, reelInfo, instructions, instructions.opening{10});
-    Screen('Flip', screenInfo.window);                  % Flip
-    KbWait(-1, 2);                                      % Wait for keypress
-       
-    keyCode = 0;
-    
-    % View these instructions again?
-    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
-    Screen('Flip', screenInfo.window);
-    [~, keyCode] = KbWait(-1, 2);
-    
-    % set key down and wait for user to make key press
-    keyCode = find(keyCode);
-    
-end
+% Create and set VarNames
+names = num2str([1:reelInfo.blockN]');
+names = join([repmat(["Block_"], 9, 1), names], "");
+sessionInfo.timing.Properties.VariableNames = names;
+sessionInfo.timing.Properties.RowNames = ["BlockStart", "BlockEnd", "BreakStart", "BreakEnd"];
 
 % ----------------------------------------------------------------------
-%% Explain Lines
+% Task Instructions
 % ----------------------------------------------------------------------
 
-% While loop to allow user to repeat instructions if desired.
-keyCode = 38;
+present_instructions(screenInfo, reelInfo, outputData);
 
-while keyCode == 38
-    
-    % 'There are 5 different symbols:'; ...
-    draw_text(screenInfo, reelInfo, instructions, instructions.lines{1}); % Text Draw
-    Screen('Flip', screenInfo.window);                                    % Screen flip
-    KbWait(-1, 2);                                                        % Wait for user input
-    
-    % Show symbols:
-    draw_text(screenInfo, reelInfo, instructions, ''); % Empty text draw to get any key text.
-    inArow(screenInfo, reelInfo);                      % Quick function to draw five symbols to centre.
-    Screen('Flip', screenInfo.window);                 % Screen flip
-    KbWait(-1, 2);                                     % Wait for user input
-    
-    % 2 - 'Match 3 of any symbol and the machine will payout!'; ...
-    % 3 - 'There are 9 different ways that a three symbol match can occur'; ...
-    for i = 2:3
-        draw_text(screenInfo, reelInfo, instructions, instructions.lines{i}); % Text Draw
-        Screen('Flip', screenInfo.window);                                    % Screen flip
-        KbWait(-1, 2);                                                        % Wait for user input
-    end
-    
-    % Throw up 9 lines one at a time
-    demo_lines(screenInfo, reelInfo, instructions);
-    
-    keyCode = 0;
-    
-    % View these instructions again?
-    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
-    Screen('Flip', screenInfo.window);
-    [~, keyCode] = KbWait(-1, 2);
-    
-    % set key down and wait for user to make key press
-    keyCode = find(keyCode);
-    
-end
-
-% ----------------------------------------------------------------------
-%% Explain Betting
-% ----------------------------------------------------------------------
-
-% While loop to allow user to repeat instructions if desired.
-keyCode = 38;
-
-while keyCode == 38
-        
-    % Reset keyCode
-    keyCode = 0;
-    
-    % Cycle through betting instructions.
-    for i = 1:length(instructions.betting)
-        draw_text(screenInfo, reelInfo, instructions, instructions.betting{i}); % Text Draw
-        Screen('Flip', screenInfo.window);                                      % Screen flip
-        KbWait(-1, 2);                                                          % Wait for user input
-    end
-    
-    % View these instructions again?
-    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
-    Screen('Flip', screenInfo.window);
-	[~, keyCode] = KbWait(-1, 2);
-    
-    % set key down and wait for user to make key press   
-    keyCode = find(keyCode);
-    
-end
-
-% ----------------------------------------------------------------------
-%% Explain Fixation Cross
-% ----------------------------------------------------------------------
-
-% While loop to allow user to repeat instructions if desired.
-keyCode = 38;
-
-while keyCode == 38
-    
-    % Reset keyCode
-    keyCode = 0;
-    
-    % Cycle through fixation cross instructions.
-    for i = 1:length(instructions.fixation)
-        
-        i = ['|' repmat(' ', 1, 200) instructions.fixation{i} repmat(' ', 1, 200) '|'];
-
-        % Text Draw
-        DrawFormattedText(screenInfo.window, i, 'center', screenInfo.yCenter + floor(screenInfo.gridRect(4)/8) * 3); 
-
-        % Draw any key text
-        DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
-        
-        % Draw a little red dot :)
-        Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
-            get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]) ... 
-            );
-        
-        draw_fixation(screenInfo, reelInfo);    % Fixation cross
-        Screen('Flip', screenInfo.window);      % Screen flip
-        
-        KbWait(-1, 2);                          % Wait for user input
-        
-    end
-    
-    % View these instructions again?
-    DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
-    Screen('Flip', screenInfo.window);
-	[~, keyCode] = KbWait(-1, 2);
-    
-    % set key down and wait for user to make key press   
-    keyCode = find(keyCode);
-    
-end
-
-% Debugging
-DrawFormattedText(screenInfo.window,'End of debugging', 'center', screenInfo.yCenter);
+% Ready?
+DrawFormattedText(screenInfo.window, ...
+    'When you are ready press the 9 key to begin the experiment', ...
+    'center', screenInfo.yCenter);
+% Flip screen
 Screen('Flip', screenInfo.window);
 
-% Wait for key press:
-keyDown = 1;
+% Wait for 9 Key or terminate on ESCAPE.
+keyCode = 0;
+nineKey = KbName('9(');
+escapeKey = KbName('ESCAPE');
 
-% Wait until key comes back up before starting first trial
-while keyDown
-    [keyDown, KeyUpTime] = KbCheck(-1);
-     WaitSecs(0.001); % delay to prevent CPU hogging
+% Wait until 9 key before starting first trial
+while keyCode ~= nineKey
+    
+    [keyDown, KeyTime, keyCode] = KbCheck(-1); % Check keyboard
+    keyCode = find(keyCode);                     % Get keycode
+        
+    if keyDown == 0
+	keyCode = 0;
+    end
+     
+    % Exit experiment on ESCAPE    
+    if keyCode == escapeKey
+        sca;
+        return
+    end
+    
+    WaitSecs(0.001); % slight delay to prevent CPU hogging
+    
 end
 
-sessionInfo.instrEndT = sessionInfo.start - KeyUpTime;
+sessionInfo.instrEndT = sessionInfo.start - KeyTime;
 
 % ----------------------------------------------------------------------
-%% Practice section
+% 1ST BLOCK
 % ----------------------------------------------------------------------
 
-% This should run continously until the experimenter comes in to enter a
-% key to begin the experiment. The actual experiment should start from a
-% seperate script.
+sessionInfo.timing{"BlockStart", "Block_1"} = sessionInfo.start - GetSecs;
 
-for i = 1:3
+for i = 1:5 %reelInfo.blocksize * 1 % Block One
     
     [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
     
 end
 
+sessionInfo.timing{"BlockEnd", "Block_1"} = sessionInfo.start - GetSecs;
+
 % ----------------------------------------------------------------------
-%% Introduce Task
+% 1ST BREAK
+% ----------------------------------------------------------------------
+
+sessionInfo.timing{"BreakStart", "Block_1"} = sessionInfo.start - GetSecs;
+
+for i = 1:5 %reelInfo.blocksize * 1 % Block One
+    
+    [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
+    
+end
+
+sessionInfo.timing{"BreakEnd", "Block_1"} = sessionInfo.start - GetSecs;
+
+% ----------------------------------------------------------------------
+% 2ND BLOCK
 % ----------------------------------------------------------------------
 
 % ----------------------------------------------------------------------
-%% First block
+% 2ND BREAK
 % ----------------------------------------------------------------------
 
 % ----------------------------------------------------------------------
-%% END text
+% END text
 % ----------------------------------------------------------------------
-
-% Set up text for final text display
-Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
-Screen('TextFont', screenInfo.window, 'Garamond');
-Screen('TextColor', screenInfo.window, screenInfo.black);
-payoutText = ['<b>', 'Demo over :)'];
 
 % Draw text to centre
 [cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
@@ -363,10 +170,10 @@ Screen('Flip', screenInfo.window);
 
 KbWait(-1, 2);
 
+% EVENT MARKER (END)
+
 % Session end time
 sessionInfo.end = GetSecs;
-
-% Event Marker (END)
 
 % Session duration
 sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
@@ -374,14 +181,14 @@ sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
 % All shown?
 sessionInfo.shown = sum(outputData.shown);
 
+% Clear the screen
+sca;
+
 % Open notes for experimenter to add details.
 sessionInfo.notes = inputdlg({ 'List Any Bad Channels:', 'Notes (e.g. errors, fixed channel at trial x etc):'}, ...
     'Enter Experimenter Notes', [1 150; 10 150]);
 
 sessionInfo.badchannels = sessionInfo.notes{1};
 sessionInfo.notes = sessionInfo.notes{2};
-
-% Clear the screen
-sca;
 
 
