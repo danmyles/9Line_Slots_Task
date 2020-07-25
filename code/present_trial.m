@@ -367,7 +367,7 @@ end
 % EVENT MARKER – TRIAL END
 
 % Trial End Time to outputData
-outputData.credits(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
+outputData.TrialEnd(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
 
 end
 

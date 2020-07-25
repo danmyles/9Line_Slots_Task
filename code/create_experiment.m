@@ -74,9 +74,8 @@ reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 
 %% TODO: Create trial and block structure
 
-% Load in empty output table and add credits
+% Load in empty output table
 [outputEmpty] = setup_output(reelInfo.nTrials);
-outputEmpty.credits(1) = reelInfo.credits;
 
 %% Generate random reel index and fill outputData
 % Get stop columns by column name:
