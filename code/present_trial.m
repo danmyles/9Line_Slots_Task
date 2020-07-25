@@ -193,6 +193,9 @@ reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops
 
 % EVENT MARKER (Spin Animation Begin)
 
+% Add timing info to outputData
+outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
+
 % Spin reels
 [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
 
@@ -260,7 +263,7 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
         % Flip to the screen
         Screen('Flip', screenInfo.window);
 
-        % Event marker (Highlight Appears)
+        % EVENT MARKER - (Highlight Appears)
 
         % Wait time between highlighted reels
         WaitSecs(reelInfo.timing.highlight);
@@ -275,7 +278,10 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     Screen('Flip', screenInfo.window);
 
     % EVENT MARKER (Highlighting Complete)
-
+    
+    % update outputData
+    outputData.HighlightEnd(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
+    
 end
 
 % Wait ISI

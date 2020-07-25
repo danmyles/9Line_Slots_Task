@@ -88,12 +88,12 @@ BetChoiceRT = zeros(nTrials, 1);
 % Time of 9lST display screen flip (show reels)
 ReelSFT = zeros(nTrials, 1);
 
-% Time that spin sequence begins
-ReelSpinSFT = zeros(nTrials, 1);
-
 % Duration of each reel spin
 LStopSF = zeros(nTrials, 1);
 RStopSF = zeros(nTrials, 1);
+
+% Reel highlight timing
+HighlightEnd = zeros(nTrials, 1);
 
 % When was outcome presented
 FCTime = zeros(nTrials, 1);
@@ -115,7 +115,7 @@ outputData = table(...
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
     betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
-    shown, BetChoiceSFT, BetChoiceRT, ReelSFT, ReelSpinSFT, LStopSF, RStopSF, ... 
-    FCTime, CSTime, PRP, TrialEnd); % Post Display Info
+    shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
+    HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 
 end
