@@ -13,12 +13,12 @@ function [reelInfo, outputData] = present_trial(screenInfo, reelInfo, outputData
 % Display the spin
 % Record timing information throughout
 %
-% This function uses the reelInfo iterator to draw out the next reel 
-% stop from the output file and present a trial. 
-% Reelstops are used to index reelstrip 1 and reelstrip 2 to select the 
+% This function uses the reelInfo iterator to draw out the next reel
+% stop from the output file and present a trial.
+% Reelstops are used to index reelstrip 1 and reelstrip 2 to select the
 % symbols to be draw to the screen.
 % Spin animation is handled seperately by the spin functions.
-% 
+%
 %
 % This function then updates the reelInfo.sym_shape matrix with the symbol
 % identities. This information is then passed back to the update_reelInfo
@@ -74,26 +74,26 @@ keyCode = 0;
 keyWait = 0;
 
 while ~keyWait
-    
+
     % Get Key Press Code and Timing
     [~, KeyPressTime, keyCode] = KbCheck(-1);
-    
+
     % Get keyCode
     keyCode = find(keyCode);
-    
+
     if keyCode == leftKey | keyCode == rightKey
-        
+
         keyWait = 1;
-        
+
         % EVENT MARKER (Bet Choice)
-        
+
     elseif keyCode == escapeKey
-        
+
         sca;
         return
-        
+
     end
-    
+
 end
 
 % ------------------------------------------------------------------------
@@ -111,20 +111,21 @@ reelInfo.trialIndex = (reelInfo.trialIndex + 1);
 % If side = [2, 1] then HIGH LOW
 
 if keyCode == leftKey
-    
+
     betChoice = reelInfo.lineBet(side(1));
     % Highlight left choice with a red box
     Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectL, screenInfo.gridPenWidthPixel .* 3)
-    
+
 elseif keyCode == rightKey
-    
+
     betChoice = reelInfo.lineBet(side(2));
-    
+
     % Highlight right choice with a red box
     Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectR, screenInfo.gridPenWidthPixel .* 3)
-    
+
 end
 
+% get betting amount
 totalBet = betChoice * 9;
 
 % Update credits
@@ -133,7 +134,7 @@ if reelInfo.trialIndex == 1
 else
     outputData.credits(reelInfo.trialIndex) = outputData.credits(reelInfo.trialIndex - 1) - totalBet;
 end
-   
+
 % Flip screen with choice highlighted and credits updated
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
 Screen('Flip', screenInfo.window); % Flip
@@ -144,8 +145,8 @@ outputData.totalBet(reelInfo.trialIndex) = totalBet;
 outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betChoice(reelInfo.trialIndex);
 outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialIndex) - outputData.totalBet(reelInfo.trialIndex);
 
-% Add timing data to output 
-outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT;
+% Add timing data to output
+outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT - sessionInfo.start;
 outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
 
 % ------------------------------------------------------------------------
@@ -201,76 +202,76 @@ WaitSecs(reelInfo.timing.highlight);
 % HIGHLIGHT ACTIVE REELS
 % ----------------------------------------------------------------------
 
-% I have some old code in a function called "highlight reels" if you 
+% I have some old code in a function called "highlight reels" if you
 % want this done simultaneously.
 
 % Check if active
 if reelInfo.highlight == 2 || reelInfo.highlight == 3
 
-% This required a fair bit a messing about. Easier if we had some extra
-% variables I could toy with
+    % This required a fair bit a messing about. Easier if we had some extra
+    % variables I could toy with
 
-% Reel 1
-A = reelInfo.outcome.dspSymbols(1:3, 1);
+    % Reel 1
+    A = reelInfo.outcome.dspSymbols(1:3, 1);
 
-% Reel 2
-B = reelInfo.outcome.dspSymbols(1:3, 3);  
+    % Reel 2
+    B = reelInfo.outcome.dspSymbols(1:3, 3);
 
-% C contains the identities of the matched elements, in our case the
-% symbol or shape code.
-% intersect() finds the locations in which the values of the two
-% vectors are the same.
+    % C contains the identities of the matched elements, in our case the
+    % symbol or shape code.
+    % intersect() finds the locations in which the values of the two
+    % vectors are the same.
 
-[C] = intersect(A, B, 'stable');
+    [C] = intersect(A, B, 'stable');
 
-% 1st arg contains indices for where these matches occur in argument A .
-% 2nd arg the same for argument B.
-% 'stable' returns the indices in IA and IB in the order that they
-% occur in argument A
+    % 1st arg contains indices for where these matches occur in argument A .
+    % 2nd arg the same for argument B.
+    % 'stable' returns the indices in IA and IB in the order that they
+    % occur in argument A
 
-% Print highlighted squares to screen one match at a time
-% Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
+    % Print highlighted squares to screen one match at a time
+    % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
 
-for i = 1:numel(C)
+    for i = 1:numel(C)
 
-    Ai = ismember(A, C(i));
-    Bi = ismember(B, C(i));
+        Ai = ismember(A, C(i));
+        Bi = ismember(B, C(i));
 
-    % Reel 1 Highlights:
-    highlight_pos = screenInfo.gridPos(1:3, :);
-    Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
-    % Place another square on the inside of the highlight square (looks nice)
-    highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
-    Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
+        % Reel 1 Highlights:
+        highlight_pos = screenInfo.gridPos(1:3, :);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
+        % Place another square on the inside of the highlight square (looks nice)
+        highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+        Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
 
-    % Reel 2 Highlights:
-    highlight_pos = screenInfo.gridPos(7:9, :);
-    Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
-    % Place another square on the inside of the highlight square (looks nice)
-    highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
-    Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
+        % Reel 2 Highlights:
+        highlight_pos = screenInfo.gridPos(7:9, :);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
+        % Place another square on the inside of the highlight square (looks nice)
+        highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+        Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
 
+        draw_grid(screenInfo);
+        draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+
+        % Flip to the screen
+        Screen('Flip', screenInfo.window);
+
+        % Event marker (Highlight Appears)
+
+        % Wait time between highlighted reels
+        WaitSecs(reelInfo.timing.highlight);
+
+    end
+
+    % Re-draw without highlights
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
     % Flip to the screen
     Screen('Flip', screenInfo.window);
 
-    % Event marker (Highlight Appears)
-
-    % Wait time between highlighted reels
-    WaitSecs(reelInfo.timing.highlight);
-
-end
-
-% Re-draw without highlights
-draw_grid(screenInfo);
-draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-
-% Flip to the screen
-Screen('Flip', screenInfo.window);
-
-% EVENT MARKER (Highlighting Complete)
+    % EVENT MARKER (Highlighting Complete)
 
 end
 
@@ -294,11 +295,11 @@ Screen('Flip', screenInfo.window);
 % Wait ISI
 WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
 
-% ----------------------------------------------------------------------    
+% ----------------------------------------------------------------------
 % OUTCOME STIMULUS
 % ----------------------------------------------------------------------
 
-% Draw grid 
+% Draw grid
 draw_grid(screenInfo);
 
 % Draw shapes
@@ -310,8 +311,8 @@ if outputData.match(reelInfo.trialIndex) == 1
     % Win
 
     if reelInfo.highlight == 1 || reelInfo.highlight == 2
-    % Highlight winning grid positions and show payout amount
-    highlight_win(screenInfo, reelInfo);
+        % Highlight winning grid positions and show payout amount
+        highlight_win(screenInfo, reelInfo);
     end
 
     % Display payout
@@ -348,12 +349,20 @@ outputData.PRP(reelInfo.trialIndex) = PRP;
 outputData.shown(reelInfo.trialIndex) = 1;
 
 % Outcome Stimulus Onset Time
-outputData.CSTime(reelInfo.trialIndex) = StimulusOnsetTime;
+outputData.CSTime(reelInfo.trialIndex) = StimulusOnsetTime - sessionInfo.start;
+
+% Resolve payout (total Bet credits already subtracted above)
+outputData.credits(reelInfo.trialIndex) = ...
+    outputData.credits(reelInfo.trialIndex) + outputData.payout(reelInfo.trialIndex);
 
 % Wait minimum trial time if neccesary (likely already elapsed)
 while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome
     WaitSecs(0.001); % delay to prevent CPU hogging
 end
+
+% EVENT MARKE TRIAL END
+
+% Trial End Time to outputData
 
 end
 

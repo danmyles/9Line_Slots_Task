@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
 % [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
@@ -22,26 +22,6 @@ function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_ex
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------
-
-% Clear the workspace and the screen
-sca;
-close all;
-clearvars;
-rng shuffle; % See notes below
-
-% HideCursor % Off when debugging
-
-% It is recomended that the rng be reseeded at the beginning of any MATLAB 
-% session if we wish to think of output from the rng as being
-% statistically independent. Only needs to be done once at the start of the
-% session.
-
-% The deBruijn package notes also recomend reseeding MATLAB rng prior to 
-% each session.
-
-% Get time
-sessionInfo.start = GetSecs;
-sessionInfo.date = date;
 
 % Get directories relative to file location
 [fileInfo] = setup_file();
