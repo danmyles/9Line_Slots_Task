@@ -1,4 +1,4 @@
-function [reelInfo, outputData] = present_trial(screenInfo, reelInfo, outputData)
+function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData)
 % ----------------------------------------------------------------------
 % [reelInfo, outputData] = present_trial(reelInfo)
 % ----------------------------------------------------------------------
@@ -351,6 +351,10 @@ outputData.shown(reelInfo.trialIndex) = 1;
 % Outcome Stimulus Onset Time
 outputData.CSTime(reelInfo.trialIndex) = StimulusOnsetTime - sessionInfo.start;
 
+% Baseline L stop and R stop with session start time
+outputData.LStopSF(reelInfo.trialIndex) = outputData.LStopSF(reelInfo.trialIndex) - sessionInfo.start;
+outputData.RStopSF(reelInfo.trialIndex) = outputData.RStopSF(reelInfo.trialIndex) - sessionInfo.start;
+
 % Resolve payout (total Bet credits already subtracted above)
 outputData.credits(reelInfo.trialIndex) = ...
     outputData.credits(reelInfo.trialIndex) + outputData.payout(reelInfo.trialIndex);
@@ -360,9 +364,10 @@ while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome
     WaitSecs(0.001); % delay to prevent CPU hogging
 end
 
-% EVENT MARKE TRIAL END
+% EVENT MARKER – TRIAL END
 
 % Trial End Time to outputData
+outputData.credits(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
 
 end
 
