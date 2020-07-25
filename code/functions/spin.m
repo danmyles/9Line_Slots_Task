@@ -127,7 +127,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
             left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
             
             if demo ~= 1
-            % Enter ~ approx LDuration
+            % Enter ~ approx LStop timing
             outputData.LStopSF(reelInfo.trialIndex) = GetSecs;
             end
             
