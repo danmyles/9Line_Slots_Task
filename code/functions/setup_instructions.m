@@ -25,12 +25,6 @@ function [instructions, demoSequence] = setup_instructions(reelInfo, outputData)
 % ----------------------------------------------------------------------
 instructions.cont = 'Press any key to continue.';
 
-instructions.break = {
-    'Break:'; ...
-    'Please take a moment to rest your eyes and get comfortable'; ...
-    'When you''re ready, press the 9 key to continue'; ...
-    };
-
 % ----------------------------------------------------------------------
 %% Opening
 % ----------------------------------------------------------------------

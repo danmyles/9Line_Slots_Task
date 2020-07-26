@@ -144,6 +144,14 @@ sessionInfo.timing{"BlockEnd", "Block_1"} = sessionInfo.start - GetSecs;
 % 1ST BREAK
 % ----------------------------------------------------------------------
 
+% Send start time to sessionInfo
+sessionInfo.timing{"BreakStart", "Block_1"} = sessionInfo.start - GetSecs;
+
+% Show break screen:
+present_break(screenInfo, reelInfo);
+
+% Send start time to sessionInfo
+sessionInfo.timing{"BreakEnd", "Block_1"} = sessionInfo.start - GetSecs;
 
 % ----------------------------------------------------------------------
 % 2ND BLOCK

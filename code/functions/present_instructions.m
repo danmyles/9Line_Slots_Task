@@ -1,6 +1,6 @@
 function [] = present_instructions(screenInfo, reelInfo, outputData)
     % ------------------------------------------------------------------------
-    % [] = present_instructions(screenInfo, reelInfo)
+    % [] = present_instructions(screenInfo, reelInfo, outputData)
     % ------------------------------------------------------------------------
     % Goal of this function:
     % Run through instructions sequence
