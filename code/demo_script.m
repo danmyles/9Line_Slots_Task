@@ -121,12 +121,14 @@ while keyCode ~= nineKey
     
 end
 
+% Send end time to sessionInfo
 sessionInfo.instrEndT = sessionInfo.start - KeyTime;
 
 % ----------------------------------------------------------------------
 % 1ST BLOCK
 % ----------------------------------------------------------------------
 
+% Send start time to sessionInfo
 sessionInfo.timing{"BlockStart", "Block_1"} = sessionInfo.start - GetSecs;
 
 for i = 1:5 %reelInfo.blocksize * 1 % Block One
@@ -135,21 +137,13 @@ for i = 1:5 %reelInfo.blocksize * 1 % Block One
     
 end
 
+% Send end time to sessionInfo
 sessionInfo.timing{"BlockEnd", "Block_1"} = sessionInfo.start - GetSecs;
 
 % ----------------------------------------------------------------------
 % 1ST BREAK
 % ----------------------------------------------------------------------
 
-sessionInfo.timing{"BreakStart", "Block_1"} = sessionInfo.start - GetSecs;
-
-for i = 1:5 %reelInfo.blocksize * 1 % Block One
-    
-    [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
-    
-end
-
-sessionInfo.timing{"BreakEnd", "Block_1"} = sessionInfo.start - GetSecs;
 
 % ----------------------------------------------------------------------
 % 2ND BLOCK
