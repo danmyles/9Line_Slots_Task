@@ -1,5 +1,6 @@
-%% Script to draw a 9 random symbols onscreen one reel at a time
-% Simple script for debugging and development
+% -----------------------------------------------------------------------
+% Dev Script For Experiment
+% -----------------------------------------------------------------------
 
 %% TODO ? SAVE ALL SCREEN INFO TO FILE?
 
@@ -22,7 +23,7 @@
 
 % You will also need to consider the length of time neccesary to avoid
 % artifacts from previous stimuli affecting the result. ~1000 ms from
-% fixation cross to display of final symbol.
+% fixation cross to display of outcome stimulus.
 
 % ----------------------------------------------------------------------
 % Clear the workspace and the screen
@@ -35,13 +36,9 @@ rng shuffle; % See notes below
 
 % HideCursor % Off when debugging
 
-% It is recomended that the rng be reseeded at the beginning of any MATLAB 
-% session if we wish to think of output from the rng as being
-% statistically independent. Only needs to be done once at the start of the
-% session.
-
-% The deBruijn package notes also recomend reseeding MATLAB rng prior to 
-% each session.
+% Reseeding the rng at the beginning of any MATLAB prevents (exceedingly mild) 
+% depenendcies in the rng such as booting the experiment/computer at the
+% same time of day every session.
 
 % ----------------------------------------------------------------------
 % BEGIN TIMING
@@ -50,8 +47,7 @@ rng shuffle; % See notes below
 % Get time
 sessionInfo.date = datetime;
 sessionInfo.start = GetSecs;
-
-% Event Marker (Start)
+% Send Event Marker: Experiment Start
 
 % ----------------------------------------------------------------------
 % RUN SETUP SCRIPTS

@@ -108,6 +108,19 @@ DrawFormattedText2(['<color=1.><size=22><b>K'], ...
     'sx', loadScreen.sym_position(5), 'sy', screenInfo.yCenter, ...
     'xalign','center','yalign','center','xlayout','center');
 
+% ----------------------------------------------------------------------
+% DISPLAY CREDITS TO USER
+% ----------------------------------------------------------------------
+
+
+credits = outputData.credits(reelInfo.trialIndex);
+
+DrawFormattedText2(['<size=20>CREDITS: ' num2str(credits)], ...
+    'win', screenInfo.window, ...
+    'winRect', screenInfo.windowRect, ...
+    'sx', 'center', 'sy', screenInfo.screenYpixels - screenInfo.ydot, ...
+    'xalign','center','yalign','center','xlayout','center');
+
 % Flip screen
 Screen('Flip', screenInfo.window);
 
@@ -124,7 +137,7 @@ escapeKey = KbName('ESCAPE');
 while keyCode ~= nineKey
 
     [keyDown, ~, keyCode] = KbCheck(-1); % Check keyboard
-    keyCode = find(keyCode);                     % Get keycode
+    keyCode = find(keyCode);             % Get keycode
 
     if keyDown == 0
         keyCode = 0;
