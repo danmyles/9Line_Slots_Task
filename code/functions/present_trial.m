@@ -74,6 +74,32 @@ keyCode = 0;
 keyWait = 0;
 keyDown = 0;
 
+% We need to disable the left or right key if nBetLow or nBetHigh have run out
+% (i.e. the pariticpant has already chosen that option the max number of times)
+
+% If side = [1, 2] then LOW  HIGH
+% If side = [2, 1] then HIGH LOW
+% We can use this to set the left/right value to -1, this will force subsequent 
+% if statements to fail and not register the key press.
+
+% Check Bet High has run out
+if reelInfo.nBetHigh == 0
+    if find(side == 2) == 2
+        rightKey = -1;
+    elseif find(side == 2) == 1
+        leftKey  = -1;
+    end
+end
+
+% Check Bet Low has run out
+if reelInfo.nBetLow == 0
+    if find(side == 1) == 2
+        rightKey = -1;
+    elseif find(side == 1) == 1
+        leftKey  = -1;
+    end
+end
+
 while ~keyWait
 
     % Get Key Press Code and Timing
@@ -149,6 +175,13 @@ outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialInd
 % Add timing data to output
 outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT - sessionInfo.start;
 outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
+
+% Remove 1 betChoice from pile:
+if betChoice == 10
+    reelInfo.nBetHigh = (reelInfo.nBetHigh - 1);
+elseif betChoice == 1
+    reelInfo.nBetLow = (reelInfo.nBetLow - 1);
+end
 
 % Allow long enough to view change to screen (highlight and counter)
 WaitSecs(reelInfo.timing.highlight);

@@ -32,13 +32,13 @@
 sca;
 close all;
 clearvars;
-rng shuffle; % See notes below
-
-% HideCursor % Off when debugging
+rng shuffle;
 
 % Reseeding the rng at the beginning of any MATLAB prevents (exceedingly mild) 
 % depenendcies in the rng such as booting the experiment/computer at the
 % same time of day every session.
+
+% HideCursor % Off when debugging
 
 % ----------------------------------------------------------------------
 % BEGIN TIMING
