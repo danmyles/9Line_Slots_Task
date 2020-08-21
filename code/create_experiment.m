@@ -77,8 +77,12 @@ reelInfo.credits = 20000;
 % Get reel length to allow relative scripting for length of the reelstrips
 reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 
-% Load in empty output table
-[outputEmpty] = setup_output(reelInfo.nTrials);
+% Load in empty outcome tables
+[~, betHigh, betLow] = setup_output(reelInfo.nTrials);
+
+% Trim n rows to size:
+betHigh = betHigh(1:reelInfo.nBetHigh, :);
+betLow = betLow(1:reelInfo.nBetHigh, :);
 
 %% Generate random reel index and fill outputData
 % Get stop columns by column name:
@@ -94,6 +98,7 @@ outputEmpty.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
 
 % Add central symbol
 outputEmpty.CS(:) = randi(5, reelInfo.nTrials, 1);
+betHigh.CS = randi(5, reelInfo.nTrials, 1);
 
 for i = 1:reelInfo.nTrials
     % Add reel symbols for each spin to output table

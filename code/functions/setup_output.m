@@ -1,4 +1,4 @@
-function [outputData] = setup_output(nTrials)
+function [outputEmpty, betHigh, betLow] = setup_output(nTrials)
 % ----------------------------------------------------------------------
 % setup_output(nTrials)
 % ----------------------------------------------------------------------
@@ -110,12 +110,16 @@ TrialEnd = zeros(nTrials, 1);
 % ------------------------------------------------------------------------
 % Add all of above into table
 % ------------------------------------------------------------------------
-outputData = table(... 
+outputEmpty = table(... 
     participantID, TrialN, blockID, blockN, ...   % Exp Info
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
     betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
+
+% Outcome Display Info
+betHigh = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);
+betLow  = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);
 
 end
