@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp()
 % ----------------------------------------------------------------------
 % [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
@@ -42,9 +42,11 @@ end
 [fileInfo.input, ID, EXT] = fileparts([fileInfo.input ID]);
 fileInfo.input = [fileInfo.input filesep];
 
-% Load up participant experiment data
-outputData = load([fileInfo.input ID EXT], ID);
-outputData = outputData.(ID);
+% Create empty data table for output
+[outputData] = setup_output(reelInfo);
+
+% Load up experiment data
+sessionInfo = load([fileInfo.input ID EXT]);
 
 % Set up screen
 [screenInfo] = setup_screen();

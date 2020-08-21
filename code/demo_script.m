@@ -41,20 +41,16 @@ rng shuffle;
 % HideCursor % Off when debugging
 
 % ----------------------------------------------------------------------
-% BEGIN TIMING
-% ----------------------------------------------------------------------
-
-% Get time
-sessionInfo.date = datetime;
-sessionInfo.start = GetSecs;
-% Send Event Marker: Experiment Start
-
-% ----------------------------------------------------------------------
 % RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
 % Start experiment and run all setup functions
-[screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp();
+[screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp();
+
+% Get system time
+sessionInfo.date = datetime;
+sessionInfo.start = GetSecs;
+% Send Event Marker: Experiment Start
 
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);

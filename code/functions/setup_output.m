@@ -1,4 +1,4 @@
-function [outputEmpty, betHigh, betLow] = setup_output(nTrials)
+function [outputEmpty, betHigh, betLow] = setup_output(reelInfo)
 % ----------------------------------------------------------------------
 % setup_output(nTrials)
 % ----------------------------------------------------------------------
@@ -20,6 +20,8 @@ function [outputEmpty, betHigh, betLow] = setup_output(nTrials)
 % ----------------------------------------------------------------------
 
 % ---- Trial Info: ----
+
+nTrials = reelInfo.nTrials;
 
 % Participant Identifier
 participantID = zeros(nTrials, 1);
@@ -108,7 +110,7 @@ PRP = zeros(nTrials, 1);
 TrialEnd = zeros(nTrials, 1);
 
 % ------------------------------------------------------------------------
-% Add all of above into table
+% Add all of above into empty table to collect data
 % ------------------------------------------------------------------------
 outputEmpty = table(... 
     participantID, TrialN, blockID, blockN, ...   % Exp Info
@@ -118,7 +120,12 @@ outputEmpty = table(...
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 
-% Outcome Display Info
+% Fill out Block N
+outputEmpty.blockN = repmat([1:reelInfo.blocksize]', reelInfo.blockN, 1);
+% Fill out Block ID
+outputEmpty.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
+
+% Outcome Tables
 betHigh = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);
 betLow  = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);
 
