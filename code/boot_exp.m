@@ -45,6 +45,12 @@ fileInfo.input = [fileInfo.input filesep];
 % Create empty data table for output
 [outputData] = setup_output(reelInfo);
 
+% Fill out Block N
+outputData.blockN = repmat([1:reelInfo.blocksize]', reelInfo.blockN, 1);
+
+% Fill out Block ID
+outputData.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
+
 % Load up experiment data
 sessionInfo = load([fileInfo.input ID EXT]);
 

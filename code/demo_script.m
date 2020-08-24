@@ -64,16 +64,16 @@ Screen('TextColor', screenInfo.window, screenInfo.black);
 
 %% Empty Table for block timing info
 % Empty table
-sessionInfo.timing = array2table(zeros(4, 9));
+sessionInfo.timing = array2table(zeros(4, reelInfo.blockN));
 
 % Create and set VarNames
 names = num2str([1:reelInfo.blockN]');
-names = join([repmat(["Block_"], 9, 1), names], "");
+names = join([repmat(["Block_"], reelInfo.blockN, 1), names], "");
 sessionInfo.timing.Properties.VariableNames = names;
 sessionInfo.timing.Properties.RowNames = ["BlockStart", "BlockEnd", "BreakStart", "BreakEnd"];
 
-% Add participant ID to sessionInfo
-sessionInfo.participantID = ID;
+% Add filename ID to sessionInfo
+fileInfo.fileID = ID;
 
 % ----------------------------------------------------------------------
 % Task Instructions

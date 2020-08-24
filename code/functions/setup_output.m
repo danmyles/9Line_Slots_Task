@@ -1,4 +1,4 @@
-function [outputEmpty, betHigh, betLow] = setup_output(reelInfo)
+function [outputEmpty, betHigh, betLow] = setup_output(reelInfo, nTrials)
 % ----------------------------------------------------------------------
 % setup_output(nTrials)
 % ----------------------------------------------------------------------
@@ -21,7 +21,10 @@ function [outputEmpty, betHigh, betLow] = setup_output(reelInfo)
 
 % ---- Trial Info: ----
 
-nTrials = reelInfo.nTrials;
+% Allow user to override size. Otherwise use reelInfo.nTrials
+if ~exist('nTrials')
+    nTrials = reelInfo.nTrials;
+end
 
 % Participant Identifier
 participantID = zeros(nTrials, 1);
@@ -119,11 +122,6 @@ outputEmpty = table(...
     betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
-
-% Fill out Block N
-outputEmpty.blockN = repmat([1:reelInfo.blocksize]', reelInfo.blockN, 1);
-% Fill out Block ID
-outputEmpty.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
 
 % Outcome Tables
 betHigh = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);

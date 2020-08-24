@@ -5,13 +5,11 @@
 % To generate a set of sequences to use in my 9LST experiment
 % ----------------------------------------------------------------------
 % Input(s) :
-% reelInfo ? takes the reelstrips as input
 % ----------------------------------------------------------------------
-% Output(s):
-% reelInfo - provides updated symbol positions to sym_shape
+% Output(s): output Tables for high and low bet conditions.
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
-% Last update : June 2020
+% Last update : August 2020
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------
@@ -42,7 +40,7 @@ clearvars;
 % of reel symbols, while disallowing any repeats.
 
 % -------------------------------------------------------------------------
-%% Gerenate Reelstrips
+%% Generate Reelstrips
 % -------------------------------------------------------------------------
 
 repeatSymbols = 0;
@@ -58,8 +56,8 @@ writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 n = 40; % Number of experiments to generate (sample size plus dropout).
 
 % Block structure
-reelInfo.blocksize = 50; % Length of each block
-reelInfo.blockN = 9;     % Number of blocks
+reelInfo.blocksize = 60; % Length of each block
+reelInfo.blockN = 8;     % Number of blocks
 
 % Number of trials (length of experiment)
 reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
@@ -68,17 +66,17 @@ reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
 reelInfo.lineBet = [1, 10];
 
 % Set maximum number of each betting choice
-reelInfo.nBetLow = reelInfo.nTrials/2;
 reelInfo.nBetHigh = reelInfo.nTrials/2;
+reelInfo.nBetLow  = reelInfo.nBetHigh;
 
 % Set multipliers
-reelInfo.multipliers = [5, 8, 10, 14, 70];
+reelInfo.multipliers = [3, 6, 12, 15, 50];
 
 % Minimum number of each outcome type
 reelInfo.nMinEvent = 22;  
 
 % Minimum number of losses that should occur 
-reelInfo.nMinLosses = numel(reelInfo.multipliers) * reelInfo.nMinEvent;
+reelInfo.nMinLosses = reelInfo.nBetLow - numel(reelInfo.multipliers) * reelInfo.nMinEvent;
 
 % Set credits
 reelInfo.credits = 20000;
@@ -104,11 +102,12 @@ summaryTable.Properties.VariableNames = [...
 % -------------------------------------------------------------------------
 % Loop over sample size to produce n x 2 tables of outcomes
 
-% for i = 1:n
-i = 1
+% Likely to be fairly time consuming so maybe make a coffee or whatever.
+
+for i = 1:n
 
 % Load in empty outcome tables
-[~, betHigh, betLow] = setup_output(reelInfo);
+[~, betHigh, betLow] = setup_output(reelInfo, 900);
 
 % This function is a hacky workaround a result of how I had designed a
 % previous script. I orginally designed the task to be truly random 
@@ -124,7 +123,7 @@ i = 1
 % ------------------------------------------------------------------------
 
 % Count the occurance of each outcome
-[C, ia, ic] = unique(betHigh.multiplier);
+[C, ~, ic] = unique(betHigh.multiplier);
 H = [C, accumarray(ic, 1)];
 H = transpose(H);
 H = H(2, :);
@@ -150,12 +149,17 @@ summaryTable(i, :) = array2table([
 % Save outcomes to file:
 % ------------------------------------------------------------------------
 
-output = struct('betHigh', betHigh, 'betLow', betLow, 'outcomeSummary', summaryTable(i, :));
+output = struct('betHigh', betHigh, 'betLow', betLow, ...
+                'outcomeSummary', summaryTable(i, :), ...
+                'participantID', i);
 
 filename = ['participant' num2str(i)];
 
 save([fileInfo.input filename '.mat'], '-struct', 'output')
 
-% end
+sprintf([filename ' complete'])
 
+end
+
+sprintf('Done')
 

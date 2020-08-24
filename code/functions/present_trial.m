@@ -162,6 +162,29 @@ else
     outputData.credits(reelInfo.trialIndex) = outputData.credits(reelInfo.trialIndex - 1) - totalBet;
 end
 
+% Index by column names in sessionInfo Table that need to be replaced in
+% outputData
+replace = ismember(outputData.Properties.VariableNames, sessionInfo.betHigh.Properties.VariableNames);
+
+% Get outcome data from appropriate outcome table
+if betChoice == 10
+    
+    % Add outcome to output table
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betHigh(reelInfo.nBetHigh, :);
+    
+    % Remove 1 choice from pile
+    reelInfo.nBetHigh = reelInfo.nBetHigh - 1;
+    
+elseif betChoice == 1
+    
+    % Add outcome to output table
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betLow(reelInfo.nBetLow, :);
+    
+    % Remove 1 choice from pile
+    reelInfo.nBetLow = reelInfo.nBetLow - 1;
+    
+end
+
 % Flip screen with choice highlighted and credits updated
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
 Screen('Flip', screenInfo.window); % Flip
@@ -175,13 +198,6 @@ outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialInd
 % Add timing data to output
 outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT - sessionInfo.start;
 outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
-
-% Remove 1 betChoice from pile:
-if betChoice == 10
-    reelInfo.nBetHigh = (reelInfo.nBetHigh - 1);
-elseif betChoice == 1
-    reelInfo.nBetLow = (reelInfo.nBetLow - 1);
-end
 
 % Allow long enough to view change to screen (highlight and counter)
 WaitSecs(reelInfo.timing.highlight);
