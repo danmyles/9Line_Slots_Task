@@ -42,17 +42,20 @@ end
 [fileInfo.input, ID, EXT] = fileparts([fileInfo.input ID]);
 fileInfo.input = [fileInfo.input filesep];
 
+% Load up experiment data
+sessionInfo = load([fileInfo.input ID EXT]);
+
 % Create empty data table for output
 [outputData] = setup_output(reelInfo);
 
-% Fill out Block N
+% Fill in Block N
 outputData.blockN = repmat([1:reelInfo.blocksize]', reelInfo.blockN, 1);
 
-% Fill out Block ID
+% Fill in Block ID
 outputData.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
 
-% Load up experiment data
-sessionInfo = load([fileInfo.input ID EXT]);
+% Fill in Participant ID
+outputData.participantID(:) = sessionInfo.participantID;
 
 % Set up screen
 [screenInfo] = setup_screen();
