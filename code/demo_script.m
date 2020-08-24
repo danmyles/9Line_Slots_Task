@@ -56,25 +56,6 @@ sessionInfo.start = GetSecs;
 loading_screen(screenInfo, reelInfo, 4);
 loading_screen(screenInfo, reelInfo, 5);
 
-%% TEXT SETUP 
-% Setup some default text settings for the window
-Screen('TextSize', screenInfo.window, 20);
-Screen('TextFont', screenInfo.window, 'Helvetica Neue');
-Screen('TextColor', screenInfo.window, screenInfo.black);
-
-%% Empty Table for block timing info
-% Empty table
-sessionInfo.timing = array2table(zeros(4, reelInfo.blockN));
-
-% Create and set VarNames
-names = num2str([1:reelInfo.blockN]');
-names = join([repmat(["Block_"], reelInfo.blockN, 1), names], "");
-sessionInfo.timing.Properties.VariableNames = names;
-sessionInfo.timing.Properties.RowNames = ["BlockStart", "BlockEnd", "BreakStart", "BreakEnd"];
-
-% Add filename ID to sessionInfo
-fileInfo.fileID = ID;
-
 % ----------------------------------------------------------------------
 % Task Instructions
 % ----------------------------------------------------------------------
@@ -188,4 +169,9 @@ sessionInfo.notes = inputdlg({ 'List Any Bad Channels:', 'Notes (e.g. errors, fi
 sessionInfo.badchannels = sessionInfo.notes{1};
 sessionInfo.notes = sessionInfo.notes{2};
 
+% Save outputData to output folder:
+writetable(outputData, [fileInfo.output fileInfo.fileID '.csv'])
+
+% Save session info to output folder:
+save([fileInfo.output fileInfo.fileID 'Info' '.mat'], 'sessionInfo')
 

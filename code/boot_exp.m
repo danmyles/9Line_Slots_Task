@@ -57,6 +57,19 @@ outputData.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
 % Fill in Participant ID
 outputData.participantID(:) = sessionInfo.participantID;
 
+%% Empty Table for block timing info
+% Empty table
+sessionInfo.timing = array2table(zeros(4, reelInfo.blockN));
+
+% Create and set VarNames
+names = num2str([1:reelInfo.blockN]');
+names = join([repmat(["Block_"], reelInfo.blockN, 1), names], "");
+sessionInfo.timing.Properties.VariableNames = names;
+sessionInfo.timing.Properties.RowNames = ["BlockStart", "BlockEnd", "BreakStart", "BreakEnd"];
+
+% Add filename ID to sessionInfo
+fileInfo.fileID = ID;
+
 % Set up screen
 [screenInfo] = setup_screen();
 
@@ -71,6 +84,11 @@ priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
 
+%% TEXT SETUP 
+% Setup some default text settings for the window
+Screen('TextSize', screenInfo.window, 20);
+Screen('TextFont', screenInfo.window, 'Helvetica Neue');
+Screen('TextColor', screenInfo.window, screenInfo.black);
 
 end
 
