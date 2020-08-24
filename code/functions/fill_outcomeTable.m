@@ -18,7 +18,9 @@ function [outcomeTable] = fill_outcomeTable(outcomeTable, reelInfo)
 % Version : 2020a
 % ----------------------------------------------------------------------
 
-for i = 1:reelInfo.nBetHigh
+[n, ~] = size(outcomeTable);
+
+for i = 1:n
     % Add reel symbols for each spin to output table
     
     % A bit of nesting here. expandStopINDEX is a custom function.

@@ -38,9 +38,6 @@ clearvars;
 %       2 = Kautz sequence
 % For more information see documentation inside generate_reelstrip function
 
-% I did this so that any random sampling would not be biased by the order
-% of reel symbols, while disallowing any repeats.
-
 % -------------------------------------------------------------------------
 %% Gerenate Reelstrips
 % -------------------------------------------------------------------------
@@ -52,14 +49,14 @@ repeatSymbols = 0;
 writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 % -------------------------------------------------------------------------
-%% Experiment Details
+%% Experiment Paramters
 % -------------------------------------------------------------------------
 
 n = 40; % Number of experiments to generate (sample size plus dropout).
 
 % Block structure
-reelInfo.blocksize = 50; % Length of each block
-reelInfo.blockN = 9;     % Number of blocks
+reelInfo.blocksize = 50;
+reelInfo.blockN = 9;
 
 % Number of trials (length of experiment)
 reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
@@ -73,12 +70,6 @@ reelInfo.nBetHigh = reelInfo.nTrials/2;
 
 % Set multipliers
 reelInfo.multipliers = [5, 8, 10, 14, 70];
-
-% Minimum number of each outcome type
-reelInfo.nMinEvent = 22;  
-
-% Minimum number of losses that should occur 
-reelInfo.nMinLosses = numel(reelInfo.multipliers) * reelInfo.nMinEvent;
 
 % Set credits
 reelInfo.credits = 20000;
@@ -104,20 +95,34 @@ summaryTable.Properties.VariableNames = [...
 % -------------------------------------------------------------------------
 % Loop over sample size to produce n x 2 tables of outcomes
 
-% for i = 1:n
-i = 1
+for i = 1:n
 
 % Load in empty outcome tables
 [~, betHigh, betLow] = setup_output(reelInfo);
 
-% This function is a hacky workaround a result of how I had designed a
-% previous script. I orginally designed the task to be truly random 
-% (see create_experimentALT). In the end I decided it was better to go for 
-% statistcal power so I'm selecting a minimum number of trials for each 
-% matching outcome. The function then tops up any remaining rows randomly.
+% Trim n rows to size:
+betHigh = betHigh(1:reelInfo.nBetHigh, :);
+betLow = betLow(1:reelInfo.nBetHigh, :);
 
-[betHigh] = balanceOutcomes(betHigh, reelInfo);
-[betLow] = balanceOutcomes(betLow, reelInfo);
+%% Generate array of random reel index positions and fill tables.
+% Get stop columns by column name:
+pattern = ["LStop","RStop"];
+
+betHigh(:, ismember(betHigh.Properties.VariableNames, pattern)) = ... 
+    array2table(randi(reelInfo.reel_length, reelInfo.nBetHigh, 2));
+    % ^ Randomly draw a stop position for each reel repeat x nTrials
+
+% And again
+betLow(:, ismember(betLow.Properties.VariableNames, pattern)) = ...
+    array2table(randi(reelInfo.reel_length, reelInfo.nBetLow, 2));
+
+% Fill in Centre Symbol
+betHigh.CS = randi(5, reelInfo.nBetHigh, 1);
+betLow.CS = randi(5, reelInfo.nBetLow, 1);
+
+% Fill in symbol codes and other info (see function)
+[betHigh] = fill_outcomeTable(betHigh, reelInfo);
+[betLow] = fill_outcomeTable(betLow, reelInfo);
 
 % ------------------------------------------------------------------------
 % Summarise outcomes on this iteration:
@@ -156,6 +161,6 @@ filename = ['participant' num2str(i)];
 
 save([fileInfo.input filename '.mat'], '-struct', 'output')
 
-% end
+end
 
 
