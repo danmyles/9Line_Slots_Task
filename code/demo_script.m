@@ -2,28 +2,22 @@
 % Dev Script For Experiment
 % -----------------------------------------------------------------------
 
-%% TODO ? SAVE ALL SCREEN INFO TO FILE?
-
-%% TODO ? SET ALL EVENT MARKERS
-% Be sure to add markers from betChoice
-
-%% TO DO: Series of tests and checks for all video features to ensure
-% accurate timing. For instance checking the recorded inter frame interval
-% or refresh rate against those desired.
-
-%% TO DO: HideCursor; To hide the mouse cursor? but this is annoying when
-% debugging. Probably put this in setup_exp?
-
-%% TO DO SET SPEED OF PLAY
-% Speed of play - From Harrigan & Dixon 2009
-% We estimated the speed of play by using the second hand on a watch. On the two
-% traditional mechanical reel slot machine games, the player can play approximately every
-% 6 s, which is approximately 10 spins per minute, or 600 spins per hour. On the two video
-% slots games, the player can play approximately every 3 s, which is 1,200 spins per hour.
-
-% You will also need to consider the length of time neccesary to avoid
-% artifacts from previous stimuli affecting the result. ~1000 ms from
-% fixation cross to display of outcome stimulus.
+%% TODO
+% - SET ALL EVENT MARKERS:
+%    i. Be sure to add markers from betChoice
+% - CHECK TIMING FOR SCREEN FLIPS and IFI
+% - CHECK SPEED: Should match speed of play outlined by Harrigan & Dixon 2009:  
+%     i) We estimated the speed of play by using the second hand  
+%     on a watch. On the two traditional mechanical reel slot machine games, 
+%     the player can play approximately every 6 s, which is approximately 
+%     10 spins per minute, or 600 spins per hour. On the two video slots  
+%     games, the player can play approximately every 3 s, which is 1,200  
+%     spins per hour. 
+%     ii) You will also need to consider the length of time neccesary to avoid 
+%     artifacts from previous stimuli affecting the result. ~1000 ms from 
+%     fixation cross to display of outcome stimulus.
+% - ADD MOVE participant.mat file to end of script (commented out for debugging)
+% — HIDE CURSOR
 
 % ----------------------------------------------------------------------
 % Clear the workspace and the screen
@@ -50,7 +44,8 @@ rng shuffle;
 % Get system time
 sessionInfo.date = datetime;
 sessionInfo.start = GetSecs;
-% Send Event Marker: Experiment Start
+
+% EVENT MARKER: Experiment Start
 
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);
@@ -97,14 +92,20 @@ end
 % Send end time to sessionInfo
 sessionInfo.instrEndT = sessionInfo.start - KeyTime;
 
+% --------------------- % START EXPERIMENT LOOP % ---------------------- %
+
+% for block = 
+
 % ----------------------------------------------------------------------
-% 1ST BLOCK
+% DISPLAY BLOCK
 % ----------------------------------------------------------------------
 
 % Send start time to sessionInfo
 sessionInfo.timing{"BlockStart", "Block_1"} = sessionInfo.start - GetSecs;
 
-for i = 1:5 %reelInfo.blocksize * 1 % Block One
+% EVENT MARKER: BLOCK START
+
+for i = (reelInfo.trialIndex + 1):(reelInfo.trialIndex + reelInfo.blocksize)
     
     [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
     
@@ -113,33 +114,36 @@ end
 % Send end time to sessionInfo
 sessionInfo.timing{"BlockEnd", "Block_1"} = sessionInfo.start - GetSecs;
 
+% EVENT MARKER: BLOCK END
+
 % ----------------------------------------------------------------------
-% 1ST BREAK
+% DISPLAY BREAK
 % ----------------------------------------------------------------------
 
 % Send start time to sessionInfo
 sessionInfo.timing{"BreakStart", "Block_1"} = sessionInfo.start - GetSecs;
 
+% EVENT MARKER: BREAK START
+
 % Show break screen:
-present_break(screenInfo, reelInfo);
+present_break(screenInfo, reelInfo, outputData);
 
 % Send start time to sessionInfo
 sessionInfo.timing{"BreakEnd", "Block_1"} = sessionInfo.start - GetSecs;
 
-% ----------------------------------------------------------------------
-% 2ND BLOCK
-% ----------------------------------------------------------------------
+% EVENT MARKER: BREAK END
 
-% ----------------------------------------------------------------------
-% 2ND BREAK
-% ----------------------------------------------------------------------
+
+end
+
+% ----------------------- % END EXPERIMENT LOOP % ---------------------- %
 
 % ----------------------------------------------------------------------
 % END text
 % ----------------------------------------------------------------------
 
 % Draw text to centre
-[cache] = DrawFormattedText2(payoutText, 'win', screenInfo.window, ...
+[cache] = DrawFormattedText2('END :)', 'win', screenInfo.window, ...
     'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
     'xalign','center','yalign','center','xlayout','center');
 
@@ -174,4 +178,10 @@ writetable(outputData, [fileInfo.output fileInfo.fileID '.csv'])
 
 % Save session info to output folder:
 save([fileInfo.output fileInfo.fileID 'Info' '.mat'], 'sessionInfo')
+
+% Move participant InputData file to completed folder:
+% script here
+source = [fileInfo.input fileInfo.fileID '.mat'];
+destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
+% movefile(source, destination)
 

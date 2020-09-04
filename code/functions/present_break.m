@@ -1,4 +1,4 @@
-function [] = present_break(screenInfo, reelInfo)
+function [] = present_break(screenInfo, reelInfo, outputData)
 % ----------------------------------------------------------------------
 % [] = present_break(screenInfo, reelInfo)
 % ------------------------------------------------------------------------
