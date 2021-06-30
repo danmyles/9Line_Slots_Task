@@ -29,7 +29,7 @@ clearvars;
 rng shuffle;
 
 % Reseeding the rng at the beginning of any MATLAB prevents (exceedingly mild) 
-% depenendcies in the rng such as booting the experiment/computer at the
+% depenendcies in the rng such as booting the e9xperiment/computer at the
 % same time of day every session.
 
 % HideCursor % Off when debugging
@@ -94,45 +94,44 @@ sessionInfo.instrEndT = sessionInfo.start - KeyTime;
 
 % --------------------- % START EXPERIMENT LOOP % ---------------------- %
 
-% for block = 
+for block = 1:reelInfo.blockN
 
-% ----------------------------------------------------------------------
-% DISPLAY BLOCK
-% ----------------------------------------------------------------------
+    % ----------------------------------------------------------------------
+    % DISPLAY BLOCK
+    % ----------------------------------------------------------------------
 
-% Send start time to sessionInfo
-sessionInfo.timing{"BlockStart", "Block_1"} = sessionInfo.start - GetSecs;
+    % Send start time to sessionInfo
+    sessionInfo.timing{'BlockStart', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
-% EVENT MARKER: BLOCK START
+    % EVENT MARKER: BLOCK START
 
-for i = (reelInfo.trialIndex + 1):(reelInfo.trialIndex + reelInfo.blocksize)
-    
-    [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
-    
-end
+    for i = (reelInfo.trialIndex + 1):(reelInfo.trialIndex + reelInfo.blocksize)
 
-% Send end time to sessionInfo
-sessionInfo.timing{"BlockEnd", "Block_1"} = sessionInfo.start - GetSecs;
+        [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
 
-% EVENT MARKER: BLOCK END
+    end
 
-% ----------------------------------------------------------------------
-% DISPLAY BREAK
-% ----------------------------------------------------------------------
+    % Send end time to sessionInfo
+    sessionInfo.timing{'BlockEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
-% Send start time to sessionInfo
-sessionInfo.timing{"BreakStart", "Block_1"} = sessionInfo.start - GetSecs;
+    % EVENT MARKER: BLOCK END
 
-% EVENT MARKER: BREAK START
+    % ----------------------------------------------------------------------
+    % DISPLAY BREAK
+    % ----------------------------------------------------------------------
 
-% Show break screen:
-present_break(screenInfo, reelInfo, outputData);
+    % Send start time to sessionInfo
+    sessionInfo.timing{'BreakStart', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
-% Send start time to sessionInfo
-sessionInfo.timing{"BreakEnd", "Block_1"} = sessionInfo.start - GetSecs;
+    % EVENT MARKER: BREAK START
 
-% EVENT MARKER: BREAK END
+    % Show break screen:
+    present_break(screenInfo, reelInfo, outputData);
 
+    % Send start time to sessionInfo
+    sessionInfo.timing{'BreakEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
+
+    % EVENT MARKER: BREAK END
 
 end
 
