@@ -23,6 +23,17 @@ function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_ex
 % Version : 2020a
 % ----------------------------------------------------------------------
 
+% Check psychtoolbox and stats toolbox are installed:
+if ~ license('test','statistics_toolbox')
+    warning('Statistics toolbox not installed. Please isntall and try again');
+    sca;
+end
+
+if ~ contains(matlabpath, 'Psychtoolbox')
+    warning('Psychtoolbox was not found in the MATLAB path. Please install/add to path');
+    sca;
+end
+
 % Get directories relative to file location
 [fileInfo] = setup_file();
 

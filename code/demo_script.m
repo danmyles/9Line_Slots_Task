@@ -38,6 +38,8 @@ rng shuffle;
 % RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
+% EVENT MARKER (EXP START)
+
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp();
  
@@ -106,9 +108,16 @@ for block = 1:reelInfo.blockN
     % EVENT MARKER: BLOCK START
 
     for i = (reelInfo.trialIndex + 1):(reelInfo.trialIndex + reelInfo.blocksize)
-
+        
+        % EVENT MARKER – TRIAL START
+        
         [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
-
+        
+        % Trial End Time to outputData
+        outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
+        
+        % EVENT MARKER – TRIAL END
+        
     end
 
     % Send end time to sessionInfo
@@ -151,7 +160,7 @@ Screen('Flip', screenInfo.window);
 
 KbWait(-1, 2);
 
-% EVENT MARKER (END)
+% EVENT MARKER (EXP END)
 
 % Session end time
 sessionInfo.end = GetSecs;
