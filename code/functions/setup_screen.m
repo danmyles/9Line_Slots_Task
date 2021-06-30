@@ -31,8 +31,8 @@ Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
 screenInfo.screens = Screen('Screens');
 
 % Choose screen to display to
-% screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
-screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
+screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
+% screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
 
 % Define white (white will be 1 and black 0). This is because
 % luminace values are (in general) defined between 0 and 1.
@@ -43,13 +43,13 @@ screenInfo.white = WhiteIndex(screenInfo.screenNumber);
 
 % For help see: Screen OpenWindow?
 % Open the main window with multi-sampling for anti-aliasing
-[screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, [], [], [], [], 6, []);
+% [screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, [], [], [], [], 6, []);
 
 %% DEBUGGING ON LAPTOP
 
 % Setup for playing on laptop only (ie no external)
-% laptopScreen = Screen('Rect', 0)/2;
-% [screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, laptopScreen, [], [], [], 6, []);
+laptopScreen = Screen('Rect', 0)/2;
+[screenInfo.window, screenInfo.windowRect] = PsychImaging('OpenWindow', screenInfo.screenNumber, screenInfo.white, laptopScreen, [], [], [], 6, []);
 %%
 
 % Get the size of the on screen window in pixels

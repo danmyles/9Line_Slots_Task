@@ -40,7 +40,7 @@ rng shuffle;
 
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp();
-
+ 
 % Get system time
 sessionInfo.date = datetime;
 sessionInfo.start = GetSecs;
