@@ -11,11 +11,15 @@ output:
     highlight: monochrome
 ---
 # 9 Line Slot Task
+
+You can contact me at dan.myles@monash.edu.
+
 ## Dependancies
 
 Make sure you have the following software and MATLAB packages installed:
 
-  1. [MATLAB_2019a](http://mathworks.com)
+  1. [MATLAB_2021a](http://mathworks.com)
+	  i. The statistics and machine learning toolbox is also required
   2. [PsychToolbox-3](http://psychtoolbox.org/)
   3. I installed https://www.xquartz.org/ in order to use the PsychToolbox function DrawFormattedText2
   
@@ -33,35 +37,91 @@ Make sure you have the following software and MATLAB packages installed:
 
 ## Flow
 
-Diagram of how experiment operates will be displayed here
+This experiment is broken down into a series of functions. The rough order of operations is something like this:
 
-This experiment is broken down into a multitude of functions. The rough order of operations is something like (see comments within each function for more details):
+(see comments within each function for more details):
 
-  1. Experiment Script (contains over-all structure)
-	  2. Call "boot_exp.m"
-		  3. This runs a series of set up functions:
-			  - Start clock ("tic")
-			  - Set file path
-			  - Set up Psychtoolbox screen –> save to "screenInfo"
-			  - Set up the slot machine grid –> save to "screenInfo"
-			  - Set up reelInfo, creates:
-				  - Shape, size and colour information for reel symbols
-				  - Possible payout amounts, and display parameters
-				  - Position information for the reel positions
-				  - The sequence of symbols across the "reel strips"
-			  - Set up a table for experiment output (trial by trial)
-			  - Set max priority (limit processing power consumed by background activities)
-	  1.  The loading screen function is called throughout to display a little graphic as the experiment progresses through these early set up procedures. Generating the reel strips can take a moment.
-	  2.  [Instructions]
-	  2.  We can then call the update stops function to generate a starting reel position, and the draw shapes and draw grid function to fill in the screen.
-	  3.  
+  1. Experiment Script (contains over-all structure)\
+		1. **EVENT MARKER: EXP START**
+	  2. This calls "boot_exp.m" which runs a series of set up functions:
+		  - Start clock ("tic")
+		  - Check Psychtoolbox and Stat toolbox are installed
+		  - Set file path
+		  - Set up Psychtoolbox screen –> save to "screenInfo"
+		  - Set up the slot machine grid –> save to "screenInfo"
+		  - Set up reelInfo, creates:
+			  - Shape, size and colour information for reel symbols
+			  - Possible payout amounts, and display parameters
+			  - Position information for the reel positions
+			  - The sequence of symbols across the "reel strips"
+		  - Set up a table for experiment output (trial by trial)
+		  - Set max priority (limit processing power consumed by background activities)
+		  - The loading screen function is called throughout to display a little graphic as the experiment progresses through these early set up procedures. Generating the reel strips can take a moment.
+		  - Returns to experiment script
+	  2.  Display task instructions sequence
+		  -  See present_instructions.m
+		  -  Record duration of instructions `sessionInfo.instrEndT` when participant presses 9 on the last page
+	  3.  Begin experiment proper
+		  - **Event Marker: Block Start = []**
+		  - **Event Marker: Block End = []**
+		  -  The block and trial structure is read off the reelInfo struct.
+		  -  Pretty much just a series of nested for loops over the present_trial.m function and it's dependencies.
+		4. present_trial.m, loosely the following events:
+			- Display betting screen
+				- **Event Marker: Display Bet**
+	    - Take participant betting choice 
+		    - **Event Marker: Display Bet**
+	    - Update reelInfo.trialIndex iterator
+	    - Update outputData by participant betting choice
+	    - Display the spin
+		    - **Event Marker: Spin Animation Start**
+		    - **Event Marker: Spin Animation End**
+			- Highlight any active reels
+				- **Event Marker: Highlight Appears**
+				- **Event Marker: Highlight Sequence Complete**
+			- Display Fixation Cross
+				- **Event Marker: Fixation Cross**
+			- Display Outcome Stimulus
+				- **‌Event Marker: Display Outcome Stimulus**
+			- Trial End - Back to main loop
+				- **‌Event Marker: Trial End**
+		5. Occasional breaks every `` trials
+	    - **‌Event Marker: Break Start**
+	    - **‌Event Marker: Break End**
+	  6. Experiment End
+	    - **‌Event Marker: EXP END**
+
+## Trigger Dictionary
+
+Experiment Start
+Experiment End
+
+Block Start
+Block End
+
+Trial Start
+Trial End
+
+Break Start
+Break End
+
+Display Bet
+Bet Choice
+
+Spin Animation Start
+Spin Animation End
+
+Highlight Appears
+Highlight Sequence Complete
+
+Display Fixation Cross
+Display Outcome Stimulus
 
 ## Config
 
 Explanation of how config file works will go here.
 
-May end up having to change "reelInfo" to config? Or have reelInfo read 
-from a config file that the user can pre-set...
+May end up having to change "reelInfo" to config? Or have reelInfo read from a config file that the user can pre-set...
 
 ## Functions
 
