@@ -60,7 +60,7 @@ side = randsample(1:2, 2, false);
 
 [~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
 
-% EVENT MARKER (BET SCREEN FLIP)
+% EVENT MARKER (DISPLAY BET)
 
 % ------------------------------------------------------------------------
 % WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
@@ -241,7 +241,7 @@ reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops
 % SPIN REELS
 % ----------------------------------------------------------------------
 
-% EVENT MARKER (Spin Animation Begin)
+% EVENT MARKER (Spin Animation Start)
 
 % Add timing info to outputData
 outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
@@ -249,7 +249,7 @@ outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
 % Spin reels
 [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
 
-% EVENTMARKER (Spin Animation Complete)
+% EVENTMARKER (Spin Animation End)
 
 % Wait ISI
 WaitSecs(reelInfo.timing.highlight);
@@ -327,7 +327,7 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     % Flip to the screen
     Screen('Flip', screenInfo.window);
 
-    % EVENT MARKER (Highlighting Complete)
+    % EVENT MARKER (Highlight Sequence Complete)
     
     % update outputData
     outputData.HighlightEnd(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
@@ -392,7 +392,7 @@ end
 % Flip to the screen (outcome stimulus, payout, win highlights)
 [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
 
-% EVENT MARKER (Outcome Stimulus)
+% EVENT MARKER (Display Outcome Stimulus)
 
 keyDown = 0;
 KeyPressTime = 0;
@@ -433,11 +433,6 @@ while keyDown
     [keyDown, KeyUpTime] = KbCheck(-1);
      WaitSecs(0.001); % delay to prevent CPU hogging
 end
-
-% EVENT MARKER – TRIAL END
-
-% Trial End Time to outputData
-outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
 
 end
 
