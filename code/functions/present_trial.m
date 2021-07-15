@@ -5,7 +5,7 @@ function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInf
 % Goal of the function :
 % To display the sequence of events that makes up each individual trial
 % Loosely the following events:
-%
+% 
 % Display betting screen
 % Take participant betting choice
 % Update reelInfo.trialIndex iterator
