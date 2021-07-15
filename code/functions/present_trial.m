@@ -434,6 +434,9 @@ while keyDown
      WaitSecs(0.001); % delay to prevent CPU hogging
 end
 
+% Trial End Time to outputData
+outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
+
 end
 
 

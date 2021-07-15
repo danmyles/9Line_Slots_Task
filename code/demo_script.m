@@ -38,11 +38,9 @@ rng shuffle;
 % RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
-% EVENT MARKER (EXP START)
-
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp();
- 
+
 % Get system time
 sessionInfo.date = datetime;
 sessionInfo.start = GetSecs;
@@ -57,7 +55,7 @@ loading_screen(screenInfo, reelInfo, 5);
 % Task Instructions
 % ----------------------------------------------------------------------
 
-present_instructions(screenInfo, reelInfo, outputData);
+% present_instructions(screenInfo, reelInfo, outputData);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...
@@ -113,9 +111,6 @@ for block = 1:reelInfo.blockN
         
         [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
         
-        % Trial End Time to outputData
-        outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
-        
         % EVENT MARKER – TRIAL END
         
     end
@@ -160,16 +155,18 @@ Screen('Flip', screenInfo.window);
 
 KbWait(-1, 2);
 
-% EVENT MARKER (EXP END)
-
 % Session end time
 sessionInfo.end = GetSecs;
+
+% EVENT MARKER (EXP END)
 
 % Session duration
 sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
 
 % All shown?
 sessionInfo.shown = sum(outputData.shown);
+
+% Close Serial Port
 
 % Clear the screen
 sca;
