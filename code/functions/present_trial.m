@@ -167,15 +167,14 @@ else
     outputData.credits(reelInfo.trialIndex) = outputData.credits(reelInfo.trialIndex - 1) - totalBet;
 end
 
-% Index by column names in sessionInfo Table that need to be replaced in
-% outputData
+% Index column names in sessionInfo Table that need to be replaced in outputData
 replace = ismember(outputData.Properties.VariableNames, sessionInfo.betA.Properties.VariableNames);
 
 % Get outcome data from appropriate outcome table
 if betChoice == 1
     
     % Count choices
-    sessionInfo.betAChoices = sessionInfo.betAChoices + 1;
+    sessionInfo.betAChoices = (sessionInfo.betAChoices + 1);
     
     % Add outcome to output table
     outputData(reelInfo.trialIndex, replace) = sessionInfo.betA(sessionInfo.betAChoices, :);
@@ -186,7 +185,7 @@ if betChoice == 1
 elseif betChoice == 2
     
     % Count choices
-    sessionInfo.betBChoices = sessionInfo.betBChoices + 1;
+    sessionInfo.betBChoices = (sessionInfo.betBChoices + 1);
     
     % Add outcome to output table
     outputData(reelInfo.trialIndex, replace) = sessionInfo.betB(sessionInfo.betBChoices, :);
