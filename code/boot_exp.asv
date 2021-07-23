@@ -56,7 +56,7 @@ fileInfo.input = [fileInfo.input filesep];
 % Load up experiment data
 sessionInfo = load([fileInfo.input ID EXT]);
 
-% Start sessionInfo choice counts.
+% Load up experiment data
 sessionInfo.betAChoices = 0;
 sessionInfo.betBChoices = 0;
 

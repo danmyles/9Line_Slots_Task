@@ -67,6 +67,9 @@ match = zeros(nTrials, 1);
 % Participant choice to bet A vs bet B
 betChoice = zeros(nTrials, 1);
 
+% Size of bet for choice n
+betSize = zeros(nTrials, 1);
+
 % betChoice * nLines
 totalBet = zeros(nTrials, 1);
 
@@ -122,7 +125,7 @@ outputEmpty = table(...
     participantID, TrialN, blockID, blockN, ...   % Exp Info
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
-    betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
+    betChoice, betSize, totalBet, multiplier, binN, payout, netOutcome, credits, ...  % Bet Info
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 

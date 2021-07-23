@@ -174,22 +174,16 @@ replace = ismember(outputData.Properties.VariableNames, sessionInfo.betA.Propert
 % Get outcome data from appropriate outcome table
 if betChoice == 1
     
-    % Count choices
-    sessionInfo.betAChoices = sessionInfo.betAChoices + 1;
-    
     % Add outcome to output table
-    outputData(reelInfo.trialIndex, replace) = sessionInfo.betA(sessionInfo.betAChoices, :);
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betA(reelInfo.betA.n, :);
     
     % Remove 1 choice from pile
     reelInfo.betA.n = reelInfo.betA.n - 1;
     
 elseif betChoice == 2
     
-    % Count choices
-    sessionInfo.betBChoices = sessionInfo.betBChoices + 1;
-    
     % Add outcome to output table
-    outputData(reelInfo.trialIndex, replace) = sessionInfo.betB(sessionInfo.betBChoices, :);
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betB(reelInfo.betB.n, :);
     
     % Remove 1 choice from pile
     reelInfo.betB.n = reelInfo.betB.n - 1;
@@ -202,9 +196,8 @@ Screen('Flip', screenInfo.window); % Flip
 
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
-outputData.betSize(reelInfo.trialIndex) = betSize;
 outputData.totalBet(reelInfo.trialIndex) = totalBet;
-outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betSize(reelInfo.trialIndex);
+outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betChoice(reelInfo.trialIndex);
 outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialIndex) - outputData.totalBet(reelInfo.trialIndex);
 
 % Add timing data to output
