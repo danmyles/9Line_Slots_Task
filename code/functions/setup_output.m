@@ -1,4 +1,4 @@
-function [outputEmpty, betHigh, betLow] = setup_output(reelInfo, nTrials)
+function [outputEmpty, betA, betB] = setup_output(reelInfo, nTrials)
 % ----------------------------------------------------------------------
 % setup_output(nTrials)
 % ----------------------------------------------------------------------
@@ -32,11 +32,14 @@ participantID = zeros(nTrials, 1);
 % Total number of trials
 TrialN = [1:nTrials]';
 
-% Block Identifier (Will probably run in blocks of 50 or so with breaks)
+% Block Identifier (Will probably run in blocks with breaks)
 blockID = zeros(nTrials, 1);
 
 % Trial number within block
 blockN = zeros(nTrials, 1);
+
+% Time at trial end.
+binN = zeros(nTrials, 1);
 
 % ---- Reel stops and symbols ---- 
 
@@ -61,7 +64,7 @@ match = zeros(nTrials, 1);
 
 % ---- Outcome and Betting Info ---- 
 
-% Participant choice to bet high/bet low
+% Participant choice to bet A vs bet B
 betChoice = zeros(nTrials, 1);
 
 % betChoice * nLines
@@ -124,7 +127,7 @@ outputEmpty = table(...
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 
 % Outcome Tables
-betHigh = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);
-betLow  = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier);
+betA = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier, binN);
+betB  = betA;
 
 end

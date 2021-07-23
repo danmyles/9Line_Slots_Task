@@ -58,9 +58,8 @@ n = 5; % Number of experiment files to generate (sample size plus dropout).
 % Block structure
 reelInfo.blocksize = 60; % Length of each block
 reelInfo.blockN = 6;     % Number of blocks
-reelInfo.binsize = 30;   % Number of events in each bin
-% Number of bins:
-reelInfo.binN = reelInfo.blockN * (reelInfo.blocksize / reelInfo.binsize); 
+reelInfo.binsize = 30;   % Number of bins
+reelInfo.binN = 6;     % Number of bins
 
 % Number of trials (length of experiment)
 reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
@@ -114,18 +113,15 @@ summaryTable.Properties.VariableNames = [...
 for i = 1:n
 
 % Load in empty outcome tables
-% Generate an empty tables for outcomes
-[~, betA, betB] = setup_output(reelInfo, 360*2);
+[~, betA, betB] = setup_output(reelInfo);
 
 % In the end I decided it was better to go for statistcal power rather than
 % letting outcomes genuinely vary randomly. So we are bucketing outcomes 
-% into groups of reelInfo.binsize to ensure a reasonable balance of outcomes, but still 
-% allowing for some variability. 
-% See the fill_outcomeTable function for more info.
+% into groups of 30 to ensure a reasonable balance of outcomes, but still 
+% allowing for some variability.
 
-% Fill reel stops and symbols codes
-betA = fill_outcomeTable(betA, reelInfo);
-betB = fill_outcomeTable(betB, reelInfo);
+[betA] = balanceOutcomes(betA, reelInfo);
+[betB] = balanceOutcomes(betB, reelInfo);
 
 % ------------------------------------------------------------------------
 % Summarise outcomes on this iteration:

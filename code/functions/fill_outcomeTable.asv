@@ -96,7 +96,7 @@ events.binN = repelem([1:12]', 15, 1);
 
 % Three of each event per bin:
 binEvents = repelem(reelInfo.multipliers(choice, :)', 3, 1);
-%                                        ^ switch to choice row
+%                                        ^ switch to choice
  
 % Fit multiplier
 events.multiplier = repmat(binEvents, height(events) / height(binEvents), 1);
@@ -112,7 +112,7 @@ for i = 1:reelInfo.binN
     this = this(randperm(height(this)), :);
     
     % Get row index for outcomeTable
-    index = [1:reelInfo.binsize] + reelInfo.binsize*(i - 1);
+    index = [1:reelInfo.binsize] + reelInfo.binsize*(i - 1)
     
     % fill rows
     outcomeTable(index, :) = this;
