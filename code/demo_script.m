@@ -5,7 +5,7 @@
 %% TODO
 % - SET ALL EVENT MARKERS:
 %    i. Be sure to add markers from betChoice
-% - FILLIN OUTCOME SUMMARY AT END OF EXP TO COLLATE ALL EVETNS:
+% - FILL IN OUTCOME SUMMARY AT END OF EXP TO COLLATE ALL EVETNS:
 % - CHECK TIMING FOR SCREEN FLIPS and IFI
 % - CHECK SPEED: Should match speed of play outlined by Harrigan & Dixon 2009:  
 %     i) We estimated the speed of play by using the second hand  
@@ -56,7 +56,7 @@ loading_screen(screenInfo, reelInfo, 5);
 % Task Instructions
 % ----------------------------------------------------------------------
 
-% present_instructions(screenInfo, reelInfo, outputData);
+present_instructions(screenInfo, reelInfo, outputData);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...

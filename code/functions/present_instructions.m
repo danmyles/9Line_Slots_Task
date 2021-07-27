@@ -220,8 +220,8 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         keyCode = 0;
         
         % Cycle through betting instructions.
-        % 1 - 'Before each spin you will be shown the total credits you have'
-        % 2 - 'You will also be given a choice: Bet low or bet high?'
+        % 1 - 'Before each spin you will be shown your total credits'; ...
+        % 2 - 'You will also be given a choice between two different slot machine games'; ...
         for i = 1:2
             draw_text(screenInfo, reelInfo, instructions, instructions.betting{i}); % Text Draw
             Screen('Flip', screenInfo.window);                                      % Screen flip
@@ -238,6 +238,11 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
             );
         Screen('Flip', screenInfo.window); % Flip screen
         KbWait(-1, 2);  % Wait for keyPress
+        
+        % 3 - 'Each game is subtly different'; ...
+        % 4 - 'Your task is to determine which of the two games is the most advantageous'; ...
+        % 5 - 'Every bet will cost 90 credits'; ...
+        % N - 'That's 10 credits for each of the 9 ways that a win can occur'
         
         for i = 3:length(instructions.betting)
             draw_text(screenInfo, reelInfo, instructions, instructions.betting{i}); % Text Draw
