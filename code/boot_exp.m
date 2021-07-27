@@ -57,8 +57,8 @@ fileInfo.input = [fileInfo.input filesep];
 sessionInfo = load([fileInfo.input ID EXT]);
 
 % Start sessionInfo choice counts.
-sessionInfo.betAChoices = 0;
-sessionInfo.betBChoices = 0;
+reelInfo.betAChoices = 0;
+reelInfo.betBChoices = 0;
 
 % Create empty data table for output
 [outputData] = setup_output(reelInfo);

@@ -54,6 +54,7 @@ function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInf
 % ------------------------------------------------------------------------
 
 % Randomly pick a side to draw each bet to
+% side = randsample(["A", "B"], 2, false);
 side = randsample(1:2, 2, false);
 
 [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side);
@@ -91,7 +92,7 @@ if reelInfo.betA.n == 0
     end
 end
 
-% Check Bet Low has run out
+% Check Bet B has run out
 if reelInfo.betB.n == 0
     if find(side == 2) == 2
         rightKey = -1;
@@ -124,6 +125,28 @@ while ~keyWait
 end
 
 % ------------------------------------------------------------------------
+% Set choice
+% ------------------------------------------------------------------------
+
+if keyCode == leftKey
+
+    betSize = reelInfo.lineBet(side(1));
+    
+    betChoice = side(1);
+    
+    highlight = rectL;
+    
+elseif keyCode == rightKey
+
+    betSize = reelInfo.lineBet(side(2));
+    
+    betChoice = side(2);
+    
+    highlight = rectR;
+    
+end
+
+% ------------------------------------------------------------------------
 % UPDATE reelInfo.trialIndex
 % ------------------------------------------------------------------------
 
@@ -132,30 +155,9 @@ reelInfo.trialIndex = (reelInfo.trialIndex + 1);
 % ------------------------------------------------------------------------
 % UPDATE outputData
 % ------------------------------------------------------------------------
-
 % Get participant choice:
 % If side = [1, 2] then A B
 % If side = [2, 1] then B A
-
-if keyCode == leftKey
-
-    betSize = reelInfo.lineBet(side(1));
-    
-    betChoice = side(1);
-    
-    % Highlight left choice with a red box
-    Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectL, screenInfo.gridPenWidthPixel .* 3)
-
-elseif keyCode == rightKey
-
-    betSize = reelInfo.lineBet(side(2));
-    
-    betChoice = side(2);
-    
-    % Highlight right choice with a red box
-    Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectR, screenInfo.gridPenWidthPixel .* 3)
-
-end
 
 % get betting amount
 totalBet = betSize * 9;
@@ -174,10 +176,10 @@ replace = ismember(outputData.Properties.VariableNames, sessionInfo.betA.Propert
 if betChoice == 1
     
     % Count choices
-    sessionInfo.betAChoices = (sessionInfo.betAChoices + 1);
+    reelInfo.betAChoices = (reelInfo.betAChoices + 1);
     
     % Add outcome to output table
-    outputData(reelInfo.trialIndex, replace) = sessionInfo.betA(sessionInfo.betAChoices, :);
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betA(reelInfo.betAChoices, :);
     
     % Remove 1 choice from pile
     reelInfo.betA.n = reelInfo.betA.n - 1;
@@ -185,19 +187,28 @@ if betChoice == 1
 elseif betChoice == 2
     
     % Count choices
-    sessionInfo.betBChoices = (sessionInfo.betBChoices + 1);
+    reelInfo.betBChoices = (reelInfo.betBChoices + 1);
     
     % Add outcome to output table
-    outputData(reelInfo.trialIndex, replace) = sessionInfo.betB(sessionInfo.betBChoices, :);
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betB(reelInfo.betBChoices, :);
     
     % Remove 1 choice from pile
     reelInfo.betB.n = reelInfo.betB.n - 1;
     
 end
 
-% Flip screen with choice highlighted and credits updated
+% ------------------------------------------------------------------------
+% Highlight the choice and update credits:
+% ------------------------------------------------------------------------
+
+% Highlight left choice with a red box
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
+Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), highlight, screenInfo.gridPenWidthPixel .* 3) % Red frame highlight
 Screen('Flip', screenInfo.window); % Flip
+
+% ------------------------------------------------------------------------
+% MORE UPDATING
+% ------------------------------------------------------------------------
 
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
@@ -239,8 +250,8 @@ reelInfo.outcome.match = outputData.match(reelInfo.trialIndex);
 
 % Find all indices for above and below the stops on reel 1 & 2
 % Then update reel information
-for i = [1, 2]
-    reelInfo.outcome.allstops(:, i) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(i), 1, 1);
+for icol = [1, 2]
+    reelInfo.outcome.allstops(:, icol) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(icol), 1, 1);
 end
 
 % Fill out sym_shape from reel w/ allstops
@@ -299,21 +310,21 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     % Print highlighted squares to screen one match at a time
     % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
 
-    for i = 1:numel(C)
+    for ih = 1:numel(C)
 
-        Ai = ismember(A, C(i));
-        Bi = ismember(B, C(i));
+        Ai = ismember(A, C(ih));
+        Bi = ismember(B, C(ih));
 
         % Reel 1 Highlights:
         highlight_pos = screenInfo.gridPos(1:3, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(ih), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
         % Place another square on the inside of the highlight square (looks nice)
         highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
         Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
 
         % Reel 2 Highlights:
         highlight_pos = screenInfo.gridPos(7:9, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(ih), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
         % Place another square on the inside of the highlight square (looks nice)
         highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
         Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
@@ -449,10 +460,6 @@ end
 outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
 
 end
-
-
-
-
 
 
 
