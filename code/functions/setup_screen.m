@@ -23,7 +23,7 @@ function [screenInfo] = setup_screen()
 PsychDefaultSetup(2);
 
 % Do you need to run SyncTest?
-Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
+% Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
 % Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
 % Get the numbers for each screen. 

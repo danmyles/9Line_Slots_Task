@@ -60,6 +60,9 @@ sessionInfo = load([fileInfo.input ID EXT]);
 reelInfo.betAChoices = 0;
 reelInfo.betBChoices = 0;
 
+% Start sessionInfo choice counts.
+reelInfo.draw_rate = 15;
+
 % Create empty data table for output
 [outputData] = setup_output(reelInfo);
 

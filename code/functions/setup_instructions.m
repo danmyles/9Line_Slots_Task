@@ -103,6 +103,10 @@ demoSequence.multiplier(1) = reelInfo.multipliers(end);
 demoSequence.LStop(1) = strfind(reelInfo.reelstrip(:, 1)', [2 1 3]) + 1;
 demoSequence.RStop(1) = strfind(reelInfo.reelstrip(:, 2)', [4 1 5]) + 1;
 
+if demoSequence.LStop(1) == 0 | demoSequence.RStop(1) == 0
+    error("Could not find reel position for demo sequence stops. You may need to re-run create_experiment script to shuffle the reelstrips")
+end
+
 % Select cols by colnames
 pattern = ["L1", "L2", "L3", "CS", "R1", "R2", "R3"];
 % Add symbols

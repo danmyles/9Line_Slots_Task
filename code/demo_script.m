@@ -30,7 +30,7 @@ clearvars;
 rng shuffle;
 
 % Reseeding the rng at the beginning of any MATLAB prevents (exceedingly mild) 
-% depenendcies in the rng such as booting the e9xperiment/computer at the
+% depenendcies in the rng such as booting the experiment/computer at the
 % same time of day every session.
 
 % HideCursor % Off when debugging
@@ -58,7 +58,7 @@ loading_screen(screenInfo, reelInfo, 5);
 % Task Instructions
 % ----------------------------------------------------------------------
 
-% present_instructions(screenInfo, reelInfo, outputData);
+present_instructions(screenInfo, reelInfo, outputData);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...
