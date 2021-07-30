@@ -74,8 +74,8 @@ reelInfo.betA.n = reelInfo.nTrials/2;
 reelInfo.betB.n = reelInfo.betA.n;
 
 % Set multipliers
-reelInfo.multipliers = [3, 5, 13, 15, 44; %  betA
-                        2, 6, 12, 16, 44]; % betB
+reelInfo.multipliers = [3, 5, 13, 15, 45; %  bet A
+                        1, 7, 11, 17, 45]; % bet B
 
 % Number of each outcome type per block
 % CHECK FOR DELETION
