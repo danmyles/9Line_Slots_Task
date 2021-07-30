@@ -18,9 +18,9 @@ function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_ex
 %   ID : Participant ID
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : June 2020
+% Last update : July 2021
 % Project : 9_Line_Slots_Task
-% Version : 2020a
+% Version : 2021a
 % ----------------------------------------------------------------------
 
 % Check psychtoolbox and stats toolbox are installed:

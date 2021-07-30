@@ -13,9 +13,9 @@ function [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side)
 % [rectR, rectL] -> useful for more drawing in nested function.
 % ------------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2020
+% Last update : July 2021
 % Project : 9_Line_Slots_Task
-% Version : 2020a
+% Version : 2021a
 % ------------------------------------------------------------------------
 
 % ------------------------------------------------------------------------

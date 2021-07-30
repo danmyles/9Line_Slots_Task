@@ -9,9 +9,9 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
     % reelInfo, screenInfo
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : July 2020
+    % Last update : July 2021
     % Project : 9_Line_Slots_Task
-    % Version : 2020a
+    % Version : 2021a
     % ----------------------------------------------------------------------
     
     % Get instructions and demo spins.

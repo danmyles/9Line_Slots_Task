@@ -13,7 +13,7 @@ function [outcomeTable] = fill_outcomeTable(outcomeTable, reelInfo)
 % outcome table, filled with symbol codes
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : August 2021
+% Last update : July 2021
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------
