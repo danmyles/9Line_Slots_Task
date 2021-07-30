@@ -1,4 +1,4 @@
-function [outputData] = setup_output(nTrials)
+function [outputEmpty, betA, betB] = setup_output(reelInfo, nTrials)
 % ----------------------------------------------------------------------
 % setup_output(nTrials)
 % ----------------------------------------------------------------------
@@ -21,17 +21,25 @@ function [outputData] = setup_output(nTrials)
 
 % ---- Trial Info: ----
 
+% Allow user to override size. Otherwise use reelInfo.nTrials
+if ~exist('nTrials')
+    nTrials = reelInfo.nTrials;
+end
+
 % Participant Identifier
 participantID = zeros(nTrials, 1);
 
 % Total number of trials
 TrialN = [1:nTrials]';
 
-% Block Identifier (Will probably run in blocks of 50 or so with breaks)
+% Block Identifier (Will probably run in blocks with breaks)
 blockID = zeros(nTrials, 1);
 
 % Trial number within block
 blockN = zeros(nTrials, 1);
+
+% Time at trial end.
+binN = zeros(nTrials, 1);
 
 % ---- Reel stops and symbols ---- 
 
@@ -56,8 +64,11 @@ match = zeros(nTrials, 1);
 
 % ---- Outcome and Betting Info ---- 
 
-% Participant choice to bet high/bet low
+% Participant choice to bet A vs bet B
 betChoice = zeros(nTrials, 1);
+
+% Size of bet for choice n
+betSize = zeros(nTrials, 1);
 
 % betChoice * nLines
 totalBet = zeros(nTrials, 1);
@@ -108,14 +119,18 @@ PRP = zeros(nTrials, 1);
 TrialEnd = zeros(nTrials, 1);
 
 % ------------------------------------------------------------------------
-% Add all of above into table
+% Add all of above into empty table to collect data
 % ------------------------------------------------------------------------
-outputData = table(... 
+outputEmpty = table(... 
     participantID, TrialN, blockID, blockN, ...   % Exp Info
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
-    betChoice, totalBet, multiplier, payout, netOutcome, credits, ...  % Bet Info
+    betChoice, betSize, totalBet, multiplier, binN, payout, netOutcome, credits, ...  % Bet Info
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
+
+% Outcome Tables
+betA = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier, binN);
+betB  = betA;
 
 end

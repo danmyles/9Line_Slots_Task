@@ -5,7 +5,7 @@ function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInf
 % Goal of the function :
 % To display the sequence of events that makes up each individual trial
 % Loosely the following events:
-%
+% 
 % Display betting screen
 % Take participant betting choice
 % Update reelInfo.trialIndex iterator
@@ -44,9 +44,9 @@ function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInf
 % outputData: bet choice, payout, updates shown 0 -> 1, records timing info.
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2020
+% Last update : July 2021
 % Project : 9_Line_Slots_Task
-% Version : 2020a
+% Version : 2021a
 % ----------------------------------------------------------------------
 
 % ------------------------------------------------------------------------
@@ -54,13 +54,14 @@ function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInf
 % ------------------------------------------------------------------------
 
 % Randomly pick a side to draw each bet to
+% side = randsample(["A", "B"], 2, false);
 side = randsample(1:2, 2, false);
 
 [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side);
 
 [~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
 
-% EVENT MARKER (BET SCREEN FLIP)
+% EVENT MARKER (DISPLAY BET)
 
 % ------------------------------------------------------------------------
 % WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
@@ -73,6 +74,32 @@ rightKey = KbName('RightArrow');
 keyCode = 0;
 keyWait = 0;
 keyDown = 0;
+
+% We need to disable the left or right key if betB.n or betA.n have run out
+% (i.e. the pariticpant has already chosen that option the max number of times)
+
+% If side = [1, 2] then A B
+% If side = [2, 1] then B A
+% We can use this to set the left/right value to -1, this will force subsequent 
+% if statements to fail and not register the key press.
+
+% Check Bet A has run out
+if reelInfo.betA.n == 0
+    if find(side == 1) == 2
+        rightKey = -1;
+    elseif find(side == 1) == 1
+        leftKey  = -1;
+    end
+end
+
+% Check Bet B has run out
+if reelInfo.betB.n == 0
+    if find(side == 2) == 2
+        rightKey = -1;
+    elseif find(side == 2) == 1
+        leftKey  = -1;
+    end
+end
 
 while ~keyWait
 
@@ -98,6 +125,28 @@ while ~keyWait
 end
 
 % ------------------------------------------------------------------------
+% Set choice
+% ------------------------------------------------------------------------
+
+if keyCode == leftKey
+
+    betSize = reelInfo.lineBet(side(1));
+    
+    betChoice = side(1);
+    
+    highlight = rectL;
+    
+elseif keyCode == rightKey
+
+    betSize = reelInfo.lineBet(side(2));
+    
+    betChoice = side(2);
+    
+    highlight = rectR;
+    
+end
+
+% ------------------------------------------------------------------------
 % UPDATE reelInfo.trialIndex
 % ------------------------------------------------------------------------
 
@@ -106,28 +155,12 @@ reelInfo.trialIndex = (reelInfo.trialIndex + 1);
 % ------------------------------------------------------------------------
 % UPDATE outputData
 % ------------------------------------------------------------------------
-
 % Get participant choice:
-% If side = [1, 2] then LOW  HIGH
-% If side = [2, 1] then HIGH LOW
-
-if keyCode == leftKey
-
-    betChoice = reelInfo.lineBet(side(1));
-    % Highlight left choice with a red box
-    Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectL, screenInfo.gridPenWidthPixel .* 3)
-
-elseif keyCode == rightKey
-
-    betChoice = reelInfo.lineBet(side(2));
-
-    % Highlight right choice with a red box
-    Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), rectR, screenInfo.gridPenWidthPixel .* 3)
-
-end
+% If side = [1, 2] then A B
+% If side = [2, 1] then B A
 
 % get betting amount
-totalBet = betChoice * 9;
+totalBet = betSize * 9;
 
 % Update credits
 if reelInfo.trialIndex == 1
@@ -136,14 +169,52 @@ else
     outputData.credits(reelInfo.trialIndex) = outputData.credits(reelInfo.trialIndex - 1) - totalBet;
 end
 
-% Flip screen with choice highlighted and credits updated
+% Index column names in sessionInfo Table that need to be replaced in outputData
+replace = ismember(outputData.Properties.VariableNames, sessionInfo.betA.Properties.VariableNames);
+
+% Get outcome data from appropriate outcome table
+if betChoice == 1
+    
+    % Count choices
+    reelInfo.betAChoices = (reelInfo.betAChoices + 1);
+    
+    % Add outcome to output table
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betA(reelInfo.betAChoices, :);
+    
+    % Remove 1 choice from pile
+    reelInfo.betA.n = reelInfo.betA.n - 1;
+    
+elseif betChoice == 2
+    
+    % Count choices
+    reelInfo.betBChoices = (reelInfo.betBChoices + 1);
+    
+    % Add outcome to output table
+    outputData(reelInfo.trialIndex, replace) = sessionInfo.betB(reelInfo.betBChoices, :);
+    
+    % Remove 1 choice from pile
+    reelInfo.betB.n = reelInfo.betB.n - 1;
+    
+end
+
+% ------------------------------------------------------------------------
+% Highlight the choice and update credits:
+% ------------------------------------------------------------------------
+
+% Highlight left choice with a red box
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
+Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), highlight, screenInfo.gridPenWidthPixel .* 3) % Red frame highlight
 Screen('Flip', screenInfo.window); % Flip
+
+% ------------------------------------------------------------------------
+% MORE UPDATING
+% ------------------------------------------------------------------------
 
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
+outputData.betSize(reelInfo.trialIndex) = betSize;
 outputData.totalBet(reelInfo.trialIndex) = totalBet;
-outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betChoice(reelInfo.trialIndex);
+outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betSize(reelInfo.trialIndex);
 outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialIndex) - outputData.totalBet(reelInfo.trialIndex);
 
 % Add timing data to output
@@ -179,8 +250,8 @@ reelInfo.outcome.match = outputData.match(reelInfo.trialIndex);
 
 % Find all indices for above and below the stops on reel 1 & 2
 % Then update reel information
-for i = [1, 2]
-    reelInfo.outcome.allstops(:, i) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(i), 1, 1);
+for icol = [1, 2]
+    reelInfo.outcome.allstops(:, icol) = expandStopINDEX(reelInfo, reelInfo.outcome.stops(icol), 1, 1);
 end
 
 % Fill out sym_shape from reel w/ allstops
@@ -192,7 +263,7 @@ reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops
 % SPIN REELS
 % ----------------------------------------------------------------------
 
-% EVENT MARKER (Spin Animation Begin)
+% EVENT MARKER (Spin Animation Start)
 
 % Add timing info to outputData
 outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
@@ -200,7 +271,7 @@ outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
 % Spin reels
 [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
 
-% EVENTMARKER (Spin Animation Complete)
+% EVENTMARKER (Spin Animation End)
 
 % Wait ISI
 WaitSecs(reelInfo.timing.highlight);
@@ -239,21 +310,21 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     % Print highlighted squares to screen one match at a time
     % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
 
-    for i = 1:numel(C)
+    for ih = 1:numel(C)
 
-        Ai = ismember(A, C(i));
-        Bi = ismember(B, C(i));
+        Ai = ismember(A, C(ih));
+        Bi = ismember(B, C(ih));
 
         % Reel 1 Highlights:
         highlight_pos = screenInfo.gridPos(1:3, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(ih), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
         % Place another square on the inside of the highlight square (looks nice)
         highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
         Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
 
         % Reel 2 Highlights:
         highlight_pos = screenInfo.gridPos(7:9, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(i), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(C(ih), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
         % Place another square on the inside of the highlight square (looks nice)
         highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
         Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
@@ -278,7 +349,7 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     % Flip to the screen
     Screen('Flip', screenInfo.window);
 
-    % EVENT MARKER (Highlighting Complete)
+    % EVENT MARKER (Highlight Sequence Complete)
     
     % update outputData
     outputData.HighlightEnd(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
@@ -343,7 +414,7 @@ end
 % Flip to the screen (outcome stimulus, payout, win highlights)
 [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
 
-% EVENT MARKER (Outcome Stimulus)
+% EVENT MARKER (Display Outcome Stimulus)
 
 keyDown = 0;
 KeyPressTime = 0;
@@ -385,16 +456,10 @@ while keyDown
      WaitSecs(0.001); % delay to prevent CPU hogging
 end
 
-% EVENT MARKER – TRIAL END
-
 % Trial End Time to outputData
 outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
 
 end
-
-
-
-
 
 
 

@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp()
 % ----------------------------------------------------------------------
 % [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
@@ -23,6 +23,17 @@ function [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % Version : 2020a
 % ----------------------------------------------------------------------
 
+% Check psychtoolbox and stats toolbox are installed:
+if ~ license('test','statistics_toolbox')
+    warning('Statistics toolbox not installed. Please isntall and try again');
+    sca;
+end
+
+if ~ contains(matlabpath, 'Psychtoolbox')
+    warning('Psychtoolbox was not found in the MATLAB path. Please install/add to path');
+    sca;
+end
+
 % Get directories relative to file location
 [fileInfo] = setup_file();
 
@@ -42,9 +53,37 @@ end
 [fileInfo.input, ID, EXT] = fileparts([fileInfo.input ID]);
 fileInfo.input = [fileInfo.input filesep];
 
-% Load up participant experiment data
-outputData = load([fileInfo.input ID EXT], ID);
-outputData = outputData.(ID);
+% Load up experiment data
+sessionInfo = load([fileInfo.input ID EXT]);
+
+% Start sessionInfo choice counts.
+reelInfo.betAChoices = 0;
+reelInfo.betBChoices = 0;
+
+% Create empty data table for output
+[outputData] = setup_output(reelInfo);
+
+% Fill in Block N
+outputData.blockN = repmat([1:reelInfo.blocksize]', reelInfo.blockN, 1);
+
+% Fill in Block ID
+outputData.blockID = kron([1:reelInfo.blockN], ones(1, reelInfo.blocksize))';
+
+% Fill in Participant ID
+outputData.participantID(:) = sessionInfo.participantID;
+
+%% Empty Table for block timing info
+% Empty table
+sessionInfo.timing = array2table(zeros(4, reelInfo.blockN));
+
+% Create and set VarNames
+names = num2str([1:reelInfo.blockN]');
+names = join([repmat(["Block_"], reelInfo.blockN, 1), names], "");
+sessionInfo.timing.Properties.VariableNames = names;
+sessionInfo.timing.Properties.RowNames = ["BlockStart", "BlockEnd", "BreakStart", "BreakEnd"];
+
+% Add filename ID to sessionInfo
+fileInfo.fileID = ID;
 
 % Set up screen
 [screenInfo] = setup_screen();
@@ -60,6 +99,11 @@ priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
 
 
+%% TEXT SETUP 
+% Setup some default text settings for the window
+Screen('TextSize', screenInfo.window, 20);
+Screen('TextFont', screenInfo.window, 'Helvetica Neue');
+Screen('TextColor', screenInfo.window, screenInfo.black);
 
 end
 

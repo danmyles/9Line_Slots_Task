@@ -5,13 +5,15 @@
 % To generate a set of sequences to use in my 9LST experiment
 % ----------------------------------------------------------------------
 % Input(s) :
+% reelInfo ? takes the reelstrips as input
 % ----------------------------------------------------------------------
-% Output(s): output Tables for high and low bet conditions.
+% Output(s):
+% reelInfo - provides updated symbol positions to sym_shape
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2021
+% Last update : June 2020
 % Project : 9_Line_Slots_Task
-% Version : 2021a
+% Version : 2020a
 % ----------------------------------------------------------------------
 % Shuffle RNG
 rng shuffle;
@@ -36,11 +38,8 @@ clearvars;
 %       2 = Kautz sequence
 % For more information see documentation inside generate_reelstrip function
 
-% I did this so that any random sampling would not be biased by the order
-% of reel symbols, while disallowing any repeats.
-
 % -------------------------------------------------------------------------
-%% Generate Reelstrips
+%% Gerenate Reelstrips
 % -------------------------------------------------------------------------
 
 repeatSymbols = 0;
@@ -50,48 +49,35 @@ repeatSymbols = 0;
 writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 % -------------------------------------------------------------------------
-%% Experiment Details
+%% Experiment Paramters
 % -------------------------------------------------------------------------
 
-n = 5; % Number of experiment files to generate (sample size plus dropout).
+n = 40; % Number of experiments to generate (sample size plus dropout).
 
 % Block structure
-reelInfo.blocksize = 60; % Length of each block
-reelInfo.blockN = 6;     % Number of blocks
-reelInfo.binsize = 30;   % Number of events in each bin
-% Number of bins:
-reelInfo.binN = reelInfo.blockN * (reelInfo.blocksize / reelInfo.binsize); 
+reelInfo.blocksize = 50;
+reelInfo.blockN = 9;
 
 % Number of trials (length of experiment)
 reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
 
-% Choose bet amounts (per line) on choice screen
-reelInfo.lineBet = [10, 10];
+% Choose Low bet and high bet amounts
+reelInfo.lineBet = [1, 10];
 
-% Set maximum number of choices for each condition to maintain 
-% 50 / 50 betting choice
-reelInfo.betA.n = reelInfo.nTrials/2;
-reelInfo.betB.n = reelInfo.betA.n;
+% Set maximum number of each betting choice
+reelInfo.nBetLow = reelInfo.nTrials/2;
+reelInfo.nBetHigh = reelInfo.nTrials/2;
 
 % Set multipliers
-reelInfo.multipliers = [3, 5, 13, 15, 45; %  bet A
-                        1, 7, 11, 17, 45]; % bet B
-
-% Number of each outcome type per block
-% CHECK FOR DELETION
-% reelInfo.nMinEvent = 3 * 2;
-
-% Minimum number of losses that should occur per choice condition
-% CHECK FOR DELETION
-% reelInfo.nMinLosses = reelInfo.nBetLow - numel(reelInfo.multipliers) * reelInfo.nMinEvent * (reelInfo.blockN / 2);
+reelInfo.multipliers = [5, 8, 10, 14, 70];
 
 % Set credits
 reelInfo.credits = 20000;
 
-% Get reel length for easy access and relative scripting for length of the reelstrips
+% Get reel length to allow relative scripting for length of the reelstrips
 reelInfo.reel_length = length(reelInfo.reelstrip(:, 1));
 
-% Save reelInfo to config directory
+% Save reelstrips to config directory
 save([fileInfo.config 'reelInfo.mat'], 'reelInfo')
 
 % ------------------------------------------------------------------------
@@ -100,57 +86,68 @@ save([fileInfo.config 'reelInfo.mat'], 'reelInfo')
 
 summaryTable = array2table(zeros(n, 17));
 summaryTable.Properties.VariableNames = [...
-    'matchA', 'matchB', 'totalA', 'totalB', 'totalNet', ... 
-    strcat([0, string(reelInfo.multipliers(1, :))], "A"), ...
-    strcat([0, string(reelInfo.multipliers(2, :))], "B")];
+    'matchHigh', 'matchLow', 'totalHigh', 'totalLow', 'totalNet', ... 
+    strcat([0, string(reelInfo.multipliers)], "H"), ...
+    strcat([0, string(reelInfo.multipliers)], "L")];
 
 % -------------------------------------------------------------------------
 %% Generate Experiment Outcomes
 % -------------------------------------------------------------------------
 % Loop over sample size to produce n x 2 tables of outcomes
 
-% Likely to be fairly time consuming so maybe make a coffee or whatever.
-
 for i = 1:n
 
 % Load in empty outcome tables
-% Generate an empty tables for outcomes
-[~, betA, betB] = setup_output(reelInfo, 360*2);
+[~, betHigh, betLow] = setup_output(reelInfo);
 
-% In the end I decided it was better to go for statistcal power rather than
-% letting outcomes genuinely vary randomly. So we are bucketing outcomes 
-% into groups of reelInfo.binsize to ensure a reasonable balance of outcomes, but still 
-% allowing for some variability. 
-% See the fill_outcomeTable function for more info.
+% Trim n rows to size:
+betHigh = betHigh(1:reelInfo.nBetHigh, :);
+betLow = betLow(1:reelInfo.nBetHigh, :);
 
-% Fill reel stops and symbols codes
-betA = fill_outcomeTable(betA, reelInfo);
-betB = fill_outcomeTable(betB, reelInfo);
+%% Generate array of random reel index positions and fill tables.
+% Get stop columns by column name:
+pattern = ["LStop","RStop"];
+
+betHigh(:, ismember(betHigh.Properties.VariableNames, pattern)) = ... 
+    array2table(randi(reelInfo.reel_length, reelInfo.nBetHigh, 2));
+    % ^ Randomly draw a stop position for each reel repeat x nTrials
+
+% And again
+betLow(:, ismember(betLow.Properties.VariableNames, pattern)) = ...
+    array2table(randi(reelInfo.reel_length, reelInfo.nBetLow, 2));
+
+% Fill in Centre Symbol
+betHigh.CS = randi(5, reelInfo.nBetHigh, 1);
+betLow.CS = randi(5, reelInfo.nBetLow, 1);
+
+% Fill in symbol codes and other info (see function)
+[betHigh] = fill_outcomeTable(betHigh, reelInfo);
+[betLow] = fill_outcomeTable(betLow, reelInfo);
 
 % ------------------------------------------------------------------------
 % Summarise outcomes on this iteration:
 % ------------------------------------------------------------------------
 
 % Count the occurance of each outcome
-[C, ~, ic] = unique(betA.multiplier);
+[C, ia, ic] = unique(betHigh.multiplier);
 H = [C, accumarray(ic, 1)];
 H = transpose(H);
 H = H(2, :);
 
-[C, ia, ic] = unique(betB.multiplier);
+[C, ia, ic] = unique(betLow.multiplier);
 L = [C, accumarray(ic, 1)];
 L = transpose(L);
 L = L(2, :);
 
 % Add all to summary Table:
-% summaryTable(i, :) = array2table([
-%     sum(betA.match), ...
-%     sum(betB.match), ...
-%     sum((betA.multiplier * reelInfo.lineBet(1)) - 9*reelInfo.lineBet(1)), ...
-%     sum((betB.multiplier * reelInfo.lineBet(2)) - 9*reelInfo.lineBet(2)), ...
-%     reelInfo.credits + ((sum((betA.multiplier * 10) - 90)) + (sum((betB.multiplier) - 9))), ...
-%     H, ...
-%     L]);
+summaryTable(i, :) = array2table([
+    sum(betHigh.match), ...
+    sum(betLow.match), ...
+    sum((betHigh.multiplier * 10) - 90), ...
+    sum((betLow.multiplier) - 9), ...
+    reelInfo.credits + ((sum((betHigh.multiplier * 10) - 90)) + (sum((betLow.multiplier) - 9))), ...
+    H, ...
+    L]);
 
 % ------------------------------------------------------------------------
 
@@ -158,17 +155,12 @@ L = L(2, :);
 % Save outcomes to file:
 % ------------------------------------------------------------------------
 
-output = struct('betA', betA, 'betB', betB, ...
-                'outcomeSummary', summaryTable(i, :), ...
-                'participantID', i);
+output = struct('betHigh', betHigh, 'betLow', betLow, 'outcomeSummary', summaryTable(i, :));
 
 filename = ['participant' num2str(i)];
 
 save([fileInfo.input filename '.mat'], '-struct', 'output')
 
-sprintf([filename ' complete'])
-
 end
 
-sprintf('Done')
 
