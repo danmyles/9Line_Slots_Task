@@ -60,7 +60,9 @@ sessionInfo = load([fileInfo.input ID EXT]);
 reelInfo.betAChoices = 0;
 reelInfo.betBChoices = 0;
 
-% Start sessionInfo choice counts.
+% value for the draw_rate
+% draw rate is the number of times a symbol is redrawn between
+% reel positions.
 reelInfo.draw_rate = 15;
 
 % Create empty data table for output
