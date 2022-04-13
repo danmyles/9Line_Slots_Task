@@ -19,11 +19,11 @@ function [] = inArow(screenInfo, reelInfo)
 
 % Set x positions
 inArow = [
-    720-screenInfo.X_adjust; 
-    720-(screenInfo.X_adjust/2); 
+    screenInfo.xCenter-screenInfo.X_adjust; 
+    screenInfo.xCenter-(screenInfo.X_adjust/2); 
     screenInfo.xCenter; 
-    720+(screenInfo.X_adjust/2); 
-    720+(screenInfo.X_adjust)
+    screenInfo.xCenter+(screenInfo.X_adjust/2); 
+    screenInfo.xCenter+(screenInfo.X_adjust)
     ];
 
 % Set y positions
