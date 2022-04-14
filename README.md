@@ -91,13 +91,17 @@ This experiment is broken down into a series of functions. The rough order of op
 	  6. Experiment End
 	    - **‌Event Marker: EXP END**
 
-## Trigger Dictionary
+## Trigger/Event Code Dictionary
 
-Experiment Start - 255
-Experiment End   - 254
+See also: setup_eventInfo.m
 
-Break Start - 251
-Break End - 252
+Pulse (to alert experimenter) - 255
+
+Experiment Start - 251
+Experiment End   - 252
+
+Break Start - 253
+Break End - 254
 
 Block Start - 1
 Block End - 2
@@ -108,9 +112,11 @@ Trial End - 4
 Display Bet - 5
 
 Bet Choice Response - 6
+
+Then a few extra convenience markers for bet choice. These will need to be paired with the Response marker for accuracy if used (substantially delayed onset)
   - Choice
-	  - High: 61
-	  - Low: 62
+	  - BLUE - A: 61
+	  - GREEN - B: 62
   - Key 
 	  - Left: 63
 	  - Right: 64
@@ -121,60 +127,32 @@ Spin Animation End - 72
 Highlight Sequence Begin - 81
 Highlight Sequence Complete - 82
 
-Highlight Properties
-  - Line numbers:
-	  1. 91
-	  2. 92
-	  3. 93
-	  4. 94
-	  5. 95
-	  6. 96
-	  7. 97
-	  8. 98
-	  9. 99
-  - Highlighted Quantity
-	  1. 41
-	  2. 42
-	  3. 43  
-
 Display Fixation Cross - 55
 
 Display Outcome Stimulus - 10
-   - Loss: 
-	   - Bet Low 100
-	   - Bet High 200
+   - Loss: 100
    - Win: 
 	   - Payout
-		   - 12: 112
-		   - 15: 115
-		   - 50: 150
-		   - 120: 212
+		   - 130: 213
 		   - 150: 215
-		   - 500: 250
+		   - 450: 245
    - LDW:
 	   - Payout
-		   - 3: 103
-		   - 6: 106
 		   - 30: 203
-		   - 60: 206
+		   - 50: 205
 
 Stimulus Properties: 
-  - Win line number:
-	  1. 191
-	  2. 192
-	  3. 193
-	  4. 194
-	  5. 195
-	  6. 196
-	  7. 197
-	  8. 198
-	  9. 199
   - Center symbol:
 	  - Circle: 11
 	  - Diamond: 12
 	  - Triangle: 13
 	  - Square: 14
 	  - Pentagon: 15
+  - Highlighted Quantity
+	  1. 41
+	  2. 42
+	  3. 43  
+
 
 ## Config
 

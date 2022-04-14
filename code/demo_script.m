@@ -6,6 +6,8 @@
 % - SET ALL EVENT MARKERS:
 %    i. Be sure to add markers from betChoice
 % - CHECK TIMING FOR SCREEN FLIPS and IFI
+% - CHECK TRIGGER TIMING 
+%   - May want to consider simple mode to reduce trigger latencies.
 % - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
@@ -29,22 +31,44 @@ rng shuffle;
 % HideCursor % Off when debugging
 
 % ----------------------------------------------------------------------
+% Set-up serial port for triggers
+% ----------------------------------------------------------------------
+
+% SET MMBT TO SIMPLE MODE
+
+% Set duration of serial port pulse
+% Should be slightly larger than 2 / sampling rate
+pulseDuration = 0.002;
+
+% Get list of serial devices
+s = serialportlist;
+
+% Select device n
+n = 4;
+s = serialport(s(n), 9600);
+clear n;
+
+% ----------------------------------------------------------------------
 % RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
 % Start experiment and run all setup functions
-[screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp();
-
-% Open Serial Port
+[screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo, eventInfo] = boot_exp();
 
 % Get system time
 sessionInfo.date = datetime;
 sessionInfo.start = GetSecs;
 
 % EVENT MARKER: Experiment Start
+send_trigger(s, eventInfo.expStart, pulseDuration);
 
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);
+% All triggers on (Test)
+write(s, 255, 'uint8');
+WaitSecs(0.5);
+% All triggers off (test complete)
+write(s, 0, 'uint8');
 loading_screen(screenInfo, reelInfo, 5);
 
 % ----------------------------------------------------------------------
@@ -59,6 +83,9 @@ DrawFormattedText(screenInfo.window, ...
     'center', screenInfo.yCenter);
 % Flip screen
 Screen('Flip', screenInfo.window);
+
+% Alert Experimenter
+write(s, 255, 'uint8');
 
 % Wait for 9 Key or terminate on ESCAPE.
 keyCode = 0;
@@ -88,6 +115,9 @@ end
 % Send end time to sessionInfo
 sessionInfo.instrEndT = KeyTime - sessionInfo.start;
 
+% All triggers off
+write(s, 0, 'uint8');
+
 % --------------------- % START EXPERIMENT LOOP % ---------------------- %
 
 for block = 1:reelInfo.blockN
@@ -100,14 +130,17 @@ for block = 1:reelInfo.blockN
     sessionInfo.timing{'BlockStart', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
     % EVENT MARKER: BLOCK START
+    send_trigger(s, eventInfo.blockStart, pulseDuration);
 
     for i = (reelInfo.trialIndex + 1):(reelInfo.trialIndex + reelInfo.blocksize)
         
         % EVENT MARKER – TRIAL START
+        send_trigger(s, eventInfo.trialStart, pulseDuration);
         
-        [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData);
+        [reelInfo, outputData] = present_trial(s, eventInfo, pulseDuration, screenInfo, sessionInfo, reelInfo, outputData);
         
         % EVENT MARKER – TRIAL END
+        send_trigger(s, eventInfo.trialEnd, pulseDuration);
         
     end
 
@@ -115,6 +148,7 @@ for block = 1:reelInfo.blockN
     sessionInfo.timing{'BlockEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
     % EVENT MARKER: BLOCK END
+    send_trigger(s, eventInfo.blockEnd, pulseDuration);
 
     % ----------------------------------------------------------------------
     % DISPLAY BREAK
@@ -124,20 +158,40 @@ for block = 1:reelInfo.blockN
     sessionInfo.timing{'BreakStart', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
     % EVENT MARKER: BREAK START
-
+    send_trigger(s, eventInfo.breakStart, pulseDuration);
+    
+    % Alert Experimenter
+    write(s, 255, 'uint8');
+    
     % Show break screen:
     if reelInfo.trialIndex ~= reelInfo.nTrials
     present_break(screenInfo, reelInfo, outputData);
     end
     
+    % Alert Off
+    write(s, 0, 'uint8');
+        
     % Send start time to sessionInfo
     sessionInfo.timing{'BreakEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
     % EVENT MARKER: BREAK END
-
+    send_trigger(s, eventInfo.breakEnd, pulseDuration);
+    
 end
 
 % ----------------------- % END EXPERIMENT LOOP % ---------------------- %
+
+% Session end time
+sessionInfo.end = GetSecs;
+
+% EVENT MARKER (EXP END)
+send_trigger(s, eventInfo.expEnd, pulseDuration);
+
+% Session duration
+sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
+
+% Alert Experimenter
+write(s, 255, 'uint8')
 
 % ----------------------------------------------------------------------
 % END text
@@ -153,19 +207,14 @@ Screen('Flip', screenInfo.window);
 
 KbWait(-1, 2);
 
-% Session end time
-sessionInfo.end = GetSecs;
-
-% EVENT MARKER (EXP END)
-
-% Session duration
-sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
-
 % All shown?
 sessionInfo.shown = sum(outputData.shown);
 
-% Close Serial Port
+% End Alert
+write(s, 0, 'uint8')
 
+% Close Serial Port
+clear s;
 % Clear the screen
 sca;
 
@@ -187,4 +236,3 @@ save([fileInfo.output fileInfo.fileID 'Info' '.mat'], 'sessionInfo')
 source = [fileInfo.input fileInfo.fileID '.mat'];
 destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
 % movefile(source, destination)
-

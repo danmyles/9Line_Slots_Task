@@ -1,4 +1,4 @@
-function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo] = boot_exp()
+function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo, eventInfo] = boot_exp()
 % ----------------------------------------------------------------------
 % [screenInfo, reelInfo, fileInfo, outputData, ID] = boot_exp()
 % ----------------------------------------------------------------------
@@ -110,6 +110,9 @@ Screen('TextSize', screenInfo.window, 20);
 Screen('TextFont', screenInfo.window, 'Helvetica Neue');
 Screen('TextColor', screenInfo.window, screenInfo.black);
 
+
+% Get Event codes
+[eventInfo] = setup_eventInfo();
 end
 
 

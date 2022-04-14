@@ -1,4 +1,4 @@
-function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInfo, outputData)
+function [reelInfo, outputData] = present_trial(s, eventInfo, pulseDuration, screenInfo, sessionInfo, reelInfo, outputData)
 % ----------------------------------------------------------------------
 % [reelInfo, outputData] = present_trial(reelInfo)
 % ----------------------------------------------------------------------
@@ -64,6 +64,7 @@ side = randsample(1:2, 2, false);
 [~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
 
 % EVENT MARKER (DISPLAY BET)
+send_trigger(s, eventInfo.displayBet, pulseDuration);
 
 % ------------------------------------------------------------------------
 % WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
@@ -113,10 +114,11 @@ while ~keyWait
 
     if keyCode == leftKey | keyCode == rightKey
 
-        keyWait = 1;
-
         % EVENT MARKER (Bet Choice)
-
+        send_trigger(s, eventInfo.betChoice.Response, pulseDuration);
+        
+        keyWait = 1;
+        
     elseif keyCode == escapeKey
 
         sca;
@@ -216,6 +218,11 @@ Screen('Flip', screenInfo.window); % Flip
 % MORE UPDATING
 % ------------------------------------------------------------------------
 
+% EXTRA EVENT MARKERS (BET TYPE)
+% These need to be paired with the Response marker for accuracy if used
+send_trigger(s, eventInfo.betChoice.GAME(betChoice), pulseDuration);
+send_trigger(s, eventInfo.betChoice.LR(pressLeft * -1 + 2), pulseDuration);
+
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
 outputData.betBlue(reelInfo.trialIndex) = (betChoice == 1); % A little clearer for data processing
@@ -228,9 +235,6 @@ outputData.netOutcome(reelInfo.trialIndex) = outputData.payout(reelInfo.trialInd
 % Add timing data to output
 outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT - sessionInfo.start;
 outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
-
-% Allow long enough to view change to screen (highlight and counter)
-WaitSecs(reelInfo.timing.highlight);
 
 % ------------------------------------------------------------------------
 % END BET SCREEN BEGIN REEL SPIN SEQUENCE
@@ -272,6 +276,7 @@ reelInfo.outcome.dspSymbols(:, 3) = reelInfo.reelstrip(reelInfo.outcome.allstops
 % ----------------------------------------------------------------------
 
 % EVENT MARKER (Spin Animation Start)
+send_trigger(s, eventInfo.spinStart, pulseDuration);
 
 % Add timing info to outputData
 outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
@@ -280,6 +285,7 @@ outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
 [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
 
 % EVENTMARKER (Spin Animation End)
+send_trigger(s, eventInfo.spinEnd, pulseDuration);
 
 % Wait ISI
 WaitSecs(reelInfo.timing.highlight);
@@ -343,8 +349,9 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
         % Flip to the screen
         Screen('Flip', screenInfo.window);
 
-        % EVENT MARKER - (Highlight Appears)
-
+        % EVENT MARKER - (Highlight onset)
+        send_trigger(s, eventInfo.HL.start, pulseDuration);
+        
         % Wait time between highlighted reels
         WaitSecs(reelInfo.timing.highlight);
 
@@ -355,12 +362,13 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
     % Flip to the screen
-    Screen('Flip', screenInfo.window);
+    [~, HLendTime] = Screen('Flip', screenInfo.window);
 
     % EVENT MARKER (Highlight Sequence Complete)
+    send_trigger(s, eventInfo.HL.end, pulseDuration);
     
     % update outputData
-    outputData.HighlightEnd(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
+    outputData.HighlightEnd(reelInfo.trialIndex) = HLendTime - sessionInfo.start;
     
 end
 
@@ -380,6 +388,7 @@ draw_fixation(screenInfo, reelInfo);
 [~, FixationOnsetTime] = Screen('Flip', screenInfo.window);
 
 % EVENT MARKER (Fixation Cross)
+send_trigger(s, eventInfo.FC, pulseDuration);
 
 % Get FC Timing
 outputData.FCTime(reelInfo.trialIndex) = FixationOnsetTime - sessionInfo.start;
@@ -423,6 +432,7 @@ end
 [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
 
 % EVENT MARKER (Display Outcome Stimulus)
+send_trigger(s, eventInfo.outcome.SF, pulseDuration);
 
 keyDown = 0;
 KeyPressTime = 0;
@@ -438,6 +448,22 @@ end
 % Get PRP time
 PRP = KeyPressTime - StimulusOnsetTime;
 outputData.PRP(reelInfo.trialIndex) = PRP;
+
+% BET INFO EVENT MARKERS (will need to be adjusted to match above)
+% Centre Symbol
+send_trigger(s, eventInfo.outcome.symbol(outputData.CS(reelInfo.trialIndex)), pulseDuration);
+% Highlighted Quantity
+send_trigger(s, eventInfo.HL.n(outputData.cueLines(reelInfo.trialIndex)), pulseDuration);
+
+% Payout
+% Get row vector of multipliers by Bet choice
+whichPay = [0, reelInfo.multipliers(outputData.betChoice(reelInfo.trialIndex), :)];
+% Find match
+whichPay = whichPay == outputData.multiplier(reelInfo.trialIndex);
+% Get index
+whichPay = find(whichPay);
+% Send appropriate trigger
+send_trigger(s, eventInfo.outcome.payout(whichPay), pulseDuration);
 
 % Update outputData w/ 'shown'
 outputData.shown(reelInfo.trialIndex) = 1;

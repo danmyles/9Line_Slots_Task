@@ -33,7 +33,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         KbWait(-1, 2);                      % Wait for keypress
         
     end
-    
+        
     % Display Reels
     draw_grid(screenInfo);
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
@@ -229,7 +229,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         end
         
         % Show betting screen:
-        draw_Bet(screenInfo, reelInfo, outputData, 1:2)
+        draw_Bet(screenInfo, reelInfo, outputData, 1:2);
         % Draw any key text
         DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
         % Draw a little red dot :)
