@@ -23,7 +23,7 @@ function [screenInfo] = setup_screen()
 PsychDefaultSetup(2);
 
 % Do you need to run SyncTest?
-% Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
+Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
 % Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
 % Get the numbers for each screen. 
@@ -31,8 +31,8 @@ PsychDefaultSetup(2);
 screenInfo.screens = Screen('Screens');
 
 % Choose screen to display to
-screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
-% screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
+% screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
+screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
 
 % Define white (white will be 1 and black 0). This is because
 % luminace values are (in general) defined between 0 and 1.
