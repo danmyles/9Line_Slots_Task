@@ -5,19 +5,12 @@
 %% TODO
 % - SET ALL EVENT MARKERS:
 %    i. Be sure to add markers from betChoice
-% - FILL IN OUTCOME SUMMARY AT END OF EXP TO COLLATE ALL EVENTS:
 % - CHECK TIMING FOR SCREEN FLIPS and IFI
-% - CHECK SPEED: Should match speed of play outlined by Harrigan & Dixon 2009:  
-%     i) We estimated the speed of play by using the second hand  
-%     on a watch. On the two traditional mechanical reel slot machine games, 
-%     the player can play approximately every 6 s, which is approximately 
-%     10 spins per minute, or 600 spins per hour. On the two video slots  
-%     games, the player can play approximately every 3 s, which is 1,200  
-%     spins per hour. 
+% - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
 %     fixation cross to display of outcome stimulus.
-% - ADD MOVE participant.mat file to end of script (commented out for debugging)
+% - Replace movefile() for participant.mat file to end of script (commented out for debugging)
 % — HIDE CURSOR
 
 % ----------------------------------------------------------------------
