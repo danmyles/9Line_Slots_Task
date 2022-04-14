@@ -55,6 +55,8 @@ function [reelInfo, outputData] = present_trial(screenInfo, sessionInfo, reelInf
 
 % Randomly pick a side to draw each bet to
 % side = randsample(["A", "B"], 2, false);
+% If side = [1, 2] then BLUE GREEN
+% If side = [2, 1] then GREEN BLUE
 side = randsample(1:2, 2, false);
 
 [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side);
@@ -75,12 +77,12 @@ keyCode = 0;
 keyWait = 0;
 keyDown = 0;
 
-% We need to disable the left or right key if betB.n or betA.n have run out
-% (i.e. the pariticpant has already chosen that option the max number of times)
-
 % If side = [1, 2] then A B
 % If side = [2, 1] then B A
-% We can use this to set the left/right value to -1, this will force subsequent 
+
+% If we need to disable the left or right key if betB.n or betA.n have run out
+% (i.e. the pariticpant has already chosen that option the max number of times)
+% We can use this to set the left/right key value to -1, this will force subsequent 
 % if statements to fail and not register the key press.
 
 % Check Bet A has run out
@@ -134,6 +136,8 @@ if keyCode == leftKey
     
     betChoice = side(1);
     
+    pressLeft = 1;
+    
     highlight = rectL;
     
 elseif keyCode == rightKey
@@ -141,6 +145,8 @@ elseif keyCode == rightKey
     betSize = reelInfo.lineBet(side(2));
     
     betChoice = side(2);
+    
+    pressLeft = 0;
     
     highlight = rectR;
     
@@ -212,6 +218,8 @@ Screen('Flip', screenInfo.window); % Flip
 
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
+outputData.betBlue(reelInfo.trialIndex) = (betChoice == 1); % A little clearer for data processing
+outputData.pressLeft(reelInfo.trialIndex) = pressLeft;
 outputData.betSize(reelInfo.trialIndex) = betSize;
 outputData.totalBet(reelInfo.trialIndex) = totalBet;
 outputData.payout(reelInfo.trialIndex) = outputData.multiplier(reelInfo.trialIndex) .* outputData.betSize(reelInfo.trialIndex);

@@ -41,7 +41,7 @@ textBox = {InsetRect(rectL, 75, 75); InsetRect(rectR, 75, 75)};
 colourBlock = {[rectL([1:3]), rectL(2) + 150]; [rectR([1:3]), rectR(2) + 150]};
 
 % ------------------------------------------------------------------------
-% BET A
+% BLUE GAME - A
 % ------------------------------------------------------------------------
 
 % Colour block
@@ -62,7 +62,7 @@ DrawFormattedText2(['<size=32>', num2str(reelInfo.lineBet(1) * 9), ' CREDITS PER
     'xalign','center','yalign','center','xlayout','center');
 
 % ------------------------------------------------------------------------
-% BET B
+% GREEN GAME - B
 % ------------------------------------------------------------------------
 
 % Colour block

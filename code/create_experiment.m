@@ -53,7 +53,7 @@ writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 %% Experiment Details
 % -------------------------------------------------------------------------
 
-n = 5; % Number of experiment files to generate (sample size plus dropout).
+n = 40; % Number of experiment files to generate (sample size plus dropout).
 
 % Block structure
 reelInfo.blocksize = 60; % Length of each block
@@ -68,14 +68,13 @@ reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
 % Choose bet amounts (per line) on choice screen
 reelInfo.lineBet = [10, 10];
 
-% Set maximum number of choices for each condition to maintain 
-% 50 / 50 betting choice
-reelInfo.betA.n = reelInfo.nTrials/2;
+% Set maximum number of choices for each condition
+reelInfo.betA.n = reelInfo.nTrials;
 reelInfo.betB.n = reelInfo.betA.n;
 
 % Set multipliers
 reelInfo.multipliers = [3, 5, 13, 15, 45; %  bet A
-                        1, 7, 11, 17, 45]; % bet B
+                        3, 5, 13, 15, 45]; % bet B
 
 % Number of each outcome type per block
 % CHECK FOR DELETION
@@ -98,11 +97,11 @@ save([fileInfo.config 'reelInfo.mat'], 'reelInfo')
 % Create a summary to check all outputs:
 % ------------------------------------------------------------------------
 
-summaryTable = array2table(zeros(n, 17));
-summaryTable.Properties.VariableNames = [...
-    'matchA', 'matchB', 'totalA', 'totalB', 'totalNet', ... 
-    strcat([0, string(reelInfo.multipliers(1, :))], "A"), ...
-    strcat([0, string(reelInfo.multipliers(2, :))], "B")];
+% summaryTable = array2table(zeros(n, 17));
+% summaryTable.Properties.VariableNames = [...
+%     'matchA', 'matchB', 'totalA', 'totalB', 'totalNet', ... 
+%     strcat([0, string(reelInfo.multipliers(1, :))], "A"), ...
+%     strcat([0, string(reelInfo.multipliers(2, :))], "B")];
 
 % -------------------------------------------------------------------------
 %% Generate Experiment Outcomes
@@ -158,8 +157,11 @@ L = L(2, :);
 % Save outcomes to file:
 % ------------------------------------------------------------------------
 
+% output = struct('betA', betA, 'betB', betB, ...
+%                 'outcomeSummary', summaryTable(i, :), ...
+%                 'participantID', i);
+            
 output = struct('betA', betA, 'betB', betB, ...
-                'outcomeSummary', summaryTable(i, :), ...
                 'participantID', i);
 
 filename = ['participant' num2str(i)];

@@ -5,19 +5,12 @@
 %% TODO
 % - SET ALL EVENT MARKERS:
 %    i. Be sure to add markers from betChoice
-% - FILL IN OUTCOME SUMMARY AT END OF EXP TO COLLATE ALL EVENTS:
 % - CHECK TIMING FOR SCREEN FLIPS and IFI
-% - CHECK SPEED: Should match speed of play outlined by Harrigan & Dixon 2009:  
-%     i) We estimated the speed of play by using the second hand  
-%     on a watch. On the two traditional mechanical reel slot machine games, 
-%     the player can play approximately every 6 s, which is approximately 
-%     10 spins per minute, or 600 spins per hour. On the two video slots  
-%     games, the player can play approximately every 3 s, which is 1,200  
-%     spins per hour. 
+% - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
 %     fixation cross to display of outcome stimulus.
-% - ADD MOVE participant.mat file to end of script (commented out for debugging)
+% - Replace movefile() for participant.mat file to end of script (commented out for debugging)
 % — HIDE CURSOR
 
 % ----------------------------------------------------------------------
@@ -30,7 +23,7 @@ clearvars;
 rng shuffle;
 
 % Reseeding the rng at the beginning of any MATLAB prevents (exceedingly mild) 
-% depenendcies in the rng such as booting the e9xperiment/computer at the
+% depenendcies in the rng such as booting the experiment/computer at the
 % same time of day every session.
 
 % HideCursor % Off when debugging
@@ -58,7 +51,7 @@ loading_screen(screenInfo, reelInfo, 5);
 % Task Instructions
 % ----------------------------------------------------------------------
 
-% present_instructions(screenInfo, reelInfo, outputData);
+present_instructions(screenInfo, reelInfo, outputData);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...
@@ -93,7 +86,7 @@ while keyCode ~= nineKey
 end
 
 % Send end time to sessionInfo
-sessionInfo.instrEndT = sessionInfo.start - KeyTime;
+sessionInfo.instrEndT = KeyTime - sessionInfo.start;
 
 % --------------------- % START EXPERIMENT LOOP % ---------------------- %
 
@@ -133,8 +126,10 @@ for block = 1:reelInfo.blockN
     % EVENT MARKER: BREAK START
 
     % Show break screen:
+    if reelInfo.trialIndex ~= reelInfo.nTrials
     present_break(screenInfo, reelInfo, outputData);
-
+    end
+    
     % Send start time to sessionInfo
     sessionInfo.timing{'BreakEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 

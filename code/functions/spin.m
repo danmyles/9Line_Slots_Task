@@ -22,23 +22,8 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     % Project : 9_Line_Slots_Task
     % Version : 2020a
     % ----------------------------------------------------------------------
-    
-    % NOTE: THESE ANIMATIONS ARE DESIGNED TO PROGRESS 1 PLACE BEYOND
-    % THEIR START VALUE.
-    
-
-          
-    % Some notes.
-    % I want to re-organise this function so that both reels spin
-    % simultaneously, the left reel should stop before the right.
-    
-    % It should draw ~10 symbols out in front of the next stopping position
-    % and then progress them down until the stop is displayed at centre.
-    
-    % We also use this function for the demo. Which requires that we skip a
-    % few operations to simplyfy things.
-    
-    % Fill in the value if missing:
+      
+    % Fill in the demo value if missing:
     if nargin < 4
         demo = 0;
     end
@@ -104,8 +89,8 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     % create a default value for the draw_rate
     % draw rate is the number of times a symbol is redrawn between
     % reel positions.
-    if ~ exist("draw_rate")
-        draw_rate = 3;
+    if ~ exist("reelInfo.draw_rate")
+        reelInfo.draw_rate = 3;
     end
     
     % Somewhat hacky iterator for spin sequence
@@ -115,7 +100,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     it = (numel(right(:, 1))-3);
     
     % .* the draw rate because each symbols has to be drawn this many times.
-    it = it .* draw_rate;
+    it = it .* reelInfo.draw_rate;
     
     % Start spin sequence
     for i = 1:it
@@ -124,7 +109,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
         
         if left(1, 3) ~= screenInfo.splitposY(1)
             
-            left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/draw_rate);
+            left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/reelInfo.draw_rate);
             
             if demo ~= 1
             % Enter ~ approx LStop timing
@@ -134,7 +119,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
         end
         
         % For loop takes care of stopping the right reel.
-        right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/draw_rate);
+        right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/reelInfo.draw_rate);
         
         % Draw new values to screen
         draw_shapes(screenInfo, reelInfo, left(:, 2:3), left(:, 1));
