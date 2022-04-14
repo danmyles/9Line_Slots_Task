@@ -1,2 +1,8 @@
-*.mat
-**/inputData/*.*
+# Ignore files produced by sctipts
+code/config/inputData/*.mat
+code/config/reelInfo.mat
+code/config/reelstrip.csv
+output/*
+
+# Ignore autosave files
+*.asv
