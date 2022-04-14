@@ -67,6 +67,14 @@ match = zeros(nTrials, 1);
 % Participant choice to bet A vs bet B
 betChoice = zeros(nTrials, 1);
 
+% Participant choice to bet Blue vs bet Green
+% This column is redundant, but I added it later on for 
+% clarity when data processing.
+betBlue = zeros(nTrials, 1);
+
+% Participant choice left or right key
+pressLeft = zeros(nTrials, 1);
+
 % Size of bet for choice n
 betSize = zeros(nTrials, 1);
 
@@ -125,7 +133,8 @@ outputEmpty = table(...
     participantID, TrialN, blockID, blockN, ...   % Exp Info
     LStop, RStop, L1, L2, L3, CS, R1, R2, R3, ... % Outcome Display Info
     cueLines, match, ...                          % Win/Loss
-    betChoice, betSize, totalBet, multiplier, binN, payout, netOutcome, credits, ...  % Bet Info
+    betChoice, betBlue, pressLeft, betSize, totalBet, ...
+    multiplier, binN, payout, netOutcome, credits, ...  % Bet Info
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
     HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
 
