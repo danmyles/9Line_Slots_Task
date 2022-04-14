@@ -66,7 +66,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
         DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
         Screen('Flip', screenInfo.window);  % Flip to the screen
-        KbWait(-1, 2);                      % Wait for keypress
+        KbWait(-1, 2);                      % Wait for keypress 
         
         % Show a win
         [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
