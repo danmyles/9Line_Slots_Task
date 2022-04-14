@@ -53,7 +53,7 @@ writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 %% Experiment Details
 % -------------------------------------------------------------------------
 
-n = 5; % Number of experiment files to generate (sample size plus dropout).
+n = 40; % Number of experiment files to generate (sample size plus dropout).
 
 % Block structure
 reelInfo.blocksize = 60; % Length of each block
