@@ -4,6 +4,9 @@ code/config/reelInfo.mat
 code/config/reelstrip.csv
 output/*
 
+# To retain empty dirs
+!*/.gitkeep
+
 # Ignore autosave files
 *.asv
 
