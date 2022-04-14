@@ -133,8 +133,10 @@ for block = 1:reelInfo.blockN
     % EVENT MARKER: BREAK START
 
     % Show break screen:
+    if reelInfo.trialIndex ~= reelInfo.nTrials
     present_break(screenInfo, reelInfo, outputData);
-
+    end
+    
     % Send start time to sessionInfo
     sessionInfo.timing{'BreakEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
 
