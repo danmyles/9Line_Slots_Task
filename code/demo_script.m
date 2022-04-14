@@ -93,7 +93,7 @@ while keyCode ~= nineKey
 end
 
 % Send end time to sessionInfo
-sessionInfo.instrEndT = sessionInfo.start - KeyTime;
+sessionInfo.instrEndT = KeyTime - sessionInfo.start;
 
 % --------------------- % START EXPERIMENT LOOP % ---------------------- %
 
