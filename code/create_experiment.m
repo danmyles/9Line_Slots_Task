@@ -68,14 +68,13 @@ reelInfo.nTrials = reelInfo.blockN .* reelInfo.blocksize;
 % Choose bet amounts (per line) on choice screen
 reelInfo.lineBet = [10, 10];
 
-% Set maximum number of choices for each condition to maintain 
-% 50 / 50 betting choice
-reelInfo.betA.n = reelInfo.nTrials/2;
+% Set maximum number of choices for each condition
+reelInfo.betA.n = reelInfo.nTrials;
 reelInfo.betB.n = reelInfo.betA.n;
 
 % Set multipliers
 reelInfo.multipliers = [3, 5, 13, 15, 45; %  bet A
-                        1, 7, 11, 17, 45]; % bet B
+                        3, 5, 13, 15, 45]; % bet B
 
 % Number of each outcome type per block
 % CHECK FOR DELETION
