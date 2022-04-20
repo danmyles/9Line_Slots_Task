@@ -1,18 +1,18 @@
 function [] = draw_text(screenInfo, reelInfo, instructions, text)
 % ----------------------------------------------------------------------
-% draw_text(screenInfo, instructions)
+% [] = draw_text(screenInfo, reelInfo, instructions, text)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Draw instruction text to the screen
 % ----------------------------------------------------------------------
 % Input(s) :
-% screenInfo
+% screenInfo, reelInfo, instructions, text
 % ----------------------------------------------------------------------
 % Output(s):
 % (none)
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 20th July 2020
+% Last update : 19th Apr 2022
 % Project : 9_Line_Slots_Task
 % Version : 2020a
 % ----------------------------------------------------------------------

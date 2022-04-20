@@ -17,9 +17,9 @@ function [] = demo_lines(screenInfo, reelInfo, instructions)
 % (none)
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 8th April 2019
+% Last update : 20th April 2022
 % Project : 9_Line_Slots_Task
-% Version : 2019a
+% Version : 2020a
 % ----------------------------------------------------------------------
 
 % We will through this display interatively. This will require a series of

@@ -59,7 +59,7 @@ screenInfo.white = WhiteIndex(screenInfo.screenNumber);
 % Get the centre coordinates of the window in pixels
 % For help see: help RectCenter
 [screenInfo.xCenter, screenInfo.yCenter] = RectCenter(screenInfo.windowRect);
-screenInfo.screenCenter = [screenInfo.xCenter, screenInfo.yCenter];
+screenInfo.screenCenter = round([screenInfo.xCenter, screenInfo.yCenter]);
 
 % Set up alpha-blending for smooth (anti-aliased) lines
 Screen('BlendFunction', screenInfo.window, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -85,6 +85,8 @@ screenInfo.hertz = FrameRate(screenInfo.window);
 % GetFlipInterval? for more information
 screenInfo.nominalHertz = Screen('NominalFrameRate', screenInfo.window);
 
-%% TODO ? SAVE ALL SCREEN INFO TO FILE.
-% see: http://www.martinszinte.net/Martin_Szinte/Teaching_files/Prog_c6.pdf
+% Some of these values are used for drawing objects and text to the screen
+% Using a non-integer value can lead to ugly display of text.
+% So I want to round some values.
+
 end

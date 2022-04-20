@@ -12,9 +12,9 @@ function [screenInfo] = setup_grid(screenInfo)
 % gridInfo, screenInfo
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 8th April 2019
+% Last update : 19th April 2022
 % Project : 9_Line_Slots_Task
-% Version : 2019a
+% Version : 2020a
 % ----------------------------------------------------------------------
  
 %% SET SIZE OF GRID SQUARES
@@ -57,12 +57,21 @@ screenInfo.splitposY = [screenInfo.yCenter - screenInfo.Y_adjust,...
                         screenInfo.yCenter, ... 
                         screenInfo.yCenter + screenInfo.Y_adjust];
                    
-
+% Drop any decimals
+screenInfo.splitposX = floor(screenInfo.splitposX);
+screenInfo.splitposY = floor(screenInfo.splitposY);
+                    
 % Some places to draw text:
 screenInfo.cont = (screenInfo.screenYpixels - (screenInfo.yCenter/4));
 screenInfo.ydot = (screenInfo.cont + screenInfo.screenYpixels)/2;
 screenInfo.textaboveC = (screenInfo.yCenter - screenInfo.yCenter/5);
 screenInfo.textbelowC = (screenInfo.yCenter + screenInfo.yCenter/5);
+
+% And drop any decimals, again.
+screenInfo.cont = floor(screenInfo.cont);
+screenInfo.ydot = floor(screenInfo.ydot);
+screenInfo.textaboveC = floor(screenInfo.textaboveC);
+screenInfo.textbelowC = floor(screenInfo.textbelowC);
 
 % Each of these central points are useful for a number of tasks so we will
 % save them for later use

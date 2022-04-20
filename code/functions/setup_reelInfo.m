@@ -44,7 +44,8 @@ reelInfo.demoIndex = 0; % Copy of the above used to progress demo/instructions
 % -------------------------------------------------------------------------
 reelInfo.num_symbols = 5; % Circle, diamond, triangle, rectangle, pentagon, 
 % This Rect is used to set the base dimensions used in many of our shapes.
-% Computed relative to the screen size so that the shapes are proportional accross monitors.
+% Computed relative to the screen size so that the shapes are approximately 
+% proportional accross monitors.
 reelInfo.baseRect = screenInfo.windowRect;
 reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 
@@ -52,8 +53,13 @@ reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 % Set possible payout amounts here
 reelInfo.payout.max = max(reelInfo.multipliers) .* max(reelInfo.lineBet);
 % Slightly smaller rect for payout display background
-reelInfo.payout.rect = reelInfo.baseRect .* 0.5;
+reelInfo.payout.rect = reelInfo.baseRect .* (2/3);
 reelInfo.payout.textSize = reelInfo.baseRect(4)/5;
+
+% Drop decimals
+reelInfo.baseRect = floor(reelInfo.baseRect);
+reelInfo.payout.rect = floor(reelInfo.payout.rect);
+reelInfo.payout.textSize  = floor(reelInfo.payout.textSize);
 
 %% Subsets of reel positions
 % To streamline drawing shapes to different combinations of reel positions

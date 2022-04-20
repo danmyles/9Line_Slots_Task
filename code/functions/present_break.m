@@ -35,7 +35,7 @@ Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
 % SET UP SHAPE DIMENSIONS
 % ----------------------------------------------------------------------
 baseRect = [0 0 50 50];
-radius = max(baseRect)/1.5;
+radius = round(max(baseRect)/1.5);
 
 % X Coordinates
 
