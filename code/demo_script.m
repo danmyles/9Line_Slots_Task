@@ -44,7 +44,7 @@ pulseDuration = 0.002;
 s = serialportlist;
 
 % Select device n
-n = 4;
+n = 6;
 s = serialport(s(n), 9600);
 clear n;
 
