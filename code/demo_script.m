@@ -64,6 +64,7 @@ send_trigger(s, eventInfo.expStart, pulseDuration);
 
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);
+
 % All triggers on (Test)
 write(s, 255, 'uint8');
 WaitSecs(0.5);
@@ -160,16 +161,10 @@ for block = 1:reelInfo.blockN
     % EVENT MARKER: BREAK START
     send_trigger(s, eventInfo.breakStart, pulseDuration);
     
-    % Alert Experimenter
-    write(s, 255, 'uint8');
-    
     % Show break screen:
     if reelInfo.trialIndex ~= reelInfo.nTrials
     present_break(screenInfo, reelInfo, outputData);
     end
-    
-    % Alert Off
-    write(s, 0, 'uint8');
         
     % Send start time to sessionInfo
     sessionInfo.timing{'BreakEnd', ['Block_' num2str(block)]} = sessionInfo.start - GetSecs;
@@ -190,9 +185,6 @@ send_trigger(s, eventInfo.expEnd, pulseDuration);
 % Session duration
 sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
 
-% Alert Experimenter
-write(s, 255, 'uint8')
-
 % ----------------------------------------------------------------------
 % END text
 % ----------------------------------------------------------------------
@@ -209,9 +201,6 @@ KbWait(-1, 2);
 
 % All shown?
 sessionInfo.shown = sum(outputData.shown);
-
-% End Alert
-write(s, 0, 'uint8')
 
 % Close Serial Port
 clear s;
