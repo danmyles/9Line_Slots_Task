@@ -1,12 +1,12 @@
 function [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side)
 % ------------------------------------------------------------------------
-% draw_Bet(screenInfo, reelInfo, side)
+% draw_Bet(screenInfo, reelInfo, outputData, side)
 % ------------------------------------------------------------------------
 % Goal of the function :
 % Draws the text and FrameRects for the betChoice screen.
 % ------------------------------------------------------------------------
 % Input(s) :
-% screenInfo, reelInfo
+% screenInfo, reelInfo, outputData
 % side <- tells function which side to draw the HIGH/LOW bet to
 % ------------------------------------------------------------------------
 % Output(s):
