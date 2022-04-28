@@ -1,13 +1,10 @@
 % -----------------------------------------------------------------------
-% Dev Script For Experiment
+% Dev notes for experiment
 % -----------------------------------------------------------------------
 
 %% TODO
-% - SET ALL EVENT MARKERS:
-%    i. Be sure to add markers from betChoice
 % - CHECK TIMING FOR SCREEN FLIPS and IFI
 % - CHECK TRIGGER TIMING 
-%   - May want to consider simple mode to reduce trigger latencies.
 % - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
@@ -28,6 +25,7 @@ rng shuffle;
 % depenendcies in the rng such as booting the experiment/computer at the
 % same time of day every session.
 
+% Hide the cursor
 % HideCursor % Off when debugging
 
 % ----------------------------------------------------------------------
@@ -193,11 +191,10 @@ Screen('Flip', screenInfo.window);
 
 KbWait(-1, 2);
 
-% All shown?
-sessionInfo.shown = sum(outputData.shown);
-
 % Close Serial Port
 clear s;
+% Show Cursor
+ShowCursor;
 % Clear the screen
 sca;
 
