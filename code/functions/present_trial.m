@@ -223,7 +223,7 @@ Screen('Flip', screenInfo.window); % Flip
 send_trigger(s, eventInfo.betChoice.GAME(betChoice), pulseDuration);
 send_trigger(s, eventInfo.betChoice.LR(pressLeft * -1 + 2), pulseDuration);
 
-WaitSecs(0.2) % Additional pause for red box display
+WaitSecs(0.2); % Additional pause for red box display
 
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
