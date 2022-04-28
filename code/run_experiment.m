@@ -66,11 +66,10 @@ send_trigger(s, eventInfo.expStart, pulseDuration);
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);
 
-% All triggers on (Test)
-write(s, 255, 'uint8');
-WaitSecs(0.5);
-% All triggers off (test complete)
+% Reset / all triggers off
 write(s, 0, 'uint8');
+
+% Load Screen
 loading_screen(screenInfo, reelInfo, 5);
 
 % ----------------------------------------------------------------------
@@ -85,9 +84,6 @@ DrawFormattedText(screenInfo.window, ...
     'center', screenInfo.yCenter);
 % Flip screen
 Screen('Flip', screenInfo.window);
-
-% Alert Experimenter
-write(s, 255, 'uint8');
 
 % Wait for 9 Key or terminate on ESCAPE.
 keyCode = 0;
@@ -116,9 +112,6 @@ end
 
 % Send end time to sessionInfo
 sessionInfo.instrEndT = KeyTime - sessionInfo.start;
-
-% All triggers off
-write(s, 0, 'uint8');
 
 % --------------------- % START EXPERIMENT LOOP % ---------------------- %
 
