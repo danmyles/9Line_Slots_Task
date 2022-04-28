@@ -9,7 +9,7 @@
 % Output(s): output Tables for high and low bet conditions.
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2021
+% Last update : April 2022
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------

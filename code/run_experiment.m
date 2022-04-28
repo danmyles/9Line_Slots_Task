@@ -10,6 +10,7 @@
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
 %     fixation cross to display of outcome stimulus.
 % - Replace movefile() for participant.mat file to end of script (commented out for debugging)
+% - Add instructions to run_exp file
 % — HIDE CURSOR
 
 % ----------------------------------------------------------------------
