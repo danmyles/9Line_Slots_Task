@@ -107,7 +107,7 @@ Priority(priorityLevel);
 %% TEXT SETUP 
 % Setup some default text settings for the window
 Screen('TextSize', screenInfo.window, 20);
-Screen('TextFont', screenInfo.window, 'Helvetica');
+Screen('TextFont', screenInfo.window, 'Courier');
 Screen('TextColor', screenInfo.window, screenInfo.black);
 
 

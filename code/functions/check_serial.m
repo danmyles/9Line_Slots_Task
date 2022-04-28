@@ -1,4 +1,4 @@
-function [] = check_serial(s, eventInfo, N)
+function [] = check_serial(s, eventInfo, pulseDuration, N)
 % ----------------------------------------------------------------------
 % [] = check_serial(s, eventInfo, N)
 % ----------------------------------------------------------------------
@@ -38,7 +38,7 @@ end
 for ii = 1:N
     for i = 1:numel(codes)
         write(s, codes(i), 'uint8')
-        WaitSecs(0.002)
+        WaitSecs(pulseDuration)
         write(s, 0, 'uint8')
     end
 end

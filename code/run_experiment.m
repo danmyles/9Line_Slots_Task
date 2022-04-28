@@ -38,13 +38,14 @@ rng shuffle;
 
 % Set duration of serial port pulse
 % Should be slightly larger than 2 / sampling rate
-pulseDuration = 0.002;
+% pulseDuration = 0.004; % 512 Hz
+pulseDuration = 0.002; % 1024 Hz
 
 % Get list of serial devices
 s = serialportlist;
 
-% Select device n
-n = 6;
+% Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
+n = 5;
 s = serialport(s(n), 9600);
 clear n;
 
@@ -76,7 +77,7 @@ loading_screen(screenInfo, reelInfo, 5);
 % Task Instructions
 % ----------------------------------------------------------------------
 
-present_instructions(screenInfo, reelInfo, outputData);
+% present_instructions(screenInfo, reelInfo, outputData);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...

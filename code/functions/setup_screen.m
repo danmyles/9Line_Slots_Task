@@ -7,16 +7,16 @@ function [screenInfo] = setup_screen()
 % information about the screen and the monitor.
 % ----------------------------------------------------------------------
 % Input(s) :
-% (none) ? may change
+% (none)
 % ----------------------------------------------------------------------
 % Output(s):
 % screenInfo - struct containing all screen configuration.
-% [screenInfo] = setup_screen() to call into base workspace
+% [screenInfo] = setup_screen() to call into workspace
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 8th April 2019
+% Last update : April 2022
 % Project : 9_Line_Slots_Task
-% Version : 2019a
+% Version : 2020a
 % ----------------------------------------------------------------------
 
 % Here we call some default settings for setting up Psychtoolbox
@@ -31,7 +31,7 @@ Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
 screenInfo.screens = Screen('Screens');
 
 % Choose screen to display to
-% screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
+%screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
 screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
 
 % Define white (white will be 1 and black 0). This is because

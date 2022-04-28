@@ -15,11 +15,15 @@ function [] = send_trigger(s, eventCode, pulseDuration)
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------
-eventCode
-write(s, eventCode, 'uint8');
 
+% eventCode
+
+% Write to the serial port
+write(s, eventCode, 'uint8');
+% We need to wait long enough for Actiview to take a sample
 WaitSecs(pulseDuration);
 
 % All triggers off
 write(s, 0, 'uint8');
+WaitSecs(pulseDuration);
 end

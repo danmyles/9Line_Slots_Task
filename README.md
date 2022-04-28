@@ -173,3 +173,4 @@ I wanted something similar, with the exception that repeats [1, 1, 1] OR [2, 5, 
 Brimijoin, W. O., & O'Neill, W. E. (2010). Patterned tone sequences reveal non-linear interactions in auditory spectrotemporal receptive fields in the inferior colliculus. Hearing Research, 267(1-2), 96-110. https://doi.org/10.1016/j.heares.2010.04.005
 
 However, this did not prevent cases in which a repeat occurred within the subsequence non-simultaneously. So it took a bit of editing. Because of the way I came at this problem it had the code to generate deBruij or Katz style reels so I have left that in as an option, see "generate_reelstrip.m".
+ 

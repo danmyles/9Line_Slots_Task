@@ -87,7 +87,5 @@ for X = 1:3 % Enter X Position
         i = i + 1; % Increase i
     end
 end
-
-clear i;
     
 end
