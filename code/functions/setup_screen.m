@@ -31,8 +31,8 @@ Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
 screenInfo.screens = Screen('Screens');
 
 % Choose screen to display to
-%screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
-screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
+screenInfo.screenNumber = min(screenInfo.screens);   % MAIN/LAPTOP SCREEN
+%screenInfo.screenNumber = max(screenInfo.screens); % EXTERNAL SCREEN (if connected)
 
 % Define white (white will be 1 and black 0). This is because
 % luminace values are (in general) defined between 0 and 1.

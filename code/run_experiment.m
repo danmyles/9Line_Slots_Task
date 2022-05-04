@@ -9,7 +9,8 @@
 %     ii) You will also need to consider the length of time neccesary to avoid 
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
 %     fixation cross to display of outcome stimulus.
-% - Replace movefile() for participant.mat file to end of script (commented out for debugging)
+% - Replace movefile() for participant.mat file to end of script (commented
+% out for debugging)`
 % - Add instructions to run_exp file
 % — HIDE CURSOR
 
@@ -75,7 +76,7 @@ loading_screen(screenInfo, reelInfo, 5);
 % Task Instructions
 % ----------------------------------------------------------------------
 
-% present_instructions(screenInfo, reelInfo, outputData);
+present_instructions(screenInfo, reelInfo, outputData);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...

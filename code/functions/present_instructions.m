@@ -14,6 +14,11 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
     % Version : 2021a
     % ----------------------------------------------------------------------
     
+    % Set Font / Text:
+    Screen('TextSize', screenInfo.window, reelInfo.TextSize);
+    Screen('TextFont', screenInfo.window, reelInfo.Font);
+    Screen('TextColor', screenInfo.window, screenInfo.black);
+    
     % Get instructions and demo spins.
     [instructions, demoSequence] = setup_instructions(reelInfo, outputData);
     
