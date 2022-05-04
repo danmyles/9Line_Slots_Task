@@ -14,13 +14,10 @@ clear n;
 
 side = randsample(1:2, 2, false);
 
-[~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
+Screen('Flip', screenInfo.window);
 
 Screen('FillOval', screenInfo.window, 0, CenterRectOnPoint([0,0,90,90], screenInfo.xCenter, screenInfo.yCenter));
-Screen('FillOval', screenInfo.window, 1, CenterRectOnPoint([0,0,81,81], screenInfo.xCenter, screenInfo.yCenter));
-
-%Screen('FillPoly', screenInfo.window, 0, floor(get_dimensions(screenInfo, 5, 2, [0,0,81,81])))
-%Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 2, reelInfo.payout.small))
+Screen('FillOval', screenInfo.window, 1, CenterRectOnPoint([0,0,72,72], screenInfo.xCenter, screenInfo.yCenter));
 
 [~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
 
@@ -50,4 +47,3 @@ while keyCode ~= nineKey
 end
 
 sca;
-
