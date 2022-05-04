@@ -53,15 +53,15 @@ reelInfo.baseRect(3:4) = screenInfo.windowRect(4) / 9;
 % Set possible payout amounts here
 reelInfo.payout.max = max(reelInfo.multipliers) .* max(reelInfo.lineBet);
 % Slightly smaller rect for payout display background
-reelInfo.payout.rect = reelInfo.baseRect .* (2/3);
+reelInfo.payout.rect = reelInfo.baseRect .* (3/4);
 % Size of smaller inset shape, needs to be divisible by 2
-reelInfo.payout.small = reelInfo.payout.rect - (reelInfo.payout.rect/10);
-reelInfo.payout.textSize = floor(reelInfo.baseRect(4)/5);
+reelInfo.payout.small = reelInfo.payout.rect - (reelInfo.payout.rect/5);
+reelInfo.payout.textSize = floor(reelInfo.baseRect(4)/4);
 
 % Drop decimals, divisible by 2
 reelInfo.baseRect = floor(reelInfo.baseRect / 2) * 2;
 reelInfo.payout.rect = floor(reelInfo.payout.rect / 2) * 2;
-reelInfo.payout.textSize  = floor(reelInfo.payout.textSize / 2) * 2;
+reelInfo.payout.textSize = floor(reelInfo.payout.textSize / 2) * 2;
 reelInfo.payout.small = floor(reelInfo.payout.small/2) * 2;
 
 %% Subsets of reel positions

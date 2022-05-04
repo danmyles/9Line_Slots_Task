@@ -106,10 +106,16 @@ Priority(priorityLevel);
 
 %% TEXT SETUP 
 % Setup some default text settings for the window
-Screen('TextSize', screenInfo.window, 20);
-Screen('TextFont', screenInfo.window, 'Courier');
-Screen('TextColor', screenInfo.window, screenInfo.black);
 
+% Default Font
+reelInfo.Font = 'Courier';
+% Default Font Size
+reelInfo.TextSize = 24;
+
+% Set Font / Text:
+Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
+Screen('TextFont', screenInfo.window, reelInfo.Font);
+Screen('TextColor', screenInfo.window, screenInfo.black);
 
 % Get Event codes
 [eventInfo] = setup_eventInfo();

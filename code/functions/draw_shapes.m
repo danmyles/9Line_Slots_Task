@@ -30,9 +30,9 @@ function [] = draw_shapes(screenInfo, reelInfo, position, shape)
 % (none)
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 8th April 2019
+% Last update : April 2022
 % Project : 9_Line_Slots_Task
-% Version : 2019a
+% Version : 2020a
 % ----------------------------------------------------------------------
 
 if ~exist('shape')

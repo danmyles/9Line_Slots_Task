@@ -430,6 +430,9 @@ else
 
 end
 
+% Draw Rectangle to bottom right to check/debug timing
+Screen('FillRect', screenInfo.window, 0, [screenInfo.screenXpixels - 100, screenInfo.screenYpixels - 100, screenInfo.screenXpixels, screenInfo.screenYpixels]);
+
 % Flip to the screen (outcome stimulus, payout, win highlights)
 [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
 
