@@ -1,6 +1,6 @@
 function [] = present_break(screenInfo, reelInfo, outputData)
 % ----------------------------------------------------------------------
-% [] = present_break(screenInfo, reelInfo)
+% [] = present_break(screenInfo, reelInfo, outputData)
 % ------------------------------------------------------------------------
 % Goal of this function:
 % Draw and flip break display to screen
@@ -9,9 +9,9 @@ function [] = present_break(screenInfo, reelInfo, outputData)
 % reelInfo, screenInfo
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2020
+% Last update : May 2022
 % Project : 9_Line_Slots_Task
-% Version : 2020a
+% Version : 2021a
 % ----------------------------------------------------------------------
 
 % ----------------------------------------------------------------------
