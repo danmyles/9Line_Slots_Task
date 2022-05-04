@@ -1,10 +1,3 @@
-s = serialportlist;
-
-% Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
-n = 5;
-s = serialport(s(n), 9600);
-clear n;
-
 % ----------------------------------------------------------------------
 % RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------

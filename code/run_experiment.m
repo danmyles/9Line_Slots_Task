@@ -11,8 +11,28 @@
 %     fixation cross to display of outcome stimulus.
 % - Replace movefile() for participant.mat file to end of script (commented
 % out for debugging)`
-% - Add instructions to run_exp file
+% - Add instructions to run_experiment file
 % — HIDE CURSOR
+
+% -----------------------------------------------------------------------
+% 9 Line Slot Task
+% -----------------------------------------------------------------------
+% Primary script for 9 Line Slot Task
+% This script calls all set-up functions and then launches the experiment
+%
+% See README.txt for a full overview of the run flow, as well as all
+% dependencies etc.
+%
+% NOTE: If this is the first time running this script you will first need 
+% to run the create experiment.m which prepares the following inputs:
+% participant_.mat, reelInfo.mat, reelstrip.csv
+% ----------------------------------------------------------------------
+% Created by Dan Myles (dan.myles@monash.edu)
+% Last update : May 2022
+% Project : 9_Line_Slots_Task
+% Version : 2021a
+% ----------------------------------------------------------------------
+
 
 % ----------------------------------------------------------------------
 % Clear the workspace and the screen
@@ -184,9 +204,7 @@ sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
 % ----------------------------------------------------------------------
 
 % Draw text to centre
-[cache] = DrawFormattedText2('END :)', 'win', screenInfo.window, ...
-    'sx', screenInfo.xCenter, 'sy', screenInfo.yCenter, ...
-    'xalign','center','yalign','center','xlayout','center');
+DrawFormattedText(screenInfo.window, 'END :)', 'center', 'center');
 
 % Flip to the screen
 Screen('Flip', screenInfo.window);
