@@ -35,7 +35,7 @@
 
 
 % ----------------------------------------------------------------------
-% Clear the workspace and the screen
+%% Clear the workspace and the screen
 % ----------------------------------------------------------------------
 
 sca;
@@ -51,7 +51,7 @@ rng shuffle;
 % HideCursor % Off when debugging
 
 % ----------------------------------------------------------------------
-% Set-up serial port for triggers
+%% Set-up serial port for triggers
 % ----------------------------------------------------------------------
 
 % SET MMBT TO SIMPLE MODE
@@ -65,12 +65,12 @@ pulseDuration = 0.002; % 1024 Hz
 s = serialportlist;
 
 % Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
-n = 5;
+n = 4;
 s = serialport(s(n), 9600);
 clear n;
 
 % ----------------------------------------------------------------------
-% RUN SETUP SCRIPTS
+%% RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
 % Start experiment and run all setup functions
@@ -93,7 +93,7 @@ write(s, 0, 'uint8');
 loading_screen(screenInfo, reelInfo, 5);
 
 % ----------------------------------------------------------------------
-% Task Instructions
+%% Task Instructions
 % ----------------------------------------------------------------------
 
 present_instructions(screenInfo, reelInfo, outputData);
@@ -133,7 +133,7 @@ end
 % Send end time to sessionInfo
 sessionInfo.instrEndT = KeyTime - sessionInfo.start;
 
-% --------------------- % START EXPERIMENT LOOP % ---------------------- %
+%% ---------------------- START EXPERIMENT LOOP ----------------------- %%
 
 for block = 1:reelInfo.blockN
 
@@ -190,6 +190,10 @@ end
 
 % ----------------------- % END EXPERIMENT LOOP % ---------------------- %
 
+% ----------------------------------------------------------------------
+% Update sessionInfo
+% ----------------------------------------------------------------------
+
 % Session end time
 sessionInfo.end = GetSecs;
 
@@ -199,9 +203,31 @@ send_trigger(s, eventInfo.expEnd, pulseDuration);
 % Session duration
 sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
 
+% Calculate participant payments
+sessionInfo.finalCredits = sprintf('%1.3f', outputData.credits(reelInfo.nTrials) / 1000);
+sessionInfo.finalCredits = regexprep(sessionInfo.finalCredits, "\.", ",");
+sessionInfo.travelCosts  = 10.00;
+% Round payment up to nearest 5 cents
+sessionInfo.bonusPayment = (ceil(outputData.credits(reelInfo.nTrials) / 50) * 50) / 1000;
+sessionInfo.bonusPayment = round(sessionInfo.bonusPayment, 2);
+% Total payment amount
+sessionInfo.totalPayment = sessionInfo.travelCosts + sessionInfo.bonusPayment;
+
 % ----------------------------------------------------------------------
-% END text
+% Wrap Up
 % ----------------------------------------------------------------------
+
+% Save outputData to output folder:
+writetable(outputData, [fileInfo.output fileInfo.fileID '.csv'])
+
+% Save session info to output folder:
+save([fileInfo.output fileInfo.fileID 'Info' '.mat'], 'sessionInfo')
+
+% Move participant InputData file to completed folder:
+% script here
+source = [fileInfo.input fileInfo.fileID '.mat'];
+destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
+% movefile(source, destination)
 
 % Draw text to centre
 DrawFormattedText(screenInfo.window, 'END :)', 'center', 'center');
@@ -218,21 +244,5 @@ ShowCursor;
 % Clear the screen
 sca;
 
-% Open notes for experimenter to add details.
-sessionInfo.notes = inputdlg({ 'List Any Bad Channels:', 'Notes (e.g. errors, fixed channel at trial x etc):'}, ...
-    'Enter Experimenter Notes', [1 150; 10 150]);
-
-sessionInfo.badchannels = sessionInfo.notes{1};
-sessionInfo.notes = sessionInfo.notes{2};
-
-% Save outputData to output folder:
-writetable(outputData, [fileInfo.output fileInfo.fileID '.csv'])
-
-% Save session info to output folder:
-save([fileInfo.output fileInfo.fileID 'Info' '.mat'], 'sessionInfo')
-
-% Move participant InputData file to completed folder:
-% script here
-source = [fileInfo.input fileInfo.fileID '.mat'];
-destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
-% movefile(source, destination)
+% Print payment info to command window.
+print_payments(sessionInfo);

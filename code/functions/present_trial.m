@@ -44,13 +44,13 @@ function [reelInfo, outputData] = present_trial(s, eventInfo, pulseDuration, scr
 % outputData: bet choice, payout, updates shown 0 -> 1, records timing info.
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2021
+% Last update : May 2022
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------
 
 % ------------------------------------------------------------------------
-% DRAW BETTING SCREEN
+%% DRAW BETTING SCREEN
 % ------------------------------------------------------------------------
 
 % Randomly pick a side to draw each bet to
@@ -67,7 +67,7 @@ side = randsample(1:2, 2, false);
 send_trigger(s, eventInfo.displayBet, pulseDuration);
 
 % ------------------------------------------------------------------------
-% WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
+%% WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
 % ------------------------------------------------------------------------
 
 escapeKey = KbName('ESCAPE');
@@ -128,9 +128,7 @@ while ~keyWait
 
 end
 
-% ------------------------------------------------------------------------
 % Set choice
-% ------------------------------------------------------------------------
 
 if keyCode == leftKey
 
@@ -154,10 +152,7 @@ elseif keyCode == rightKey
     
 end
 
-% ------------------------------------------------------------------------
-% UPDATE reelInfo.trialIndex
-% ------------------------------------------------------------------------
-
+%% UPDATE reelInfo.trialIndex
 reelInfo.trialIndex = (reelInfo.trialIndex + 1);
 
 % ------------------------------------------------------------------------
@@ -206,7 +201,7 @@ elseif betChoice == 2
 end
 
 % ------------------------------------------------------------------------
-% Highlight the choice and update credits:
+%% Highlight the choice and update credits:
 % ------------------------------------------------------------------------
 
 % Highlight left choice with a red box
@@ -215,7 +210,7 @@ Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), highlight, screen
 Screen('Flip', screenInfo.window); % Flip
 
 % ------------------------------------------------------------------------
-% MORE UPDATING
+%% MORE UPDATING
 % ------------------------------------------------------------------------
 
 % EXTRA EVENT MARKERS (BET TYPE)
@@ -239,7 +234,7 @@ outputData.BetChoiceSFT(reelInfo.trialIndex) = BetChoiceSFT - sessionInfo.start;
 outputData.BetChoiceRT(reelInfo.trialIndex) = KeyPressTime - BetChoiceSFT;
 
 % ------------------------------------------------------------------------
-% END BET SCREEN BEGIN REEL SPIN SEQUENCE
+%% END BET SCREEN BEGIN REEL SPIN SEQUENCE
 % ------------------------------------------------------------------------
 
 % ------------------------------------------------------------------------
