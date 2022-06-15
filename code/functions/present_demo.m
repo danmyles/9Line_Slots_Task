@@ -17,9 +17,9 @@
     % demoSequence: updates shown 0 -> 1
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : July 2020
+    % Last update : June 2021
     % Project : 9_Line_Slots_Task
-    % Version : 2020a
+    % Version : 2021a
     % ----------------------------------------------------------------------
        
     % Update reelInfo iterator
@@ -63,77 +63,75 @@
     WaitSecs(reelInfo.timing.highlight);
         
 	% ----------------------------------------------------------------------
-    %% Highlight Active Reels Sequentially
+    % HIGHLIGHT ACTIVE REELS
     % ----------------------------------------------------------------------
-    
-    % The demo only displays wins accross the centre line. So this section
-    % has been edited to account for that.
-    
+
     % Check if active
     if reelInfo.highlight == 2 || reelInfo.highlight == 3
-   
-    % Reel 1
-    A = reelInfo.outcome.dspSymbols(1:3, 1);
-    
-    % Reel 2
-    B = reelInfo.outcome.dspSymbols(1:3, 3);  
 
-    % C contains the identities of the matched elements, in our case the
-    % symbol or shape code.
-    % intersect() finds the locations in which the values of the two
-    % vectors are the same.
-    
-    [C] = intersect(A, B, 'stable');
-    
-    % 1st arg contains indices for where these matches occur in argument A .
-    % 2nd arg the same for argument B.
-    % 'stable' returns the indices in IA and IB in the order that they
-    % occur in argument A
-    
-    % Print highlighted squares to screen one match at a time
-    % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
-    
-    if A(2) == B(2)
-        
-        % Reel 1 Highlights:
-        highlight_pos = screenInfo.gridPos(2, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C, :), highlight_pos, screenInfo.gridPenWidthPixel.*3);
-        % Place another square on the inside of the highlight square (looks nice)
-        highlight_pos = [highlight_pos(:, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(:, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
-        Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
-        
-        % Reel 2 Highlights:
-        highlight_pos = screenInfo.gridPos(8, :);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(C, :)', highlight_pos', screenInfo.gridPenWidthPixel.*3);
-        % Place another square on the inside of the highlight square (looks nice)
-        highlight_pos = [highlight_pos(:, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(:, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
-        Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
-        
-        % Draw the rest
+        % This required a fair bit a messing about. Easier if we had some extra
+        % variables I could toy with
+
+        % Reel 1
+        A = reelInfo.outcome.dspSymbols(1:3, 1);
+
+        % Reel 2
+        B = reelInfo.outcome.dspSymbols(1:3, 3);
+
+        % C contains the identities of the matched elements, in our case the
+        % symbol or shape code.
+        % intersect() finds the locations in which the values of the two
+        % vectors are the same.
+
+        [C] = intersect(A, B, 'stable');
+
+        % 1st arg contains indices for where these matches occur in argument A .
+        % 2nd arg the same for argument B.
+        % 'stable' returns the indices in IA and IB in the order that they
+        % occur in argument A
+
+        % Print highlighted squares to screen one match at a time
+        % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
+
+        for ih = 1:numel(C)
+
+            Ai = ismember(A, C(ih));
+            Bi = ismember(B, C(ih));
+
+            % Reel 1 Highlights:
+            highlight_pos = screenInfo.gridPos(1:3, :);
+            Screen('FrameRect', screenInfo.window, reelInfo.colours(C(ih), :)', highlight_pos(Ai, :)', screenInfo.gridPenWidthPixel.*3);
+            % Place another square on the inside of the highlight square (looks nice)
+            highlight_pos = [highlight_pos(Ai, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Ai, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+            Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
+
+            % Reel 2 Highlights:
+            highlight_pos = screenInfo.gridPos(7:9, :);
+            Screen('FrameRect', screenInfo.window, reelInfo.colours(C(ih), :)', highlight_pos(Bi, :)', screenInfo.gridPenWidthPixel.*3);
+            % Place another square on the inside of the highlight square (looks nice)
+            highlight_pos = [highlight_pos(Bi, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(Bi, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
+            Screen('FrameRect', screenInfo.window, screenInfo.black, highlight_pos', screenInfo.gridPenWidthPixel)
+
+            draw_grid(screenInfo);
+            draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
+
+            % Flip to the screen
+            Screen('Flip', screenInfo.window);
+
+            % Wait time between highlighted reels
+            WaitSecs(reelInfo.timing.highlight);
+
+        end
+
+        % Re-draw without highlights
         draw_grid(screenInfo);
         draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-        
+
         % Flip to the screen
         Screen('Flip', screenInfo.window);
-        
-        % Event marker (Highlight Appears)
-        
-        % Wait time between highlighted reels
-        WaitSecs(reelInfo.timing.highlight);
-        
+
     end
-    
-	% Re-draw without highlights
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-    
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
-	% Event marker (Highlighting Complete)
-    
-    end
-    
+
     % Wait ISI
     WaitSecs(reelInfo.timing.highlight);
     

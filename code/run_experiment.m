@@ -28,7 +28,7 @@
 % participant_.mat, reelInfo.mat, reelstrip.csv
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
-% Last update : May 2022
+% Last update : June 2022
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------

@@ -20,7 +20,8 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
     Screen('TextColor', screenInfo.window, screenInfo.black);
     
     % Get instructions and demo spins.
-    [instructions, demoSequence] = setup_instructions(reelInfo, outputData);
+    [instructions] = setup_instructions();
+    [demoSequence] = setup_demo(reelInfo, outputData);
     
     % ----------------------------------------------------------------------
     %% Opening Instructions
@@ -123,52 +124,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         keyCode = find(keyCode);
         
     end
-    
-    % ----------------------------------------------------------------------
-    %% Explain Fixation Cross
-    % ----------------------------------------------------------------------
-    
-    % While loop to allow user to repeat instructions if desired.
-    keyCode = 38;
-    
-    while keyCode == 38
-        
-        % Reset keyCode
-        keyCode = 0;
-        
-        % Cycle through fixation cross instructions.
-        for i = 1:length(instructions.fixation)
-            
-            i = ['|' repmat(' ', 1, 200) instructions.fixation{i} repmat(' ', 1, 200) '|'];
-            
-            % Text Draw
-            DrawFormattedText(screenInfo.window, i, 'center', screenInfo.yCenter + floor(screenInfo.gridRect(4)/8) * 3);
-            
-            % Draw any key text
-            DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
-            
-            % Draw a little red dot :)
-            Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
-                get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]) ...
-                );
-            
-            draw_fixation(screenInfo, reelInfo);    % Fixation cross
-            Screen('Flip', screenInfo.window);      % Screen flip
-            
-            KbWait(-1, 2);                          % Wait for user input
-            
-        end
-        
-        % View these instructions again?
-        DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
-        Screen('Flip', screenInfo.window);
-        [~, keyCode] = KbWait(-1, 2);
-        
-        % set key down and wait for user to make key press
-        keyCode = find(keyCode);
-        
-    end
-    
+       
     % ----------------------------------------------------------------------
     %% Explain Lines
     % ----------------------------------------------------------------------
@@ -199,6 +155,11 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         
         % Throw up 9 lines one at a time
         demo_lines(screenInfo, reelInfo, instructions);
+        
+        % All potential winning lines will be highlighted on each spin
+        DrawFormattedText(screenInfo.window,'All potential winning lines will be highlighted on each spin', 'center', screenInfo.yCenter);
+        Screen('Flip', screenInfo.window);                                    % Screen flip
+        KbWait(-1, 2);                                                        % Wait for user input
         
         keyCode = 0;
         
@@ -265,6 +226,8 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         
     end
     
+    
+    
     % ----------------------------------------------------------------------
     % FINAL INSTRUCTIONS
     % ----------------------------------------------------------------------
@@ -300,5 +263,76 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         [~, keyCode] = KbWait(-1, 2);
         
     end
+    
+    % ----------------------------------------------------------------------
+    %% Explain Fixation Cross
+    % ----------------------------------------------------------------------
+    
+    % While loop to allow user to repeat instructions if desired.
+    keyCode = 38;
+    
+    while keyCode == 38
+        
+        % Reset keyCode
+        keyCode = 0;
+        
+        % Reset demo index to allow repeated instructions.
+        reelInfo.demoIndex = 2;
+        
+        % Cycle through fixation cross instructions.
+        for i = 1:length(instructions.fixation)
+            
+            i = ['|' repmat(' ', 1, 200) instructions.fixation{i} repmat(' ', 1, 200) '|'];
+            
+            % Text Draw
+            DrawFormattedText(screenInfo.window, i, 'center', screenInfo.yCenter + floor(screenInfo.gridRect(4)/8) * 3);
+            
+            % Draw any key text
+            DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
+            
+            % Draw a little red dot :)
+            Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
+                get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]) ...
+                );
+            
+            draw_fixation(screenInfo, reelInfo);    % Fixation cross
+            Screen('Flip', screenInfo.window);      % Screen flip
+            
+            KbWait(-1, 2);                          % Wait for user input
+            
+        end
+        
+        % Show a win
+        [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+        
+        % View these instructions again?
+        DrawFormattedText(screenInfo.window,'To view these instructions again press the 9 key\n\nOtherwise press any key to continue', 'center', screenInfo.yCenter);
+        Screen('Flip', screenInfo.window);
+        [~, keyCode] = KbWait(-1, 2);
+        
+        % set key down and wait for user to make key press
+        keyCode = find(keyCode);
+        
+    end
+    
+    % ----------------------------------------------------------------------
+    %% Final Text
+    % ----------------------------------------------------------------------
+    
+    % If you have any further questions please ask the experimenter now
+    DrawFormattedText(screenInfo.window,'If you have any further questions please ask the experimenter now.', 'center', screenInfo.yCenter);
+    
+    % Draw any key text
+    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.cont);
+            
+    % Draw a little red dot :)
+    Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
+           get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]) ...
+           );
+       
+    % Flip final questions prompt
+    Screen('Flip', screenInfo.window);
+    % Wait for user input
+    KbWait(-1, 2);
     
 end
