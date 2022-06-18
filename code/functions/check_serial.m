@@ -37,9 +37,13 @@ end
 % repeat cycle N times
 for ii = 1:N
     for i = 1:numel(codes)
-        write(s, codes(i), 'uint8')
-        WaitSecs(pulseDuration)
-        write(s, 0, 'uint8')
+        
+        write(s, codes(i), 'uint8');
+        WaitSecs(pulseDuration);
+        write(s, 0, 'uint8');
+        WaitSecs(pulseDuration);
+        
+        % WaitSecs(.125);
     end
 end
 

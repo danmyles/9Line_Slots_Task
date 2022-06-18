@@ -4,6 +4,7 @@
 
 %% TODO
 % - CHECK TIMING FOR SCREEN FLIPS and IFI
+%   - Need to add accurate timing mod from peter schaffe
 % - CHECK TRIGGER TIMING 
 % - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
@@ -47,9 +48,6 @@ rng shuffle;
 % depenendcies in the rng such as booting the experiment/computer at the
 % same time of day every session.
 
-% Hide the cursor
-% HideCursor % Off when debugging
-
 % ----------------------------------------------------------------------
 %% Set-up serial port for triggers
 % ----------------------------------------------------------------------
@@ -65,11 +63,11 @@ pulseDuration = 0.002; % 1024 Hz
 s = serialportlist;
 
 % Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
-n = 4;
-s = serialport(s(n), 9600);
+n = 2;
+s = serialport(s(       n), 9600);
 clear n;
 
-% ----------------------------------------------------------------------
+% -----------------------------------------------------------------9-----
 %% RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
@@ -223,12 +221,6 @@ writetable(outputData, [fileInfo.output fileInfo.fileID '.csv'])
 % Save session info to output folder:
 save([fileInfo.output fileInfo.fileID 'Info' '.mat'], 'sessionInfo')
 
-% Move participant InputData file to completed folder:
-% script here
-source = [fileInfo.input fileInfo.fileID '.mat'];
-destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
-% movefile(source, destination)
-
 % Draw text to centre
 DrawFormattedText(screenInfo.window, 'END :)', 'center', 'center');
 
@@ -239,10 +231,19 @@ KbWait(-1, 2);
 
 % Close Serial Port
 clear s;
+
 % Show Cursor
-ShowCursor;
+ShowCursor();
+
 % Clear the screen
 sca;
 
+% Move participant InputData file to completed folder:
+% script here
+source = [fileInfo.input fileInfo.fileID '.mat'];
+destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
+% movefile(source, destination)
+
 % Print payment info to command window.
 print_payments(sessionInfo);
+

@@ -14,17 +14,17 @@ function [screenInfo] = setup_screen()
 % [screenInfo] = setup_screen() to call into workspace
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : April 2022
+% Last update : June 2022
 % Project : 9_Line_Slots_Task
-% Version : 2020a
+% Version : 2021a
 % ----------------------------------------------------------------------
 
 % Here we call some default settings for setting up Psychtoolbox
 PsychDefaultSetup(2);
 
 % Do you need to run SyncTest?
-Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
-% Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
+% Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
+Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
 % Get the numbers for each screen. 
 % This gives us a number for each of the screens attached to our computer.
