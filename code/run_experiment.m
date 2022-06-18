@@ -241,8 +241,8 @@ sca;
 % Move participant InputData file to completed folder:
 % script here
 source = [fileInfo.input fileInfo.fileID '.mat'];
-destination = [fileInfo.output 'completed/' fileInfo.fileID '.mat'];
-% movefile(source, destination)
+destination = [fileInfo.output];
+movefile(source, destination)
 
 % Print payment info to command window.
 print_payments(sessionInfo);
