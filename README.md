@@ -95,8 +95,6 @@ This experiment is broken down into a series of functions. The rough order of op
 
 See also: setup_eventInfo.m
 
-Pulse (to alert experimenter) - 255
-
 Experiment Start - 251
 Experiment End   - 252
 

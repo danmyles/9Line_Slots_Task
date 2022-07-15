@@ -18,7 +18,7 @@ function [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo, eventInfo
 %   ID : Participant ID
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2021
+% Last update : July 2022
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------
