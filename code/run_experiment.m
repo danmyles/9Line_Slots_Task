@@ -3,9 +3,8 @@
 % -----------------------------------------------------------------------
 
 %% TODO
-% - CHECK TIMING FOR SCREEN FLIPS and IFI
-%   - Need to add accurate timing mod from peter schaffe
-% - CHECK TRIGGER TIMING 
+% - TIMING FOR SCREEN FLIPS and IFI: 5.89 ms
+% - Need to add accurate timing mod from peter schaffe
 % - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
 %     artifacts from previous stimuli affecting the result. ~1000 ms from 
@@ -29,7 +28,7 @@
 % participant_.mat, reelInfo.mat, reelstrip.csv
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
-% Last update : June 2022
+% Last update : July 2022
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------
@@ -64,10 +63,10 @@ s = serialportlist;
 
 % Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
 n = 2;
-s = serialport(s(       n), 9600);
+s = serialport(s(n), 9600);
 clear n;
 
-% -----------------------------------------------------------------9-----
+% ----------------------------------------------------------------------
 %% RUN SETUP SCRIPTS
 % ----------------------------------------------------------------------
 
@@ -128,7 +127,7 @@ while keyCode ~= nineKey
     
 end
 
-% Send end time to sessionInfo
+% Send instructions end time to sessionInfo
 sessionInfo.instrEndT = KeyTime - sessionInfo.start;
 
 %% ---------------------- START EXPERIMENT LOOP ----------------------- %%

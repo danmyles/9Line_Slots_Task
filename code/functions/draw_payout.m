@@ -1,4 +1,4 @@
-function [] = draw_payout(screenInfo, reelInfo, win)
+function [] = draw_payout(screenInfo, reelInfo)
     
     % Draw a small bordered shape to display text within:    
     switch reelInfo.outcome.centre
@@ -19,23 +19,21 @@ function [] = draw_payout(screenInfo, reelInfo, win)
             %Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 5, reelInfo.payout.small))
     end  
     
-    % Draw text if a win occured (else skip)
+    % Draw payout text
+          
+    % Set up text for payout display
+    payoutText = sprintf('%g', reelInfo.outcome.payout);
+
+    Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
+    Screen('TextFont', screenInfo.window,'Arial', 1);
+
+    % Draw winning amount to centre
+    DrawFormattedText(screenInfo.window, payoutText, 'center', 'center');
+
+    Screen('TextFont', screenInfo.window, reelInfo.Font, 0);
+    Screen('TextSize', screenInfo.window, reelInfo.TextSize);
+        
     
-    if win == 1
-        
-        % Set up text for payout display
-        payoutText = sprintf('%g', reelInfo.outcome.payout);
-        
-        Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
-        Screen('TextFont', screenInfo.window,'Arial', 1);
-        
-        % Draw winning amount to centre
-        DrawFormattedText(screenInfo.window, payoutText, 'center', 'center');
-        
-        Screen('TextFont', screenInfo.window, reelInfo.Font, 0);
-        Screen('TextSize', screenInfo.window, reelInfo.TextSize);
-        
-    end
     
 end
 

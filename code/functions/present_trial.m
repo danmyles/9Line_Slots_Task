@@ -414,14 +414,14 @@ if outputData.match(reelInfo.trialIndex) == 1
     end
 
     % Display payout
-    draw_payout(screenInfo, reelInfo, 1);
+    draw_payout(screenInfo, reelInfo);
 
 else
 
     % Loss
 
     % Display payout shape, but not text
-    draw_payout(screenInfo, reelInfo, 0);
+    draw_payout(screenInfo, reelInfo);
 
 end
 
