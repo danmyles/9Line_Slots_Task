@@ -62,8 +62,8 @@ screenInfo.splitposX = floor(screenInfo.splitposX);
 screenInfo.splitposY = floor(screenInfo.splitposY);
                     
 % Some places to draw text:
-screenInfo.cont = (screenInfo.screenYpixels - (screenInfo.yCenter/4));
-screenInfo.ydot = (screenInfo.cont + screenInfo.screenYpixels)/2;
+screenInfo.ydot = screenInfo.screenYpixels - 45;
+screenInfo.cont = screenInfo.ydot - 45;
 screenInfo.textaboveC = (screenInfo.yCenter - screenInfo.yCenter/5);
 screenInfo.textbelowC = (screenInfo.yCenter + screenInfo.yCenter/5);
 

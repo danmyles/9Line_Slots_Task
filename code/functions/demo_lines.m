@@ -1,4 +1,4 @@
-function [] = demo_lines(screenInfo, reelInfo, instructions)
+function [i] = demo_lines(screenInfo, reelInfo, instructions, i)
 % ----------------------------------------------------------------------
 % demo_lines(screenInfo)
 % ----------------------------------------------------------------------
@@ -17,9 +17,9 @@ function [] = demo_lines(screenInfo, reelInfo, instructions)
 % (none)
 % ----------------------------------------------------------------------
 % Function created by Dan Myles (dan.myles@monash.edu)
-% Last update : 20th April 2022
+% Last update : July 2022
 % Project : 9_Line_Slots_Task
-% Version : 2020a
+% Version : 2021a
 % ----------------------------------------------------------------------
 
 % We will through this display interatively. This will require a series of
@@ -70,17 +70,18 @@ symbolList = [
 
 ];
 
+lines = 1;
 
-    for i = 1:9
+    while lines <= 9
 
         % Reel Highlights:
         % Get position info
-        highlight_pos = screenInfo.gridPos(positionList(i, :)', :);
+        highlight_pos = screenInfo.gridPos(positionList(lines, :)', :);
 
         % Print large rectangle
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(symbolList(i), :)', highlight_pos(1, :)', screenInfo.gridPenWidthPixel.*3);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(symbolList(i), :)', highlight_pos(2, :)', screenInfo.gridPenWidthPixel.*3);
-        Screen('FrameRect', screenInfo.window, reelInfo.colours(symbolList(i), :)', highlight_pos(3, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(symbolList(lines), :)', highlight_pos(1, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(symbolList(lines), :)', highlight_pos(2, :)', screenInfo.gridPenWidthPixel.*3);
+        Screen('FrameRect', screenInfo.window, reelInfo.colours(symbolList(lines), :)', highlight_pos(3, :)', screenInfo.gridPenWidthPixel.*3);
 
         % Trim with black centre (looks nice)
         highlight_pos = [highlight_pos(:, 1:2) + (3.*screenInfo.gridPenWidthPixel), highlight_pos(:, 3:4) - (3.*screenInfo.gridPenWidthPixel)];
@@ -92,17 +93,70 @@ symbolList = [
         draw_grid(screenInfo);
 
         % Draw symbols
-        draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(positionList(i, :)', :), repmat(symbolList(i), 1, 3));
-
-        % Draw any key text
-        DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
+        draw_shapes(screenInfo, reelInfo, screenInfo.splitpos(positionList(lines, :)', :), repmat(symbolList(lines), 1, 3));
+        
+        % Hollow out centre symbol:
+        switch symbolList(lines)
+            case 1
+                Screen('FillOval', screenInfo.window, 1, CenterRectOnPoint(reelInfo.payout.rect, screenInfo.xCenter, screenInfo.yCenter));
+                %Screen('FillOval', screenInfo.window, 1, CenterRectOnPoint(reelInfo.payout.small, screenInfo.xCenter, screenInfo.yCenter));
+            case 2
+                Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 2, reelInfo.payout.rect))
+                %Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 2, reelInfo.payout.small))
+            case 3
+                Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 3, reelInfo.payout.rect))
+                %Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 3, reelInfo.payout.small))
+            case 4
+                Screen('FillRect', screenInfo.window, 1, get_dimensions(screenInfo, 5, 4, reelInfo.payout.rect))
+                %Screen('FillRect', screenInfo.window, 1, get_dimensions(screenInfo, 5, 4, reelInfo.payout.small))
+            case 5
+                Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 5, reelInfo.payout.rect))
+                %Screen('FillPoly', screenInfo.window, 1, get_dimensions(screenInfo, 5, 5, reelInfo.payout.small))
+        end
+        
+        
+        Screen('TextSize', screenInfo.window, reelInfo.payout.textSize);
+        Screen('TextFont', screenInfo.window,'Arial', 1);
+        
+        % Draw line number instead of payout text
+        DrawFormattedText(screenInfo.window, num2str(lines), 'center', 'center');
+        
+        Screen('TextSize', screenInfo.window, reelInfo.TextSize);
+        Screen('TextFont', screenInfo.window, reelInfo.Font, 0);
+        
+        % Draw key prompt
+        DrawFormattedText(screenInfo.window, instructions.prompt, 'center', screenInfo.ydot);
 
         % Draw title text
-        DrawFormattedText(screenInfo.window, textList{i}, 'center', (screenInfo.screenYpixels - screenInfo.ydot));
-
+        DrawFormattedText(screenInfo.window, textList{lines}, 'center', (screenInfo.screenYpixels - screenInfo.ydot));
+        
+        % Exit function early when lines == 9
+        if lines == 9
+            return
+        end
+        
         Screen('Flip', screenInfo.window);
-
-        KbWait(-1, 2);
+        
+        [~, keyCode, ~] = KbWait(-1, 2);    % Wait for keypress
+        
+        % Code participant response
+        % If participant pressed back we need to go back one step
+        if any(find(keyCode) == KbName('LeftArrow'))
+            if lines > 1 % Prevents 0 when i == 1
+                lines = lines-1; 
+            else
+                % Lines == 0
+                % Therefore return to main instructions and drop i by 1
+                i = i - 1;
+                
+                
+                
+                return
+            end
+        % If participant pressed forward we continue
+        elseif find(keyCode) == 79
+            lines = lines+1;
+        end
 
     end      
 

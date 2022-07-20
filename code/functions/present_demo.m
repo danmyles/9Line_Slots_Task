@@ -1,4 +1,4 @@
- function [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, demo)
+ function [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, demo, prompt)
     % ----------------------------------------------------------------------
     % [reelInfo] = present_demo(reelInfo)
     % ----------------------------------------------------------------------
@@ -17,13 +17,10 @@
     % demoSequence: updates shown 0 -> 1
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : June 2021
+    % Last update : July 2022
     % Project : 9_Line_Slots_Task
     % Version : 2021a
     % ----------------------------------------------------------------------
-       
-    % Update reelInfo iterator
-    reelInfo.demoIndex = (reelInfo.demoIndex + 1);
        
     % Bump previous reelInfo.outcome to reelInfo.previous
     reelInfo.previous = reelInfo.outcome;
@@ -173,46 +170,32 @@
         end
         
         % Display payout
-        draw_payout(screenInfo, reelInfo, 1);
+        draw_payout(screenInfo, reelInfo);
         
     else
         
         % Loss
-               
-        % Display payout shape, but not text
-        draw_payout(screenInfo, reelInfo, 0);
+        draw_payout(screenInfo, reelInfo);
         
     end
        
     % Flip to the screen (outcome stimulus, payout, win highlights)
-    [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
+    Screen('Flip', screenInfo.window);
     
-    % Send event marker (Outcome Stimulus)
+    % Wait a moment, and then display prompt
+    WaitSecs(.500);
     
-    keyDown = 0;
+    draw_grid(screenInfo);
+    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
+    draw_payout(screenInfo, reelInfo); % Display payout
     
-    while(~keyDown)
+    % Draw key prompt
+    DrawFormattedText(screenInfo.window, prompt, 'center', screenInfo.cont);
+    
+    % Draw a little red dot :)
+    Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
+           get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]));
         
-        [keyDown, KeyPressTime] = KbCheck(-1);
-        WaitSecs(0.001); % delay to prevent CPU hogging
-        
-    end
-    
-    % Get PRP time
-    PRP = KeyPressTime - StimulusOnsetTime;
-    demoSequence.PRP(reelInfo.demoIndex) = PRP;
-    
-    % Update outputData w/ 'shown'
-    demoSequence.shown(reelInfo.demoIndex) = 1;
-    
-    % Outcome Stimulus Onset Time
-    demoSequence.CSTime(reelInfo.demoIndex) = StimulusOnsetTime;
-    
-    % Wait minimum trial time if neccesary (likely already elapsed)
-    while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome
-        WaitSecs(0.001); % delay to prevent CPU hogging
-    end
-       
  end
 
  

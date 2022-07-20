@@ -3,7 +3,7 @@
 % -----------------------------------------------------------------------
 
 %% TODO
-% - TIMING FOR SCREEN FLIPS and IFI: 5.89 ms
+% - TIMING FOR SCREEN FLIPS and IFI: ~5.9 ms
 % - Need to add accurate timing mod from peter schaffe
 % - CHECK SPEED:
 %     ii) You will also need to consider the length of time neccesary to avoid 
@@ -25,7 +25,7 @@
 %
 % NOTE: If this is the first time running this script you will first need 
 % to run the create experiment.m which prepares the following inputs:
-% participant_.mat, reelInfo.mat, reelstrip.csv
+% participant_n.mat, reelInfo.mat, reelstrip.csv
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
 % Last update : July 2022
@@ -41,6 +41,7 @@
 sca;
 close all;
 clearvars;
+
 rng shuffle;
 
 % Reseeding the rng at the beginning of any MATLAB prevents (exceedingly mild) 
@@ -48,23 +49,61 @@ rng shuffle;
 % same time of day every session.
 
 % ----------------------------------------------------------------------
+%% Add functions and config files to path (if not already)
+% ----------------------------------------------------------------------
+[FILEPATH, ~, ~] = fileparts(which('run_experiment.m'));
+addpath(genpath(fullfile(FILEPATH, 'functions')), fullfile(FILEPATH, 'config'))
+
+% ----------------------------------------------------------------------
 %% Set-up serial port for triggers
 % ----------------------------------------------------------------------
 
-% SET MMBT TO SIMPLE MODE
+% Use or skip triggers (for debugging/demo)
+TRIGGERS_ON = 0;
 
-% Set duration of serial port pulse
-% Should be slightly larger than 2 / sampling rate
-% pulseDuration = 0.004; % 512 Hz
-pulseDuration = 0.002; % 1024 Hz
+if TRIGGERS_ON == 1
 
-% Get list of serial devices
-s = serialportlist;
+    % SET MMBT TO SIMPLE MODE
 
-% Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
-n = 2;
-s = serialport(s(n), 9600);
-clear n;
+    % Set duration of serial port pulse
+    % Should be slightly larger than 2 / sampling rate
+    % pulseDuration = 0.004; % 512 Hz
+    pulseDuration = 0.002; % 1024 Hz
+
+    % Get list of serial devices
+    s = serialportlist;
+
+    % Select device n (YOU MAY NEED TO CHECK THIS PRIOR TO EACH SESSION)
+    n = 2;
+    s = serialport(s(n), 9600);
+    clear n;
+    
+    % Reset / all triggers off
+    write(s, 0, 'uint8');
+    
+    % Remove dummy / fake trigger function from path
+    rmpath(fullfile(FILEPATH, 'functions', 'fake_trigger_code'));
+    
+else
+    % Create an anoymous function to replace the trigger function
+    % This will notify the user that the trigger has been skipped and what
+    % the trigger code would have been
+    
+    % Confirm with user
+    selection = questdlg('Run script with triggers disabled?', 'TRIGGERS_ON = 0');
+    
+    if ~strcmp(selection, 'Yes')
+        % If No or Cancel then terminate with error:
+        error('User terminated script prior to run')
+    end
+    
+    % Set up debugging trigger code
+    s = [];
+    pulseDuration = [];
+    % Remove trigger function from path
+    rmpath(fullfile(FILEPATH, 'functions', 'trigger_code'));
+    
+end
 
 % ----------------------------------------------------------------------
 %% RUN SETUP SCRIPTS
@@ -82,9 +121,6 @@ send_trigger(s, eventInfo.expStart, pulseDuration);
 
 % Load screen
 loading_screen(screenInfo, reelInfo, 4);
-
-% Reset / all triggers off
-write(s, 0, 'uint8');
 
 % Load Screen
 loading_screen(screenInfo, reelInfo, 5);
@@ -111,7 +147,7 @@ escapeKey = KbName('ESCAPE');
 while keyCode ~= nineKey
     
     [keyDown, KeyTime, keyCode] = KbCheck(-1); % Check keyboard
-    keyCode = find(keyCode);                     % Get keycode
+    keyCode = find(keyCode);                   % Get keycode
         
     if keyDown == 0
 	keyCode = 0;
@@ -120,7 +156,7 @@ while keyCode ~= nineKey
     % Exit experiment on ESCAPE    
     if keyCode == escapeKey
         sca;
-        return
+        error('User entered escape prior to experiment start')
     end
     
     WaitSecs(0.001); % slight delay to prevent CPU hogging
