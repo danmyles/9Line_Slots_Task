@@ -63,7 +63,7 @@ reelInfo.betBChoices = 0;
 % value for the draw_rate
 % draw rate is the number of times a symbol is redrawn between
 % reel positions.
-reelInfo.draw_rate = 15;
+reelInfo.draw_rate = 5;
 
 % Create empty data table for output
 [outputData] = setup_output(reelInfo);
@@ -105,7 +105,6 @@ HideCursor() % Off when debugging
 % Give the program maximum priority (limit background programs e.g. antivirus)
 priorityLevel = MaxPriority(screenInfo.window);
 Priority(priorityLevel);
-
 
 %% TEXT SETUP 
 % Setup some default text settings for the window

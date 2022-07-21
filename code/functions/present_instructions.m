@@ -120,7 +120,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
 
     % Initiate while loop at 1
     i = 1;
-      
+        
     while i < length(instructions.loop) + 1
                 
         % Check if fixation instructions
@@ -249,7 +249,9 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
 
         end
         
-        Screen('Flip', screenInfo.window);  % Flip to the screen
+        % Flip to next available frame
+        Screen('Flip', screenInfo.window);
+        
         [~, keyCode, ~] = KbWait(-1, 2);    % Wait for keypress
         
         % Code participant response

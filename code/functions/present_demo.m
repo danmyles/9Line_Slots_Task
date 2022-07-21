@@ -54,10 +54,10 @@
     % ----------------------------------------------------------------------
     
     % Spin reels
-    [reelInfo, demoSequence] = spin(screenInfo, reelInfo, demoSequence, demo);
+    [reelInfo, demoSequence, FlipTime] = spin(screenInfo, reelInfo, demoSequence, demo);
     
-    % Wait ISI
-    WaitSecs(reelInfo.timing.highlight);
+    % ISI for next screen flip
+    FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
         
 	% ----------------------------------------------------------------------
     % HIGHLIGHT ACTIVE REELS
@@ -89,7 +89,7 @@
 
         % Print highlighted squares to screen one match at a time
         % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
-
+        
         for ih = 1:numel(C)
 
             Ai = ismember(A, C(ih));
@@ -113,10 +113,10 @@
             draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
             % Flip to the screen
-            Screen('Flip', screenInfo.window);
-
-            % Wait time between highlighted reels
-            WaitSecs(reelInfo.timing.highlight);
+            FlipTime = Screen('Flip', screenInfo.window, FlipTime);
+        
+            % Wait time between highlighted reels (timing only for visual display)
+            FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
 
         end
 
@@ -125,13 +125,10 @@
         draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
         % Flip to the screen
-        Screen('Flip', screenInfo.window);
+        [FlipTime, HLendTime] = Screen('Flip', screenInfo.window, FlipTime);
 
     end
-
-    % Wait ISI
-    WaitSecs(reelInfo.timing.highlight);
-    
+   
 	% ----------------------------------------------------------------------
     %% Fixation cross
     % ----------------------------------------------------------------------
@@ -141,17 +138,18 @@
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
     draw_fixation(screenInfo, reelInfo);
     
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-
-    % Send event marker (Fixation Cross)
+    % ISI for next screen flip
+    FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
     
-    % Wait ISI
-    WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
+    % Flip to the screen
+    [~, FixationOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % Wait ISI
     
 	% ----------------------------------------------------------------------    
     %% Outcome stimulus
     % ----------------------------------------------------------------------
+    
+    % Caluculate random ISI
+    FlipTime = FlipTime + (reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter)) - screenInfo.halfifi;
     
     % Draw grid 
     draw_grid(screenInfo);
@@ -180,9 +178,9 @@
     end
        
     % Flip to the screen (outcome stimulus, payout, win highlights)
-    Screen('Flip', screenInfo.window);
+    Screen('Flip', screenInfo.window, FlipTime); % Wait ISI for accurate timing
     
-    % Wait a moment, and then display prompt
+    % Wait a moment, before prompt
     WaitSecs(.500);
     
     draw_grid(screenInfo);

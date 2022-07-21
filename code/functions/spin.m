@@ -1,4 +1,4 @@
-function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
+function [reelInfo, outputData, vbl] = spin(screenInfo, reelInfo, outputData, demo)
     % ----------------------------------------------------------------------
     % spin(screenInfo, reelInfo)
     % ----------------------------------------------------------------------
@@ -8,19 +8,16 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     % spinning animation.
     % ----------------------------------------------------------------------
     % Input(s) :
-    % screenInfo, reelInfo
-    % also takes "start_from". This is the index from which the animation
-    % should start.
-    % i.e. it will animate from start_from to start_from + 1
+    % screenInfo, reelInfo, outputData, demo
     % ----------------------------------------------------------------------
     % Output(s):
-    % reelInfo
+    % reelInfo, outputData, vbl
     % But purpose is to draw the animation to the screen.
     % ----------------------------------------------------------------------
     % Function created by Dan Myles (dan.myles@monash.edu)
-    % Last update : June 2020
+    % Last update : July 2022
     % Project : 9_Line_Slots_Task
-    % Version : 2020a
+    % Version : 2021a
     % ----------------------------------------------------------------------
       
     % Fill in the demo value if missing:
@@ -33,7 +30,7 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     left = expandStopINDEX(reelInfo, reelInfo.outcome.stops(1), 1, 20)';
     right = expandStopINDEX(reelInfo, reelInfo.outcome.stops(2), 1, 30)';
     
-    % Check if previous position is somewhere in next spin (but let firt 10 symbols go).
+    % Check if previous position is somewhere in next spin (but let first 10 symbols go).
     [LIA, LOCB] = ismember(reelInfo.previous.dspSymbols(1, 1), reelInfo.reelstrip(left(11:end), 1));
     
     if LIA == 1 % If so slice this into the upcoming symbols
@@ -86,49 +83,61 @@ function [reelInfo, outputData] = spin(screenInfo, reelInfo, outputData, demo)
     right(:, 3) = screenInfo.splitposY(3);
     right(:, 3) = right(:, 3) - R';
     
-    % create a default value for the draw_rate
-    % draw rate is the number of times a symbol is redrawn between
-    % reel positions.
-    if ~ exist("reelInfo.draw_rate")
-        reelInfo.draw_rate = 3;
-    end
+    % These matrices now contain a Y position for each symbol in the reel
+    % strip that will be displayed during the spin. 
     
-    % Somewhat hacky iterator for spin sequence
+    % I need to iterate over these, adjusting them one step at a time.
+    % and then displaying the symbols to the screen to give the appearance
+    % of movement.
+    
+    % Pre-allocating these positions should be a little faster.
+        
+    % Each symbol will shift position until the top most symbol in the columns
+    % falls to the top row position.
+    
     % Number of rows in the right var, minus three because these are
     % already progressed onto the screen.
+    right_Y = right(:, 3) + (screenInfo.Y_adjust/reelInfo.draw_rate) * (1:((length(right) - 3) * reelInfo.draw_rate));
+    left_Y  = left(:, 3)  + (screenInfo.Y_adjust/reelInfo.draw_rate) * (1:((length(left)  - 3) * reelInfo.draw_rate));
+        
+    % Left reel stops first, so it's a little smaller.
+    % Left will now be the same dimensions as right, but with repetitions.
+    left_Y(:, (width(left_Y) + 1):width(right_Y)) = repmat(left_Y(:, width(left_Y)), 1, (width(right_Y) - width(left_Y)));
     
-    it = (numel(right(:, 1))-3);
+    % Some lost precision leading to small errors past the 4th decimal
+    % place
+    left_Y = round(left_Y, 4);
+    right_Y = round(right_Y, 4);
     
-    % .* the draw rate because each symbols has to be drawn this many times.
-    it = it .* reelInfo.draw_rate;
+    % Find the positions worth drawing:
+    select_L = left_Y > 0-(screenInfo.Y_adjust / reelInfo.draw_rate) & left_Y < screenInfo.screenYpixels+(screenInfo.Y_adjust / reelInfo.draw_rate);
+    select_R = right_Y > 0-(screenInfo.Y_adjust / reelInfo.draw_rate) & right_Y < screenInfo.screenYpixels+(screenInfo.Y_adjust / reelInfo.draw_rate);
+           
+    draw_shapes(screenInfo, reelInfo, left(:, 2:3), left(:, 1));
+    draw_shapes(screenInfo, reelInfo, right(:, 2:3), right(:, 1));
+    draw_grid(screenInfo);
+    
+    vbl = Screen('Flip', screenInfo.window);
+    vbl = vbl + 2 * screenInfo.ifi; % Allow 2 extra frames
+    
+    % The timing here isn't important, but the vast number of
+    % iterations of screen flips that this function produces meant that 
+    % I was racking up warnings that made it difficult to 
+    % identify issues in more important parts of the script. 
+    % I've set up manual timing here in an attempt to minimise these
+    % warnings.
     
     % Start spin sequence
-    for i = 1:it
-        
-        % Update Y positions until the final symbol reaches top position
-        
-        if left(1, 3) ~= screenInfo.splitposY(1)
-            
-            left(:, 3) = left(:, 3) + (screenInfo.Y_adjust/reelInfo.draw_rate);
-            
-            if demo ~= 1
-            % Enter ~ approx LStop timing
-            outputData.LStopSF(reelInfo.trialIndex) = GetSecs;
-            end
-            
-        end
-        
-        % For loop takes care of stopping the right reel.
-        right(:, 3) = right(:, 3) + (screenInfo.Y_adjust/reelInfo.draw_rate);
+    for i = 1:width(right_Y)
         
         % Draw new values to screen
-        draw_shapes(screenInfo, reelInfo, left(:, 2:3), left(:, 1));
-        draw_shapes(screenInfo, reelInfo, right(:, 2:3), right(:, 1));
+        draw_shapes(screenInfo, reelInfo, [repmat(reelInfo.pos.L(1), sum(select_L(:, i)), 1),  left_Y(select_L(:, i), i)],  left(select_L(:, i), 1));
+        draw_shapes(screenInfo, reelInfo, [repmat(reelInfo.pos.R(1), sum(select_R(:, i)), 1), right_Y(select_R(:, i), i)], right(select_R(:, i), 1));
         draw_grid(screenInfo);
-        
+                
         % Flip Screen
-        [~, OnsetTime] = Screen('Flip', screenInfo.window);
-        
+        [vbl, OnsetTime] = Screen('Flip', screenInfo.window, vbl + 0.5 * screenInfo.ifi);
+               
     end
     
     if demo ~= 1

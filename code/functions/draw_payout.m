@@ -32,8 +32,6 @@ function [] = draw_payout(screenInfo, reelInfo)
 
     Screen('TextFont', screenInfo.window, reelInfo.Font, 0);
     Screen('TextSize', screenInfo.window, reelInfo.TextSize);
-        
-    
     
 end
 

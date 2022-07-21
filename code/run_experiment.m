@@ -99,7 +99,7 @@ else
     
     % Set up debugging trigger code
     s = [];
-    pulseDuration = [];
+    pulseDuration = .002;
     % Remove trigger function from path
     rmpath(fullfile(FILEPATH, 'functions', 'trigger_code'));
     
@@ -135,7 +135,8 @@ present_instructions(screenInfo, reelInfo, outputData);
 DrawFormattedText(screenInfo.window, ...
     'When you are ready press the 9 key to begin the experiment', ...
     'center', screenInfo.yCenter);
-% Flip screen
+
+% Flip screen (next frame)
 Screen('Flip', screenInfo.window);
 
 % Wait for 9 Key or terminate on ESCAPE.

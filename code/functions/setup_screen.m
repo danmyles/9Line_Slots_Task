@@ -73,6 +73,10 @@ Screen('Preference', 'TextAntiAliasing', 2);
 % between drawing to the screen
 screenInfo.ifi = Screen('GetFlipInterval', screenInfo.window);
 
+% Typically use half the ifi to create some slack when specifying
+% screen flips.
+screenInfo.halfifi = screenInfo.ifi;
+
 % We can also determine the refresh rate of our screen. The
 % relationship between the two is: ifi = 1 / hertz
 screenInfo.hertz = FrameRate(screenInfo.window);
@@ -81,12 +85,6 @@ screenInfo.hertz = FrameRate(screenInfo.window);
 % the refresh rate as reported by the video card. This is rounded to the
 % nearest integer. In reality there can be small differences between
 % "hertz" and "nominalHertz"
-% This is nothing to worry about. See Screen FrameRate? and Screen
-% GetFlipInterval? for more information
 screenInfo.nominalHertz = Screen('NominalFrameRate', screenInfo.window);
-
-% Some of these values are used for drawing objects and text to the screen
-% Using a non-integer value can lead to ugly display of text.
-% So I want to round some values.
 
 end

@@ -1,14 +1,13 @@
 function [] = draw_shapes(screenInfo, reelInfo, position, shape)
 % ----------------------------------------------------------------------
-% draw_shapes(screenInfo, reelInfo, selectReels)
+% draw_shapes(screenInfo, reelInfo, position, shape)
 % ----------------------------------------------------------------------
 % Goal of the function :
 % Draw shapes to the screen in given positions
 % ----------------------------------------------------------------------
 % Input(s) :
-% screenInfo, gridInfo
+% screenInfo, reelInfo, position, shape
 %
-% selectReels - any set of numbers between 1 and 9. 
 %
 % Position Numbers:
 %   1   4   7
@@ -53,7 +52,7 @@ end
 % more processing)
 isConvex = 1;
 
-% This for loop uses the selectReels variable to draw a shape to each reel
+% This for loop uses the x variable to draw a shape to each reel
 % position. The loop also skips the 4th and 6th position to avoid filling
 % these.
 

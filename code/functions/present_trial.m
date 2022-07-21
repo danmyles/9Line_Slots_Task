@@ -61,6 +61,7 @@ side = randsample(1:2, 2, false);
 
 [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side);
 
+% Flip on next available frame
 [~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
 
 % EVENT MARKER (DISPLAY BET)
@@ -207,7 +208,8 @@ end
 % Highlight left choice with a red box
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
 Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), highlight, screenInfo.gridPenWidthPixel .* 3) % Red frame highlight
-Screen('Flip', screenInfo.window); % Flip
+
+Screen('Flip', screenInfo.window);  % Flip to the screen (next available frame)
 
 % ------------------------------------------------------------------------
 %% MORE UPDATING
@@ -218,7 +220,8 @@ Screen('Flip', screenInfo.window); % Flip
 send_trigger(s, eventInfo.betChoice.GAME(betChoice), pulseDuration);
 send_trigger(s, eventInfo.betChoice.LR(pressLeft * -1 + 2), pulseDuration);
 
-WaitSecs(0.2); % Additional pause for red box display
+% Additional pause long enough for red box display to be visible
+WaitSecs(0.2);
 
 % Update remaining betting information.
 outputData.betChoice(reelInfo.trialIndex) = betChoice;
@@ -279,20 +282,17 @@ send_trigger(s, eventInfo.spinStart, pulseDuration);
 outputData.ReelSFT(reelInfo.trialIndex) = GetSecs - sessionInfo.start;
 
 % Spin reels
-[reelInfo, outputData] = spin(screenInfo, reelInfo, outputData);
+[reelInfo, outputData, FlipTime] = spin(screenInfo, reelInfo, outputData);
 
 % EVENTMARKER (Spin Animation End)
 send_trigger(s, eventInfo.spinEnd, pulseDuration);
 
-% Wait ISI
-WaitSecs(reelInfo.timing.highlight);
+% ISI for next screen flip
+FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
 
 % ----------------------------------------------------------------------
 % HIGHLIGHT ACTIVE REELS
 % ----------------------------------------------------------------------
-
-% I have some old code in a function called "highlight reels" if you
-% want this done simultaneously.
 
 % Check if active
 if reelInfo.highlight == 2 || reelInfo.highlight == 3
@@ -320,7 +320,7 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
 
     % Print highlighted squares to screen one match at a time
     % Uses intersect output to select colour (C = colour) (IA/IB to index grid posistion)
-
+        
     for ih = 1:numel(C)
 
         Ai = ismember(A, C(ih));
@@ -344,13 +344,13 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
         draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
         % Flip to the screen
-        Screen('Flip', screenInfo.window);
+        FlipTime = Screen('Flip', screenInfo.window, FlipTime);
 
         % EVENT MARKER - (Highlight onset)
         send_trigger(s, eventInfo.HL.start, pulseDuration);
         
-        % Wait time between highlighted reels
-        WaitSecs(reelInfo.timing.highlight);
+        % Wait time between highlighted reels (timing only for visual display)
+        FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
 
     end
 
@@ -359,7 +359,7 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
     % Flip to the screen
-    [~, HLendTime] = Screen('Flip', screenInfo.window);
+    [FlipTime, HLendTime] = Screen('Flip', screenInfo.window, FlipTime);
 
     % EVENT MARKER (Highlight Sequence Complete)
     send_trigger(s, eventInfo.HL.end, pulseDuration);
@@ -368,9 +368,6 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
     outputData.HighlightEnd(reelInfo.trialIndex) = HLendTime - sessionInfo.start;
     
 end
-
-% Wait ISI
-WaitSecs(reelInfo.timing.highlight);
 
 % ----------------------------------------------------------------------
 % FIXATION CROSS
@@ -381,8 +378,11 @@ draw_grid(screenInfo);
 draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 draw_fixation(screenInfo, reelInfo);
 
+% ISI for next screen flip
+FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
+
 % Flip to the screen
-[~, FixationOnsetTime] = Screen('Flip', screenInfo.window);
+[FlipTime, FixationOnsetTime] = Screen('Flip', screenInfo.window, FlipTime);
 
 % EVENT MARKER (Fixation Cross)
 send_trigger(s, eventInfo.FC, pulseDuration);
@@ -390,12 +390,12 @@ send_trigger(s, eventInfo.FC, pulseDuration);
 % Get FC Timing
 outputData.FCTime(reelInfo.trialIndex) = FixationOnsetTime - sessionInfo.start;
 
-% Wait ISI
-WaitSecs(reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter));
-
 % ----------------------------------------------------------------------
 % OUTCOME STIMULUS
 % ----------------------------------------------------------------------
+
+% Caluculate random ISI
+FlipTime = FlipTime + (reelInfo.timing.fixationCross + (rand .* reelInfo.timing.jitter)) - screenInfo.halfifi;
 
 % Draw grid
 draw_grid(screenInfo);
@@ -429,7 +429,7 @@ end
 Screen('FillRect', screenInfo.window, 0, [screenInfo.screenXpixels - 100, screenInfo.screenYpixels - 100, screenInfo.screenXpixels, screenInfo.screenYpixels]);
 
 % Flip to the screen (outcome stimulus, payout, win highlights)
-[~, StimulusOnsetTime] = Screen('Flip', screenInfo.window);
+[~, StimulusOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % ISI calculated above
 
 % EVENT MARKER (Display Outcome Stimulus)
 send_trigger(s, eventInfo.outcome.SF, pulseDuration);
