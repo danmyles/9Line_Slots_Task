@@ -126,6 +126,10 @@ function [reelInfo, outputData, vbl] = spin(screenInfo, reelInfo, outputData, de
     % identify issues in more important parts of the script. 
     % I've set up manual timing here in an attempt to minimise these
     % warnings.
+    % My setup is a 240Hz monitor (running linux (pop_os)) so the frame 
+    % frame rate is super fast and I need to allow a few extra frames to 
+    % provide enough time for the script to complete.
+    % This also helped to slow the spin animation down.
     
     % Start spin sequence
     for i = 1:width(right_Y)
@@ -135,9 +139,11 @@ function [reelInfo, outputData, vbl] = spin(screenInfo, reelInfo, outputData, de
         draw_shapes(screenInfo, reelInfo, [repmat(reelInfo.pos.R(1), sum(select_R(:, i)), 1), right_Y(select_R(:, i), i)], right(select_R(:, i), 1));
         draw_grid(screenInfo);
                 
+        Screen('DrawingFinished', screenInfo.window);
+        
         % Flip Screen
-        [vbl, OnsetTime] = Screen('Flip', screenInfo.window, vbl + 0.5 * screenInfo.ifi);
-               
+        [vbl, OnsetTime] = Screen('Flip', screenInfo.window, vbl + 2.5 * screenInfo.ifi);
+        
     end
     
     if demo ~= 1

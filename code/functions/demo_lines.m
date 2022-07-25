@@ -153,7 +153,7 @@ lines = 1;
                 return
             end
         % If participant pressed forward we continue
-        elseif find(keyCode) == 79
+        elseif find(keyCode) == KbName('RightArrow')
             lines = lines+1;
         end
 

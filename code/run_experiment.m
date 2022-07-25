@@ -59,7 +59,7 @@ addpath(genpath(fullfile(FILEPATH, 'functions')), fullfile(FILEPATH, 'config'))
 % ----------------------------------------------------------------------
 
 % Use or skip triggers (for debugging/demo)
-TRIGGERS_ON = 0;
+TRIGGERS_ON = 1;
 
 if TRIGGERS_ON == 1
 

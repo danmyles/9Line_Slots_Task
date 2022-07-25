@@ -23,8 +23,8 @@ function [screenInfo] = setup_screen()
 PsychDefaultSetup(2);
 
 % Do you need to run SyncTest?
-Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
-% Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
+% Screen('Preference', 'SkipSyncTests', 1);  % SKIP SYNCTEST
+Screen('Preference', 'SkipSyncTests', 0) % TO TURN THIS OFF
 
 % Get the numbers for each screen. 
 % This gives us a number for each of the screens attached to our computer.
@@ -75,7 +75,7 @@ screenInfo.ifi = Screen('GetFlipInterval', screenInfo.window);
 
 % Typically use half the ifi to create some slack when specifying
 % screen flips.
-screenInfo.halfifi = screenInfo.ifi;
+screenInfo.halfifi = (screenInfo.ifi / 2);
 
 % We can also determine the refresh rate of our screen. The
 % relationship between the two is: ifi = 1 / hertz

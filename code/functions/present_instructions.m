@@ -249,8 +249,16 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
 
         end
         
+        % Drawing Finished
+        Screen('DrawingFinished', screenInfo.window);
+        
         % Flip to next available frame
-        Screen('Flip', screenInfo.window);
+        [~, ~, ~, Missed] = Screen('Flip', screenInfo.window, );
+        
+        if Missed > 0
+            i
+            Missed
+        end
         
         [~, keyCode, ~] = KbWait(-1, 2);    % Wait for keypress
         
