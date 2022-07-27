@@ -120,17 +120,21 @@ sessionInfo.start = GetSecs;
 % EVENT MARKER: Experiment Start
 send_trigger(s, eventInfo.expStart, pulseDuration);
 
-% Load screen
-loading_screen(screenInfo, reelInfo, 4);
-
 % Load Screen
 loading_screen(screenInfo, reelInfo, 5);
+
+% Flip to the screen
+FlipTime = Screen('Flip', screenInfo.window);
+
+keyPressTime = KbWait();
+
+FlipTime = FlipTime + (keyPressTime - FlipTime) + (1.5 * screenInfo.ifi);
 
 % ----------------------------------------------------------------------
 %% Task Instructions
 % ----------------------------------------------------------------------
 
-present_instructions(screenInfo, reelInfo, outputData);
+present_instructions(screenInfo, reelInfo, outputData, FlipTime);
 
 % Ready?
 DrawFormattedText(screenInfo.window, ...

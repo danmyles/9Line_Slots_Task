@@ -120,9 +120,6 @@ FCTime = zeros(nTrials, 1);
 % When was outcome presented
 CSTime = zeros(nTrials, 1);
 
-% Time between final stimulus onset and next trial input
-PRP = zeros(nTrials, 1);
-
 % Time at trial end.
 TrialEnd = zeros(nTrials, 1);
 
@@ -136,7 +133,7 @@ outputEmpty = table(...
     betChoice, betBlue, pressLeft, betSize, totalBet, ...
     multiplier, binN, payout, netOutcome, credits, ...  % Bet Info
     shown, BetChoiceSFT, BetChoiceRT, ReelSFT, LStopSF, RStopSF, ... 
-    HighlightEnd, FCTime, CSTime, PRP, TrialEnd); % Post Display Info
+    HighlightEnd, FCTime, CSTime, TrialEnd); % Post Display Info
 
 % Outcome Tables
 betA = table(LStop, RStop, L1, L2, L3, CS, R1, R2, R3, cueLines, match, multiplier, binN);

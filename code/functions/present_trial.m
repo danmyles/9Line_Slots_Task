@@ -123,7 +123,7 @@ while ~keyWait
     elseif keyCode == escapeKey
 
         sca;
-        return
+        error('User entered escape at bet screen')
 
     end
 
@@ -434,21 +434,6 @@ Screen('FillRect', screenInfo.window, 0, [0, 0, 85, 85]);
 % EVENT MARKER (Display Outcome Stimulus)
 send_trigger(s, eventInfo.outcome.SF, pulseDuration);
 
-keyDown = 0;
-KeyPressTime = 0;
-
-% Wait for key press
-while(~keyDown)
-
-    [keyDown, KeyPressTime] = KbCheck(-1);
-    WaitSecs(0.001); % delay to prevent CPU hogging
-
-end
-
-% Get PRP time
-PRP = KeyPressTime - StimulusOnsetTime;
-outputData.PRP(reelInfo.trialIndex) = PRP;
-
 % BET INFO EVENT MARKERS (will need to be adjusted to match above)
 % Centre Symbol
 send_trigger(s, eventInfo.outcome.symbol(outputData.CS(reelInfo.trialIndex)), pulseDuration);
@@ -479,19 +464,12 @@ outputData.RStopSF(reelInfo.trialIndex) = outputData.RStopSF(reelInfo.trialIndex
 outputData.credits(reelInfo.trialIndex) = ...
     outputData.credits(reelInfo.trialIndex) + outputData.payout(reelInfo.trialIndex);
 
-% Wait minimum trial time if neccesary (likely already elapsed)
-while (GetSecs - StimulusOnsetTime) < reelInfo.timing.outcome
-    WaitSecs(0.001); % delay to prevent CPU hogging
-end
-
-% Wait until key comes back up before starting next trial
-while keyDown
-    [keyDown, KeyUpTime] = KbCheck(-1);
-     WaitSecs(0.001); % delay to prevent CPU hogging
-end
+% Wait minimum trial time
+whenSecs = StimulusOnsetTime + reelInfo.timing.outcome;
+trialEnd = WaitSecs('UntilTime', whenSecs);
 
 % Trial End Time to outputData
-outputData.TrialEnd(reelInfo.trialIndex) = KeyUpTime - sessionInfo.start;
+outputData.TrialEnd(reelInfo.trialIndex) = trialEnd - sessionInfo.start;
 
 end
 

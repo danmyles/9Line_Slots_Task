@@ -1,4 +1,4 @@
- function [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, demo, prompt)
+ function [reelInfo, demoSequence, FlipTime] = present_demo(reelInfo, screenInfo, demoSequence, demo)
     % ----------------------------------------------------------------------
     % [reelInfo] = present_demo(reelInfo)
     % ----------------------------------------------------------------------
@@ -125,7 +125,7 @@
         draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
 
         % Flip to the screen
-        [FlipTime, HLendTime] = Screen('Flip', screenInfo.window, FlipTime);
+        [FlipTime, ~] = Screen('Flip', screenInfo.window, FlipTime);
 
     end
    
@@ -142,7 +142,7 @@
     FlipTime = FlipTime + reelInfo.timing.highlight - screenInfo.halfifi;
     
     % Flip to the screen
-    [~, FixationOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % Wait ISI
+    [FlipTime, ~] = Screen('Flip', screenInfo.window, FlipTime); % Wait ISI
     
 	% ----------------------------------------------------------------------    
     %% Outcome stimulus
@@ -178,20 +178,17 @@
     end
        
     % Flip to the screen (outcome stimulus, payout, win highlights)
-    Screen('Flip', screenInfo.window, FlipTime); % Wait ISI for accurate timing
+    [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % Wait ISI for accurate timing
     
-    % Wait a moment, before prompt
-    WaitSecs(.500);
+    % Wait minimum trial time
+    whenSecs = StimulusOnsetTime + reelInfo.timing.outcome;
+    demoEnd = WaitSecs('UntilTime', whenSecs);
     
-    draw_grid(screenInfo);
-    draw_shapes(screenInfo, reelInfo, screenInfo.splitpos, reelInfo.outcome.dspSymbols);
-    draw_payout(screenInfo, reelInfo); % Display payout
-    
-    % Draw key prompt
-    DrawFormattedText(screenInfo.window, prompt, 'center', screenInfo.cont);
-    
-    % Draw a little red dot :)
-    Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
-           get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]));
+    % Approx Number of Frames Since last flip
+    FramesSince = (demoEnd - FlipTime) / screenInfo.ifi;
+    FramesSince = ceil(FramesSince);
+        
+    % Schedule Next Screen Flip
+    FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
         
  end

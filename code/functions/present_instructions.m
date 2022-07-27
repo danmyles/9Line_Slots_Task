@@ -1,4 +1,4 @@
-function [] = present_instructions(screenInfo, reelInfo, outputData)
+function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
     % ------------------------------------------------------------------------
     % [] = present_instructions(screenInfo, reelInfo, outputData)
     % ------------------------------------------------------------------------
@@ -14,7 +14,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
     % Version : 2021a
     % ----------------------------------------------------------------------
        
-        % Here I set a large while loop to move through the instructions step by
+    % Here I set a large while loop to move through the instructions step by
     % step, the iterator, i will track the position in the
     % instructions.loop struct.
     % The while loop (rather than a for loop) allows the users to move forwards
@@ -28,6 +28,10 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
     % these each have there own nested loops or conditionals
     % If i is numeric there is a conditional statement to catch this and 
     % display a visual demonstration.
+    
+    % I also schedule screen flip deadlines manually to suppress warnings
+    % in the section of the experiment where I'm not concerned about
+    % timing.
 
     % Set Font / Text:
     Screen('TextSize', screenInfo.window, reelInfo.TextSize);
@@ -120,7 +124,13 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
 
     % Initiate while loop at 1
     i = 1;
-        
+    
+    % Schedule first screen flip
+    % I'm scheduling these here because KbWait is a bit clunky
+    % I don't care about the timing here but I want to prevent PTB clocking
+    % up errors here, so that any timing flips are representative of issues
+    % later on in the exp or with the system.
+    
     while i < length(instructions.loop) + 1
                 
         % Check if fixation instructions
@@ -151,17 +161,14 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
                     
                 case 2 % Demo Win
                     
-                    % Display Reels
-                    draw_grid(screenInfo);
-                    draw_shapes(screenInfo, reelInfo, reelInfo.pos.LR, trim_centre(reelInfo.outcome.dspSymbols));
-                    DrawFormattedText(screenInfo.window, instructions.cont, 'center', screenInfo.ydot);
-                    Screen('Flip', screenInfo.window);  % Flip to the screen
-                    KbWait(-1, 2);                      % Wait for keypress 
-
                     % Show a win
                     reelInfo.demoIndex = 1;
-                    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1, instructions.prompt);
-                
+                    [reelInfo, demoSequence, FlipTime] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+                    
+                    i = i+1; % Iterate to next instruction
+                    
+                    continue % Restart while loop
+                    
                 case 3 % Repeat Win display
                     
                     % Show previous outcome:
@@ -179,7 +186,11 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
                 case 4 % Demo Loss
                     
                     reelInfo.demoIndex = 2;
-                    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1, instructions.prompt);
+                    [reelInfo, demoSequence, FlipTime] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+                    
+                    i = i+1; % Iterate to next instruction
+                    
+                    continue
                     
                 case 5 % Show symbols
                     
@@ -196,7 +207,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
                 case 6 % Show lines
                     
                     % Throw up 9 lines one at a time
-                    [i] = demo_lines(screenInfo, reelInfo, instructions, i);
+                    [i] = demo_lines(screenInfo, reelInfo, instructions, i, FlipTime);
                     
                 case 7 % Show betting screen
                     
@@ -213,7 +224,11 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
                 case 8 % Fixation cross practice
                     
                     reelInfo.demoIndex = 3;
-                    [reelInfo, demoSequence] = present_demo(reelInfo, screenInfo, demoSequence, 1, instructions.prompt);
+                    [reelInfo, demoSequence, FlipTime] = present_demo(reelInfo, screenInfo, demoSequence, 1);
+                    
+                    i = i+1; % Iterate to next instruction
+                    
+                    continue
                     
             end
             
@@ -252,15 +267,19 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         % Drawing Finished
         Screen('DrawingFinished', screenInfo.window);      
         
-        % Flip to next available frame
-        Screen('Flip', screenInfo.window);
-
+        % Flip to scheduled frame
+        FlipTime = Screen('Flip', screenInfo.window, FlipTime);
+        
         [~, keyCode, ~] = KbWait([], 2); % Wait for keypress
         
         % Code participant response
         % If participant pressed back we need to go back one step
         if any(find(keyCode) == KbName('LeftArrow'))
-            if i > 1 % Prevents 0 when i == 1
+            % A few instances need to step back two places to avoid getting
+            % stuck at the demo
+            if contains(char(instructions.loop{i}), {'Nice!', ':''(', 'The experiment will begin in a moment...'}) 
+                i = i-2;
+            elseif i > 1 % Prevents 0 when i == 1
                 i = i-1; 
             end
         elseif any(find(keyCode) == KbName('ESCAPE'))
@@ -269,6 +288,17 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         else % we continue
             i = i+1;
         end
+        
+        % Approx Number of Frames Since last flip
+        FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
+        
+        % Schedule Next Screen Flip
+        FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
+        
+        % This is just to prevent deadline misses during instructions.
+        % I'm using a 240Hz monitor so unscheduled flips often get misses
+        % when using KbWait. I want warnings to be informative about the
+        % actual experiment, not these instructions.
         
     end
     

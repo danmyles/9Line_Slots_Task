@@ -80,9 +80,6 @@ reelInfo.colours(3,:) = [229/255, 211/255, 103/255]; % tri
 reelInfo.colours(4,:) = [152/255, 230/255, 138/255]; % rect
 reelInfo.colours(5,:) = [141/255, 038/255, 183/255]; % pent
 
-% Progress loading screen
-loading_screen(screenInfo, reelInfo, 1);
-
 % -------------------------------------------------------------------------
 %% Outcomes
 % -------------------------------------------------------------------------
@@ -117,9 +114,6 @@ reelInfo.timing.highlight = 0.500; % Reel Highlighting doesn't need to be jitter
 reelInfo.timing.fixationCross = 0.800; % Minimum Time for fixation cross
 reelInfo.timing.outcome = 1.000; % Minimum Time before participant can proceed to next trial
 
-% Progress loading screen
-loading_screen(screenInfo, reelInfo, 2);
-
 % -------------------------------------------------------------------------
 %% Define reel highlighting behaviour
 % -------------------------------------------------------------------------
@@ -132,9 +126,6 @@ loading_screen(screenInfo, reelInfo, 2);
 %       3 = Potential match highlighting only (wins are not highlighted)
 
 reelInfo.highlight = 3;
-
-% Progress loading screen
-loading_screen(screenInfo, reelInfo, 3);
 
 end
 

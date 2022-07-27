@@ -72,9 +72,6 @@ function [] = loading_screen(screenInfo, reelInfo, loadingstage)
     Screen('TextSize', screenInfo.window, 18);
     Screen('TextFont', screenInfo.window, 'Courier');
     DrawFormattedText(screenInfo.window, [line3], 'center', [screenInfo.yCenter + screenInfo.yCenter/5], screenInfo.black);
-    
-    % Flip to the screen
-    Screen('Flip', screenInfo.window);
-    
+        
 end
 

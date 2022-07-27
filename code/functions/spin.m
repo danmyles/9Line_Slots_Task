@@ -117,7 +117,7 @@ function [reelInfo, outputData, vbl] = spin(screenInfo, reelInfo, outputData, de
     draw_shapes(screenInfo, reelInfo, right(:, 2:3), right(:, 1));
     draw_grid(screenInfo);
     
-    vbl = Screen('Flip', screenInfo.window);
+    vbl = Screen('Flip', screenInfo.window, GetSecs() + 0.5 * screenInfo.ifi);
     vbl = vbl + 2 * screenInfo.ifi; % Allow 2 extra frames
     
     % The timing here isn't important, but the vast number of

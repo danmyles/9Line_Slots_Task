@@ -1,4 +1,4 @@
-function [i] = demo_lines(screenInfo, reelInfo, instructions, i)
+function [i, FlipTime] = demo_lines(screenInfo, reelInfo, instructions, i, FlipTime)
 % ----------------------------------------------------------------------
 % demo_lines(screenInfo)
 % ----------------------------------------------------------------------
@@ -136,7 +136,7 @@ lines = 1;
         end
         
         % Flip to screen on next available frame
-        Screen('Flip', screenInfo.window);
+        FlipTime = Screen('Flip', screenInfo.window, FlipTime);
         
         [~, keyCode, ~] = KbWait(-1, 2);    % Wait for keypress
         
@@ -156,6 +156,14 @@ lines = 1;
         elseif find(keyCode) == KbName('RightArrow')
             lines = lines+1;
         end
+        
+        % Schedule next screen flip
+        
+        % Approx Number of Frames Since last flip
+        FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
+        
+        % Schedule Next Screen Flip
+        FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
 
     end      
 
