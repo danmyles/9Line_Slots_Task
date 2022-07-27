@@ -126,9 +126,8 @@ loading_screen(screenInfo, reelInfo, 5);
 % Flip to the screen
 FlipTime = Screen('Flip', screenInfo.window);
 
-keyPressTime = KbWait();
-
-FlipTime = FlipTime + (keyPressTime - FlipTime) + (1.5 * screenInfo.ifi);
+% Wait for anykey
+KbWait();
 
 % ----------------------------------------------------------------------
 %% Task Instructions

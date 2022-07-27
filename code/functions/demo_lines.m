@@ -135,7 +135,7 @@ lines = 1;
             return
         end
         
-        % Flip to screen on next available frame
+        % Flip to screen
         FlipTime = Screen('Flip', screenInfo.window, FlipTime);
         
         [~, keyCode, ~] = KbWait(-1, 2);    % Wait for keypress
@@ -149,7 +149,6 @@ lines = 1;
                 % Lines == 0
                 % Therefore return to main instructions and drop i by 1
                 i = i - 1;
-                
                 return
             end
         % If participant pressed forward we continue
@@ -158,7 +157,6 @@ lines = 1;
         end
         
         % Schedule next screen flip
-        
         % Approx Number of Frames Since last flip
         FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
         

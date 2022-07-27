@@ -112,7 +112,7 @@ reelInfo.spin = zeros(4, 3); % To hold temporary info for spin animations
 reelInfo.timing.jitter = 0.200; % Add 0 - 200 ms to FC/Outcome ISI
 reelInfo.timing.highlight = 0.500; % Reel Highlighting doesn't need to be jittered
 reelInfo.timing.fixationCross = 0.800; % Minimum Time for fixation cross
-reelInfo.timing.outcome = 1.000; % Minimum Time before participant can proceed to next trial
+reelInfo.timing.outcome = 1.500; % Outcome display duration
 
 % -------------------------------------------------------------------------
 %% Define reel highlighting behaviour

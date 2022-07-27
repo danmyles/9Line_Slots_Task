@@ -131,8 +131,19 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
     % up errors here, so that any timing flips are representative of issues
     % later on in the exp or with the system.
     
+    % This is just to prevent deadline misses during instructions.
+    % I'm using a 240Hz monitor so unscheduled flips often get missed
+    % when using KbWait. I want warnings to be informative about the
+    % actual experiment, not these instructions.
+
+    % Approx Number of Frames Since last flip
+    FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
+
+    % Schedule Next Screen Flip
+    FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
+    
     while i < length(instructions.loop) + 1
-                
+                      
         % Check if fixation instructions
         if i > length(instructions.task) & i <= (length(instructions.loop) - length(instructions.final))
             fixation = 1;
@@ -207,20 +218,20 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
                 case 6 % Show lines
                     
                     % Throw up 9 lines one at a time
-                    [i] = demo_lines(screenInfo, reelInfo, instructions, i, FlipTime);
+                    [i, FlipTime] = demo_lines(screenInfo, reelInfo, instructions, i, FlipTime);
                     
                 case 7 % Show betting screen
                     
                     % Show betting screen:
                     draw_Bet(screenInfo, reelInfo, outputData, 1:2);
-                    
+                                       
                     % Draw key prompt
                     DrawFormattedText(screenInfo.window, instructions.prompt, 'center', screenInfo.cont);
                     
                     % Draw a little red dot :)
                     Screen('FillOval', screenInfo.window, reelInfo.colours(1, :), ...
                            get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]));
-                    
+                       
                 case 8 % Fixation cross practice
                     
                     reelInfo.demoIndex = 3;
@@ -269,7 +280,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
         
         % Flip to scheduled frame
         FlipTime = Screen('Flip', screenInfo.window, FlipTime);
-        
+               
         [~, keyCode, ~] = KbWait([], 2); % Wait for keypress
         
         % Code participant response
@@ -289,16 +300,11 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
             i = i+1;
         end
         
-        % Approx Number of Frames Since last flip
+        % Approx Number of Frames Since last flip (dealing with KbWait)
         FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
-        
+
         % Schedule Next Screen Flip
         FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
-        
-        % This is just to prevent deadline misses during instructions.
-        % I'm using a 240Hz monitor so unscheduled flips often get misses
-        % when using KbWait. I want warnings to be informative about the
-        % actual experiment, not these instructions.
         
     end
     
