@@ -95,7 +95,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         'This point indicates where the outcome will be displayed.'; ...
         'Whenever it appears, try to remain still and gently focus your gaze on that point.'; ...
         'Gently hold your gaze without blinking for a moment after the outcome is displayed'; ...
-        'Blinks and eye-movements impact the accuracy of the EEG recording.'; ...
+        'Blinks and eye movements impact the accuracy of the EEG recording.'; ...
         'A gentle effort to minimise these actions will improve the recording.'; ...
         'So long as you don''t find this too distracting or uncomfortable.'; ...
         'If you find this distracting or uncomfortable, it''s better to relax and focus on the task.'; ...
@@ -250,17 +250,12 @@ function [] = present_instructions(screenInfo, reelInfo, outputData)
         end
         
         % Drawing Finished
-        Screen('DrawingFinished', screenInfo.window);
+        Screen('DrawingFinished', screenInfo.window);      
         
         % Flip to next available frame
-        [~, ~, ~, Missed] = Screen('Flip', screenInfo.window, );
-        
-        if Missed > 0
-            i
-            Missed
-        end
-        
-        [~, keyCode, ~] = KbWait(-1, 2);    % Wait for keypress
+        Screen('Flip', screenInfo.window);
+
+        [~, keyCode, ~] = KbWait([], 2); % Wait for keypress
         
         % Code participant response
         % If participant pressed back we need to go back one step

@@ -4,11 +4,6 @@
 
 %% TODO
 % - TIMING FOR SCREEN FLIPS and IFI: ~5.9 ms
-% - Need to add accurate timing mod from peter schaffe
-% - CHECK SPEED:
-%     ii) You will also need to consider the length of time neccesary to avoid 
-%     artifacts from previous stimuli affecting the result. ~1000 ms from 
-%     fixation cross to display of outcome stimulus.
 % - Replace movefile() for participant.mat file to end of script (commented
 % out for debugging)`
 % - Add instructions to run_experiment file
@@ -24,8 +19,14 @@
 % dependencies etc.
 %
 % NOTE: If this is the first time running this script you will first need 
-% to run the create experiment.m which prepares the following inputs:
-% participant_n.mat, reelInfo.mat, reelstrip.csv
+%       to run the create experiment.m which prepares the following inputs:
+%       participant_n.mat, reelInfo.mat, reelstrip.csv
+%
+% NOTE: This experiment is not designed to record accurate response times
+%       Behavioural data will be unreliable and is only recorded for
+%       debugging or ball park measures. Timing for the initial experiment
+%       which utilised this scripts was done using a TTL trigger, and
+%       confirmed (adjusted) using a photodiode.
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
 % Last update : July 2022
