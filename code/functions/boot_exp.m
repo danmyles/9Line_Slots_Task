@@ -29,7 +29,7 @@ if ~ license('test','statistics_toolbox')
     sca;
 end
 
-if ~ contains(matlabpath, 'Psychtoolbox')
+if ~ contains(matlabpath, 'Psychtoolbox', 'IgnoreCase', true)
     warning('Psychtoolbox was not found in the MATLAB path. Please install/add to path');
     sca;
 end

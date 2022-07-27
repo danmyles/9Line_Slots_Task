@@ -195,11 +195,3 @@
            get_dimensions(screenInfo, [screenInfo.xCenter, screenInfo.ydot], 1, [0, 0, 15, 15]));
         
  end
-
- 
- 
- 
- 
- 
- 
- 
