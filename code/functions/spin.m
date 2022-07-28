@@ -123,13 +123,14 @@ function [reelInfo, outputData, vbl] = spin(screenInfo, reelInfo, outputData, de
     % The timing here isn't important, but the vast number of
     % iterations of screen flips that this function produces meant that 
     % I was racking up warnings that made it difficult to 
-    % identify issues in more important parts of the script. 
-    % I've set up manual timing here in an attempt to minimise these
+    % identify whether issues had occured in more important parts of the 
+    % script. I've set up manual timing here in an attempt to minimise these
     % warnings.
     % My setup is a 240Hz monitor (running linux (pop_os)) so the frame 
     % frame rate is super fast and I need to allow a few extra frames to 
     % provide enough time for the script to complete.
-    % This also helped to slow the spin animation down.
+    % This also helped to slow the spin animation down which looks a little
+    % nicer.
     
     % Start spin sequence
     for i = 1:width(right_Y)

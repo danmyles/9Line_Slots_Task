@@ -1,4 +1,4 @@
-function [reelInfo, outputData] = present_trial(s, eventInfo, pulseDuration, screenInfo, sessionInfo, reelInfo, outputData)
+function [reelInfo, outputData, FlipTime] = present_trial(s, eventInfo, pulseDuration, screenInfo, sessionInfo, reelInfo, outputData, FlipTime)
 % ----------------------------------------------------------------------
 % [reelInfo, outputData] = present_trial(reelInfo)
 % ----------------------------------------------------------------------
@@ -61,8 +61,16 @@ side = randsample(1:2, 2, false);
 
 [rectR, rectL] = draw_Bet(screenInfo, reelInfo, outputData, side);
 
-% Flip on next available frame
-[~, BetChoiceSFT] = Screen('Flip', screenInfo.window);
+% I allow an extra frame or two here to minimise missed deadline warnings
+% for unimportant timing.
+% Approx Number of Frames since last flip
+FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
+
+% Schedule Next Screen Flip
+FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
+
+% Flip
+[FlipTime, BetChoiceSFT] = Screen('Flip', screenInfo.window, FlipTime);
 
 % EVENT MARKER (DISPLAY BET)
 send_trigger(s, eventInfo.displayBet, pulseDuration);
@@ -209,7 +217,14 @@ end
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
 Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), highlight, screenInfo.gridPenWidthPixel .* 3) % Red frame highlight
 
-Screen('Flip', screenInfo.window);  % Flip to the screen (next available frame)
+% Approx Number of Frames Since last flip (dealing with KbWait)
+FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
+
+% Schedule Next Screen Flip
+FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
+
+ % Flip to the screen
+Screen('Flip', screenInfo.window, FlipTime);
 
 % ------------------------------------------------------------------------
 %% MORE UPDATING
@@ -360,7 +375,7 @@ if reelInfo.highlight == 2 || reelInfo.highlight == 3
 
     % Flip to the screen
     [FlipTime, HLendTime] = Screen('Flip', screenInfo.window, FlipTime);
-
+    
     % EVENT MARKER (Highlight Sequence Complete)
     send_trigger(s, eventInfo.HL.end, pulseDuration);
     
@@ -429,7 +444,7 @@ end
 Screen('FillRect', screenInfo.window, 0, [0, 0, 85, 85]);
 
 % Flip to the screen (outcome stimulus, payout, win highlights)
-[~, StimulusOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % ISI calculated above
+[FlipTime, StimulusOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % ISI calculated above
 
 % EVENT MARKER (Display Outcome Stimulus)
 send_trigger(s, eventInfo.outcome.SF, pulseDuration);

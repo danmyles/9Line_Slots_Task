@@ -38,7 +38,7 @@ function [reelInfo] = setup_reelInfo(screenInfo, reelInfo)
 %% Trial Index
 % -------------------------------------------------------------------------
 reelInfo.trialIndex = 0; % iterator to keep track of trials
-reelInfo.demoIndex = 0; % Copy of the above used to progress demo/instructions
+reelInfo.demoIndex = 0;  % Copy of the above used to progress demo/instructions
 % -------------------------------------------------------------------------
 %% Basic symbol information
 % -------------------------------------------------------------------------

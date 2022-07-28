@@ -3,7 +3,7 @@
 % -----------------------------------------------------------------------
 
 %% TODO
-% - TIMING FOR SCREEN FLIPS and IFI: ~5.9 ms
+% - TIMING FOR SCREEN FLIPS and IFI:
 % - Replace movefile() for participant.mat file to end of script (commented
 % out for debugging)`
 % - Add instructions to run_experiment file
@@ -23,10 +23,9 @@
 %       participant_n.mat, reelInfo.mat, reelstrip.csv
 %
 % NOTE: This experiment is not designed to record accurate response times
-%       Behavioural data will be unreliable and is only recorded for
-%       debugging or ball park measures. Timing for the initial experiment
-%       which utilised this scripts was done using a TTL trigger, and
-%       confirmed (adjusted) using a photodiode.
+%       Response time data is only recorded for debugging or ball park 
+%       measures. Primary timing for EEG measures is done using a TTL 
+%       trigger, and confirmed (adjusted) using a photodiode.
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
 % Last update : July 2022
@@ -140,8 +139,10 @@ DrawFormattedText(screenInfo.window, ...
     'When you are ready press the 9 key to begin the experiment', ...
     'center', screenInfo.yCenter);
 
+info = Screen('GetFlipInfo', screenInfo.window);
+
 % Flip screen (next frame)
-Screen('Flip', screenInfo.window);
+FlipTime = Screen('Flip', screenInfo.window);
 
 % Wait for 9 Key or terminate on ESCAPE.
 keyCode = 0;
@@ -190,11 +191,11 @@ for block = 1:reelInfo.blockN
         % EVENT MARKER – TRIAL START
         send_trigger(s, eventInfo.trialStart, pulseDuration);
         
-        [reelInfo, outputData] = present_trial(s, eventInfo, pulseDuration, screenInfo, sessionInfo, reelInfo, outputData);
+        [reelInfo, outputData, FlipTime] = present_trial(s, eventInfo, pulseDuration, screenInfo, sessionInfo, reelInfo, outputData, FlipTime);
         
         % EVENT MARKER – TRIAL END
         send_trigger(s, eventInfo.trialEnd, pulseDuration);
-        
+                
     end
 
     % Send end time to sessionInfo
@@ -284,6 +285,8 @@ source = [fileInfo.input fileInfo.fileID '.mat'];
 destination = [fileInfo.output];
 movefile(source, destination)
 
+% Open post-experiment survey
+system('/usr/bin/firefox --new-window https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg');
+
 % Print payment info to command window.
 print_payments(sessionInfo);
-
