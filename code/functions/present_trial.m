@@ -119,7 +119,8 @@ while ~keyWait
     [~, KeyPressTime, keyCode] = KbCheck(-1);
 
     % Get keyCode
-    keyCode = find(keyCode);
+    % Will return the first match here (leftKey) if ppt mashes two keys
+    keyCode = find(keyCode, 1);
 
     if keyCode == leftKey | keyCode == rightKey
 
