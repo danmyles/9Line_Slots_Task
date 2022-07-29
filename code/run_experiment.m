@@ -112,6 +112,11 @@ end
 % Start experiment and run all setup functions
 [screenInfo, reelInfo, fileInfo, outputData, ID, sessionInfo, eventInfo] = boot_exp();
 
+% Hide the cursor
+HideCursor(screenInfo.window); % Off when debugging
+% Silence Keyboard
+ListenChar(2);
+
 % Get system time
 sessionInfo.date = datetime;
 sessionInfo.start = GetSecs;
@@ -123,10 +128,13 @@ send_trigger(s, eventInfo.expStart, pulseDuration);
 loading_screen(screenInfo, reelInfo, 5);
 
 % Flip to the screen
-FlipTime = Screen('Flip', screenInfo.window);
+Screen('Flip', screenInfo.window);
 
 % Wait for anykey
 KbWait();
+
+% Get VBL timestamp
+FlipTime = Screen('Flip', screenInfo.window);
 
 % ----------------------------------------------------------------------
 %% Task Instructions
@@ -138,8 +146,6 @@ present_instructions(screenInfo, reelInfo, outputData, FlipTime);
 DrawFormattedText(screenInfo.window, ...
     'When you are ready press the 9 key to begin the experiment', ...
     'center', screenInfo.yCenter);
-
-info = Screen('GetFlipInfo', screenInfo.window);
 
 % Flip screen (next frame)
 FlipTime = Screen('Flip', screenInfo.window);
@@ -162,6 +168,8 @@ while keyCode ~= nineKey
     % Exit experiment on ESCAPE    
     if keyCode == escapeKey
         sca;
+        ShowCursor();
+        ListenChar(0);
         error('User entered escape prior to experiment start')
     end
     
@@ -276,6 +284,9 @@ clear s;
 % Show Cursor
 ShowCursor();
 
+% Return Keyboard
+ListenChar(0);
+
 % Clear the screen
 sca;
 
@@ -286,7 +297,7 @@ destination = [fileInfo.output];
 movefile(source, destination)
 
 % Open post-experiment survey
-system('/usr/bin/firefox --new-window https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg');
+system('/usr/bin/firefox -safe-mode --new-window https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg');
 
 % Print payment info to command window.
 print_payments(sessionInfo);

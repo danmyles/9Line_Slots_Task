@@ -125,8 +125,7 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
     % Initiate while loop at 1
     i = 1;
     
-    % Schedule first screen flip
-    % I'm scheduling these here because KbWait is a bit clunky
+    % I'm scheduling screen Flips in this loop because KbWait is a bit clunky
     % I don't care about the timing here but I want to prevent PTB clocking
     % up errors here, so that any timing flips are representative of issues
     % later on in the exp or with the system.
@@ -135,12 +134,6 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
     % I'm using a 240Hz monitor so unscheduled flips often get missed
     % when using KbWait. I want warnings to be informative about the
     % actual experiment, not these instructions.
-
-    % Approx Number of Frames Since last flip
-    FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
-
-    % Schedule Next Screen Flip
-    FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
     
     while i < length(instructions.loop) + 1
                       
@@ -278,10 +271,16 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
         % Drawing Finished
         Screen('DrawingFinished', screenInfo.window);      
         
+        % Approx Number of Frames Since last flip (dealing with KbWait)
+        FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
+
+        % Schedule Next Screen Flip
+        FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
+        
         % Flip to scheduled frame
         FlipTime = Screen('Flip', screenInfo.window, FlipTime);
                
-        [~, keyCode, ~] = KbWait([], 2); % Wait for keypress
+        [~, keyCode, ~] = KbWait(-1, 2); % Wait for keypress
         
         % Code participant response
         % If participant pressed back we need to go back one step
@@ -295,16 +294,12 @@ function [] = present_instructions(screenInfo, reelInfo, outputData, FlipTime)
             end
         elseif any(find(keyCode) == KbName('ESCAPE'))
             sca;
+            ShowCursor();
+            ListenChar(0);
             error('User entered escape during instructions')
         else % we continue
             i = i+1;
         end
-        
-        % Approx Number of Frames Since last flip (dealing with KbWait)
-        FramesSince = ceil((GetSecs() - FlipTime) / screenInfo.ifi);
-
-        % Schedule Next Screen Flip
-        FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
         
     end
     

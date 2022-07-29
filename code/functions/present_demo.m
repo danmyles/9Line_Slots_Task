@@ -178,17 +178,10 @@
     end
        
     % Flip to the screen (outcome stimulus, payout, win highlights)
-    [~, StimulusOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % Wait ISI for accurate timing
+    [FlipTime, StimulusOnsetTime] = Screen('Flip', screenInfo.window, FlipTime); % Wait ISI for accurate timing
     
     % Wait minimum trial time
     whenSecs = StimulusOnsetTime + reelInfo.timing.outcome;
     demoEnd = WaitSecs('UntilTime', whenSecs);
-    
-    % Approx Number of Frames Since last flip
-    FramesSince = (demoEnd - FlipTime) / screenInfo.ifi;
-    FramesSince = ceil(FramesSince);
-        
-    % Schedule Next Screen Flip
-    FlipTime = FlipTime + (FramesSince * screenInfo.ifi) + (1.5 * screenInfo.ifi);
         
  end

@@ -132,6 +132,8 @@ while ~keyWait
     elseif keyCode == escapeKey
 
         sca;
+        ShowCursor();
+        ListenChar(0);
         error('User entered escape at bet screen')
 
     end

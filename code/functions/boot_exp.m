@@ -93,9 +93,6 @@ fileInfo.fileID = ID;
 % Set up screen
 [screenInfo] = setup_screen();
 
-% % Hide the cursor
-HideCursor() % Off when debugging
-
 % Set up grid
 [screenInfo] = setup_grid(screenInfo);
 
