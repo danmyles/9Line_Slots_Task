@@ -1,15 +1,4 @@
 % -----------------------------------------------------------------------
-% Dev notes for experiment
-% -----------------------------------------------------------------------
-
-%% TODO
-% - TIMING FOR SCREEN FLIPS and IFI:
-% - Replace movefile() for participant.mat file to end of script (commented
-% out for debugging)`
-% - Add instructions to run_experiment file
-% — HIDE CURSOR
-
-% -----------------------------------------------------------------------
 % 9 Line Slot Task
 % -----------------------------------------------------------------------
 % Primary script for 9 Line Slot Task
@@ -24,8 +13,9 @@
 %
 % NOTE: This experiment is not designed to record accurate response times
 %       Response time data is only recorded for debugging or ball park 
-%       measures. Primary timing for EEG measures is done using a TTL 
+%       measures. Stilumus display timing for EEG is measured using a TTL 
 %       trigger, and confirmed (adjusted) using a photodiode.
+% USAGE: run_experiment at command window
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
 % Last update : July 2022
