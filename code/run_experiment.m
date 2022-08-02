@@ -18,7 +18,7 @@
 % USAGE: run_experiment at command window
 % ----------------------------------------------------------------------
 % Created by Dan Myles (dan.myles@monash.edu)
-% Last update : July 2022
+% Last update : August 2nd 2022
 % Project : 9_Line_Slots_Task
 % Version : 2021a
 % ----------------------------------------------------------------------
