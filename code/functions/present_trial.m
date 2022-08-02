@@ -79,6 +79,9 @@ send_trigger(s, eventInfo.displayBet, pulseDuration);
 %% WAIT FOR PARTICIPANT INPUT (LEFT OR RIGHT)
 % ------------------------------------------------------------------------
 
+% Check that participant has released key press from last trial
+KbReleaseWait();
+
 escapeKey = KbName('ESCAPE');
 leftKey = KbName('LeftArrow');
 rightKey = KbName('RightArrow');
