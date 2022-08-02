@@ -286,8 +286,9 @@ source = [fileInfo.input fileInfo.fileID '.mat'];
 destination = [fileInfo.output];
 movefile(source, destination)
 
-% Open post-experiment survey
-system('/usr/bin/firefox -safe-mode --new-window https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg');
-
 % Print payment info to command window.
 print_payments(sessionInfo);
+
+% Open post-experiment survey
+disp('Open <a href="https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg">this link</a> for post experiment survey .')
+msgbox('Lanuch Survey!')
