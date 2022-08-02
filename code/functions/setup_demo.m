@@ -30,10 +30,6 @@ demoSequence.multiplier(1) = reelInfo.multipliers(end);
 demoSequence.multiplier(2) = 0;
 demoSequence.multiplier(3) = reelInfo.multipliers(1, 3);
 
-if ~contains(char(reelInfo.reelstrip(:, 1)'), char([2 1 3])) | ~contains(char(reelInfo.reelstrip(:, 2)'), char([4 1 5]))
-    error("Could not find reel position for demo sequence stops. You may need to re-run create_experiment script to shuffle the reelstrips")
-end
-
 % Create a row that wins along the centre.
 demoSequence.LStop(1) = strfind(reelInfo.reelstrip(:, 1)', [2 1 3]) + 1;
 demoSequence.RStop(1) = strfind(reelInfo.reelstrip(:, 2)', [4 1 5]) + 1;

@@ -45,8 +45,30 @@ clearvars;
 
 repeatSymbols = 0;
 
-[reelInfo.reelstrip] = generate_reelstrip(5, 3, repeatSymbols);
+try_this = 1;
 
+while try_this == 1
+    
+    [reelInfo.reelstrip] = generate_reelstrip(5, 3, repeatSymbols);
+    
+    check_one = strfind(reelInfo.reelstrip(:, 1)', [2 1 3]) + 1;
+    check_two = strfind(reelInfo.reelstrip(:, 2)', [4 1 5]) + 1;
+    
+    if ~isempty(check_one) & ~isempty(check_two)
+        try_this = 0;
+    else
+        disp('Caught reelstrip exception. Regenerating now...')    
+    end
+   
+end
+% ^ I want the outcome pattern shown to participants during the instructions
+% to be the same
+% Occasionally generate_reelstrips will create a sequence in which these are
+% split over the ends of the reelstrips.
+% If this occurs I re-generate the reel strips.
+% Writing a try/catch here was easier than additional complexity in setup_demo
+
+% Output reelstrips.
 writematrix(reelInfo.reelstrip, 'config/reelstrip.csv')
 
 % -------------------------------------------------------------------------
