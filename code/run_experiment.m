@@ -290,5 +290,5 @@ movefile(source, destination)
 print_payments(sessionInfo);
 
 % Open post-experiment survey
-disp('Open <a href="https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg">this link</a> for post experiment survey .')
+disp('https://monash.az1.qualtrics.com/jfe/form/SV_eniEDceXKnO8FDg')
 msgbox('Lanuch Survey!')
