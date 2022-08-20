@@ -15,6 +15,14 @@ clear n;
 
 write(s, 0, 'uint8');
 
+for i = ones(1, 60)
+% Reset / all triggers off
+    write(s, i, 'uint8');
+    WaitSecs(pulseDuration);
+    write(s, 0, 'uint8');
+    WaitSecs(0.1);
+end
+    
 for i = 0:255
     % Reset / all triggers off
     write(s, i, 'uint8');
