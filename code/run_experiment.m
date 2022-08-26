@@ -240,6 +240,12 @@ send_trigger(s, eventInfo.expEnd, pulseDuration);
 % Session duration
 sessionInfo.duration = (sessionInfo.end - sessionInfo.start);
 
+% Alert experimenter with repeated 255 triggers
+for i = 1:3
+    send_trigger(s, 255, pulseDuration);
+    WaitSecs(0.1);
+end
+
 % Calculate participant payments
 sessionInfo.finalCredits = sprintf('%1.3f', outputData.credits(reelInfo.nTrials) / 1000);
 sessionInfo.finalCredits = regexprep(sessionInfo.finalCredits, "\.", ",");
