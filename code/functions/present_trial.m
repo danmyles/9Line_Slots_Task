@@ -219,7 +219,7 @@ end
 %% Highlight the choice and update credits:
 % ------------------------------------------------------------------------
 
-% Highlight left choice with a red box
+% Highlight choice with a red box
 draw_Bet(screenInfo, reelInfo, outputData, side); % Throw last screen.
 Screen('FrameRect', screenInfo.window, reelInfo.colours(1, :), highlight, screenInfo.gridPenWidthPixel .* 3) % Red frame highlight
 
