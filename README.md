@@ -1,18 +1,10 @@
----
-title: "Instructions"
-author: "Dan Myles"
-date: "24/07/2019"
-output: 
-  html_document:
-    keep_md: true
-    toc: true
-    toc_depth: 2
-    theme: paper
-    highlight: monochrome
----
 # 9 Line Slot Task
 
-You can contact me at dan.myles@monash.edu or daniel.b.myles@gmail.com.
+
+To cite this material please use:
+Myles, D., Carter, A., Yücel, M., & Bode, S (2024). Losses disguised as wins evoke the reward positivity event-related potential in a simulated machine gambling task. Psychophysiology, 00, e14541. https://doi.org/10.1111/psyp.14541
+
+You can contact me at daniel.b.myles@gmail.com.
 
 ## Dependancies
 
